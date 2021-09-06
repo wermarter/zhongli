@@ -1,0 +1,23 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "./node_modules/.bin/nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "author": "haminhchien",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^5.0.0-alpha.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
