@@ -11,7 +11,7 @@ import {
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const { name, id } = req.body
+  const { name, id } = req.query
 
   if (name !== undefined) {
     await searchMentorsByName(req, res)

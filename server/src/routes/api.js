@@ -11,7 +11,7 @@ import facultyRouter from './group/faculty.js'
 
 const router = express.Router()
 
-// router.use('/', verifyToken)
+router.use('/', verifyToken)
 
 router.use('/user', userRouter)
 router.use('/student', studentRouter)

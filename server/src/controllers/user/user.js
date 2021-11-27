@@ -4,7 +4,7 @@ import config from '../../config.js'
 import database from '../../services/database.js'
 
 export const searchUsersByName = async (req, res) => {
-  const { name, role } = req.body
+  const { name, role } = req.query
   const sql = `
     SELECT id, name
     FROM "Users"
@@ -15,7 +15,7 @@ export const searchUsersByName = async (req, res) => {
 }
 
 export const searchUsersById = async (req, res) => {
-  const { id, role } = req.body
+  const { id, role } = req.query
   const sql = `
     SELECT id, name
     FROM "Users"
@@ -26,7 +26,7 @@ export const searchUsersById = async (req, res) => {
 }
 
 export const getSomeUsers = async (req, res) => {
-  const { role } = req.body
+  const { role } = req.query
   const sql = `
     SELECT id, name
     FROM "Users"
@@ -63,19 +63,19 @@ export const updateUser = async (req, res) => {
 }
 
 export const removeUser = async (req, res) => {
-  const { id } = req.body
+  const { userId } = req.query
   const sql = `DELETE FROM "Users" WHERE id=$1`
-  await database.query(sql, [id])
+  await database.query(sql, [userId])
   res.sendStatus(200)
 }
 
 export const getUserFaculty = async (req, res) => {
-  const { id } = req.body
+  const { userId } = req.query
   const sql = `
     SELECT "Groups".id as id FROM "Groups", "Memberships"
     WHERE "Memberships".user_id=$1
     AND "Memberships".group_id="Groups".id
     AND "Groups".type='FACULTY'`
-  const result = await database.query(sql, [id])
+  const result = await database.query(sql, [userId])
   res.json(result.rows[0])
 }

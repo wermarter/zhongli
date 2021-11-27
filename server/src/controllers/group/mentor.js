@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import database from '../../services/database.js'
 
 export const searchMentorsById = async (req, res) => {
-  const { id } = req.body
+  const { id } = req.query
   const sql = `
     SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
     FROM "MentorGroups"
@@ -13,7 +13,7 @@ export const searchMentorsById = async (req, res) => {
 }
 
 export const searchMentorsByName = async (req, res) => {
-  const { name } = req.body
+  const { name } = req.query
   const sql = `
   SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
     FROM "MentorGroups"

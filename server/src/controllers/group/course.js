@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import database from '../../services/database.js'
 
 export const searchCoursesByName = async (req, res) => {
-  const { name } = req.body
+  const { name } = req.query
   const sql = `
     SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
     FROM "Courses"

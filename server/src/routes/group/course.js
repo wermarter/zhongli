@@ -10,7 +10,7 @@ import {
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const { name } = req.body
+  const { name } = req.query
   if (name !== undefined) {
     await searchCoursesByName(req, res)
   } else {

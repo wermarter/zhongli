@@ -1,0 +1,5 @@
+export const COURSE = 'COURSE'
+export const FACULTY = 'FACULTY'
+export const MENTOR = 'MENTOR'
+export const LECTURER = 'LECTURER'
+export const STUDENT = 'STUDENT'

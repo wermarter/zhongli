@@ -20,6 +20,7 @@ export const handleLogin = async (req, res) => {
   if (match) {
     const userInfo = {
       id: userId,
+      name: user.name,
       psid: user.psid,
       role: user.role,
     }
