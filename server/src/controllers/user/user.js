@@ -3,36 +3,14 @@ import bcrypt from 'bcrypt'
 import config from '../../config.js'
 import database from '../../services/database.js'
 
-export const searchUsersByName = async (req, res) => {
-  const { name, role } = req.query
+export const searchUsers = async (req, res) => {
+  const { role, query } = req.query
   const sql = `
     SELECT id, name
     FROM "Users"
     WHERE role=$1
-    AND name ILIKE $2`
-  const result = await database.query(sql, [role, `%${name}%`])
-  res.json(result.rows)
-}
-
-export const searchUsersById = async (req, res) => {
-  const { id, role } = req.query
-  const sql = `
-    SELECT id, name
-    FROM "Users"
-    WHERE role=$1
-    AND id ILIKE $2`
-  const result = await database.query(sql, [role, `%${id}%`])
-  res.json(result.rows)
-}
-
-export const getSomeUsers = async (req, res) => {
-  const { role } = req.query
-  const sql = `
-    SELECT id, name
-    FROM "Users"
-    WHERE role=$1
-    LIMIT 10`
-  const result = await database.query(sql, [role])
+    AND (name ILIKE $2 OR id ILIKE $2) LIMIT 20`
+  const result = await database.query(sql, [role, `%${query}%`])
   res.json(result.rows)
 }
 

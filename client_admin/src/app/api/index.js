@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import config from '../../config'
 import { adminLogin, selectJWT } from '../authSlice'
-import { COURSE, FACULTY, LECTURER, MENTOR, STUDENT } from './constants'
+import { COURSE, FACULTY, LECTURER, MENTOR, STUDENT } from './tagConstants'
 
 const authorizedBaseQuery = fetchBaseQuery({
   baseUrl: `${config.apiUrl}/api`,

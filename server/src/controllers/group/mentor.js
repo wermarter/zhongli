@@ -2,31 +2,23 @@ import { v4 as uuidv4 } from 'uuid'
 
 import database from '../../services/database.js'
 
-export const searchMentorsById = async (req, res) => {
-  const { id } = req.query
-  const sql = `
-    SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
-    FROM "MentorGroups"
-    WHERE mentor_id ILIKE $1`
-  const result = await database.query(sql, [`%${id}%`])
-  res.json(result.rows)
-}
-
-export const searchMentorsByName = async (req, res) => {
-  const { name } = req.query
-  const sql = `
+export const searchMentors = async (req, res) => {
+  const { query } = req.query
+  let result
+  const searchByGroupId = `
   SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
     FROM "MentorGroups"
-    WHERE mentor_name ILIKE $1`
-  const result = await database.query(sql, [`%${name}%`])
-  res.json(result.rows)
-}
-
-export const getSomeMentors = async (req, res) => {
-  const sql = `
-  SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
-    FROM "MentorGroups" LIMIT 10`
-  const result = await database.query(sql)
+    WHERE group_id = $1
+  `
+  try {
+    result = await database.query(searchByGroupId, [query])
+  } catch {
+    const sql = `
+      SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
+      FROM "MentorGroups"
+      WHERE (mentor_id ILIKE $1 OR mentor_name ILIKE $1) LIMIT 20`
+    result = await database.query(sql, [`%${query}%`])
+  }
   res.json(result.rows)
 }
 

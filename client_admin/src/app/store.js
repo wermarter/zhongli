@@ -12,10 +12,12 @@ import {
 } from 'redux-persist'
 import { apiSlice } from './api'
 import { authSlice } from './authSlice'
+import { pageSlice } from './pageSlice'
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   [authSlice.name]: authSlice.reducer,
+  [pageSlice.name]: pageSlice.reducer,
 })
 
 // Configure redux-persist

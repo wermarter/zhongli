@@ -2,13 +2,22 @@ import { v4 as uuidv4 } from 'uuid'
 
 import database from '../../services/database.js'
 
-export const searchCoursesByName = async (req, res) => {
-  const { name } = req.query
-  const sql = `
+export const searchCourses = async (req, res) => {
+  const { query } = req.query
+  const searchByGroupId = `
+    SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
+    FROM "Courses"
+    WHERE group_id = $1`
+  let result
+  try {
+    result = await database.query(searchByGroupId, [query])
+  } catch {
+    const searchByCourseName = `
     SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
     FROM "Courses"
     WHERE course_name ILIKE $1`
-  const result = await database.query(sql, [`%${name}%`])
+    result = await database.query(searchByCourseName, [`%${query}%`])
+  }
   res.json(result.rows)
 }
 

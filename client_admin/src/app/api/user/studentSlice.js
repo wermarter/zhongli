@@ -1,18 +1,18 @@
-import { STUDENT } from '../constants'
+import { STUDENT } from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
-  endpoints: (build) => ({
-    getStudents: build.query({
-      query: () => ({
+  endpoints: (builder) => ({
+    searchStudents: builder.query({
+      query: (queryStr) => ({
         url: '/user',
         method: 'GET',
-        params: { role: 'STUDENT' },
+        params: { role: 'STUDENT', query: queryStr || '' },
       }),
       providesTags: (result = [], error, arg) =>
-        result.map((student) => [{ type: STUDENT, id: student.id }]),
+        result.map((student) => ({ type: STUDENT, id: student.id })),
     }),
   }),
 })
 
-export const { useLazyGetStudentsQuery } = extendedApi
+export const { useLazySearchStudentsQuery } = extendedApi

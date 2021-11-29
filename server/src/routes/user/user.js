@@ -1,9 +1,7 @@
 import express from 'express'
 
 import {
-  searchUsersByName,
-  searchUsersById,
-  getSomeUsers,
+  searchUsers,
   createUser,
   updateUser,
   removeUser,
@@ -12,17 +10,7 @@ import {
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-  const { name, id } = req.query
-
-  if (name !== undefined) {
-    await searchUsersByName(req, res)
-  } else if (id !== undefined) {
-    await searchUsersById(req, res)
-  } else {
-    await getSomeUsers(req, res)
-  }
-})
+router.get('/', searchUsers)
 
 router.post('/', createUser)
 router.put('/', updateUser)
