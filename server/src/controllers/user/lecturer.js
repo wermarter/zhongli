@@ -12,7 +12,7 @@ export const getLecturerMentorGroup = async (req, res) => {
 export const getLecturerCourses = async (req, res) => {
   const { lecturerId } = req.query
   const sql = `
-    SELECT group_id as id FROM "Courses"
+    SELECT group_id as id, course_name as "courseName" FROM "Courses"
     WHERE lecturer_id=$1`
   const result = await database.query(sql, [lecturerId])
   res.json(result.rows)

@@ -29,7 +29,7 @@ const LecturerSearchCard = () => {
   return (
     <>
       <SearchCard
-        itemName="Lecturer"
+        label="Lecturer"
         items={data}
         selectedItemKey={selectedLecturerId}
         keySelector={(lecturer) => lecturer.id}

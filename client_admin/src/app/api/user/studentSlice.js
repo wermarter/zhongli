@@ -1,4 +1,4 @@
-import { STUDENT } from '../tagConstants'
+import { COURSE, FACULTY, MENTOR, STUDENT } from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -12,7 +12,44 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((student) => ({ type: STUDENT, id: student.id })),
     }),
+    getStudentMentorGroup: builder.query({
+      query: (studentId) => ({
+        url: '/student/mentor',
+        method: 'GET',
+        params: { studentId },
+      }),
+      providesTags: (result = {}, error, arg) => [
+        { type: MENTOR, id: result.groupId },
+      ],
+    }),
+    getStudentCourses: builder.query({
+      query: (studentId) => ({
+        url: '/student/course',
+        method: 'GET',
+        params: { studentId },
+      }),
+      providesTags: (result = [], error, arg) =>
+        result.map((course) => ({
+          type: COURSE,
+          id: course.groupId,
+        })),
+    }),
+    getStudentFaculty: builder.query({
+      query: (studentId) => ({
+        url: '/user/faculty',
+        method: 'GET',
+        params: { userId: studentId },
+      }),
+      providesTags: (result = {}, error, arg) => [
+        { type: FACULTY, id: result.groupId },
+      ],
+    }),
   }),
 })
 
-export const { useLazySearchStudentsQuery } = extendedApi
+export const {
+  useLazySearchStudentsQuery,
+  useGetStudentMentorGroupQuery,
+  useGetStudentCoursesQuery,
+  useGetStudentFacultyQuery,
+} = extendedApi

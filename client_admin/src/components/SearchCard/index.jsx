@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const SearchCard = (props) => {
   const {
-    itemName,
+    label,
     items = [],
     selectedItemKey,
     keySelector,
@@ -16,10 +16,36 @@ const SearchCard = (props) => {
 
   const [query, setQuery] = useState('')
 
+  const listItems = items
+    .filter(
+      (item) =>
+        keySelector(item).toUpperCase().includes(query.toUpperCase()) ||
+        nameSelector(item).toUpperCase().includes(query.toUpperCase()),
+    )
+    .map((item) => {
+      const itemKey = keySelector(item)
+      const itemName = nameSelector(item)
+      return (
+        <ListGroup.Item
+          key={itemKey}
+          active={itemKey === selectedItemKey}
+          action
+          as={Link}
+          to={itemKey}
+          className="user-select-none"
+        >
+          <div className="d-flex justify-content-between">
+            {itemName}
+            {showKey ? <div>[{itemKey}]</div> : null}
+          </div>
+        </ListGroup.Item>
+      )
+    })
+
   return (
-    <Card>
+    <Card border="secondary">
       <Card.Header className="d-flex justify-content-between">
-        <FloatingLabel label={itemName}>
+        <FloatingLabel className="flex-grow-1" label={label}>
           <Form.Control
             placeholder="placeholder"
             value={query}
@@ -41,31 +67,13 @@ const SearchCard = (props) => {
         </Button>
       </Card.Header>
       <ListGroup variant="flush">
-        {items.map((item) => {
-          const itemKey = keySelector(item)
-          const itemName = nameSelector(item)
-          if (
-            itemKey.toUpperCase().includes(query.toUpperCase()) ||
-            itemName.toUpperCase().includes(query.toUpperCase())
-          ) {
-            return (
-              <ListGroup.Item
-                key={itemKey}
-                active={itemKey === selectedItemKey}
-                action
-                as={Link}
-                to={itemKey}
-                className="user-select-none"
-              >
-                <div className="d-flex justify-content-between">
-                  {itemName}
-                  {showKey ? <div>[{itemKey}]</div> : null}
-                </div>
-              </ListGroup.Item>
-            )
-          }
-          return null
-        })}
+        {listItems.length !== 0 ? (
+          listItems
+        ) : (
+          <ListGroup.Item>
+            <h5 className="text-center">No result :)</h5>
+          </ListGroup.Item>
+        )}
       </ListGroup>
     </Card>
   )

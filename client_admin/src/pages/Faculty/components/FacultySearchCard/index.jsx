@@ -28,7 +28,7 @@ const FacultySearchCard = () => {
   return (
     <>
       <SearchCard
-        itemName="Faculty"
+        label="Faculty"
         items={data}
         selectedItemKey={selectedFacultyId}
         keySelector={(faculty) => faculty.groupId}

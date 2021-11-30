@@ -29,7 +29,7 @@ const MentorSearchCard = () => {
   return (
     <>
       <SearchCard
-        itemName="Mentor"
+        label="Mentor"
         items={data}
         selectedItemKey={selectedMentorId}
         keySelector={(mentor) => mentor.groupId}

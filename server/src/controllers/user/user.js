@@ -50,10 +50,11 @@ export const removeUser = async (req, res) => {
 export const getUserFaculty = async (req, res) => {
   const { userId } = req.query
   const sql = `
-    SELECT "Groups".id as id FROM "Groups", "Memberships"
+    SELECT "Groups".id as "groupId", "Faculties".name as "facultyName" FROM "Groups", "Memberships", "Faculties"
     WHERE "Memberships".user_id=$1
     AND "Memberships".group_id="Groups".id
-    AND "Groups".type='FACULTY'`
+    AND "Groups".type='FACULTY'
+    AND "Faculties".group_id="Memberships".group_id`
   const result = await database.query(sql, [userId])
   res.json(result.rows[0])
 }

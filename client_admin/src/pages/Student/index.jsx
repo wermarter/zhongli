@@ -5,6 +5,8 @@ import {
 } from '../../app/pageSlice'
 import { Row, Col } from 'react-bootstrap'
 import StudentSearchCard from './components/StudentSearchCard'
+import StudentDetailCard from './components/StudentDetailCard'
+import StudentListCard from './components/StudentListCard'
 
 const StudentPage = () => {
   const selectedStudentId = useSelectedItemId(
@@ -20,9 +22,11 @@ const StudentPage = () => {
       {selectedStudentId ? (
         <>
           <Col md="4">
-            <h1>Info Card</h1>
+            <StudentDetailCard selectedStudentId={selectedStudentId} />
           </Col>
-          <Col md="4">ListCard</Col>
+          <Col md="4">
+            <StudentListCard selectedStudentId={selectedStudentId} />
+          </Col>
         </>
       ) : (
         <>

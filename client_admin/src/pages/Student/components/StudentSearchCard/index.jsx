@@ -27,20 +27,18 @@ const StudentSearchCard = () => {
   }, [isFetching, dispatch])
 
   return (
-    <>
-      <SearchCard
-        itemName="Student"
-        items={data}
-        selectedItemKey={selectedStudentId}
-        keySelector={(student) => student.id}
-        nameSelector={(student) => student.name}
-        showKey={true}
-        handleSubmit={(query) => trigger(query)}
-        handleAdd={() => {
-          console.log('Add student button clicked')
-        }}
-      />
-    </>
+    <SearchCard
+      label="Student"
+      items={data}
+      selectedItemKey={selectedStudentId}
+      keySelector={(student) => student.id}
+      nameSelector={(student) => student.name}
+      showKey={true}
+      handleSubmit={(query) => trigger(query)}
+      handleAdd={() => {
+        console.log('Add student button clicked')
+      }}
+    />
   )
 }
 
