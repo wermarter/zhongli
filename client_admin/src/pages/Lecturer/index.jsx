@@ -3,8 +3,10 @@ import {
   selectedLecturerIdSelector,
   setSelectedLecturerId,
 } from '../../app/pageSlice'
-import { Row, Col, Fade } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import LecturerSearchCard from './components/LecturerSearchCard'
+import LecturerDetailCard from './components/LecturerDetailCard'
+import LecturerListCard from './components/LecturerListCard'
 
 const LecturerPage = () => {
   const selectedLecturerId = useSelectedItemId(
@@ -17,12 +19,21 @@ const LecturerPage = () => {
       <Col md="3">
         <LecturerSearchCard />
       </Col>
-      <Col md="4">
-        <Fade in={!!selectedLecturerId} dimension="width">
-          <h1>Info Card</h1>
-        </Fade>
-      </Col>
-      <Col md="4">ListCard</Col>
+      {selectedLecturerId ? (
+        <>
+          <Col md="4">
+            <LecturerDetailCard selectedLecturerId={selectedLecturerId} />
+          </Col>
+          <Col md="4">
+            <LecturerListCard selectedLecturerId={selectedLecturerId} />
+          </Col>
+        </>
+      ) : (
+        <>
+          <Col md="4"></Col>
+          <Col md="4"></Col>
+        </>
+      )}
     </Row>
   )
 }

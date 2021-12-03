@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useGetStudentCoursesQuery } from '../../../../app/api/user/studentSlice'
+import { useGetLecturerCoursesQuery } from '../../../../app/api/user/lecturerSlice'
 import { setIsLoading } from '../../../../app/pageSlice'
 import ListCard from '../../../../components/ListCard'
 
-const StudentListCard = ({ selectedStudentId }) => {
+const LecturerListCard = ({ selectedLecturerId }) => {
   const { data: courses, isFetching } =
-    useGetStudentCoursesQuery(selectedStudentId)
+    useGetLecturerCoursesQuery(selectedLecturerId)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -28,11 +28,9 @@ const StudentListCard = ({ selectedStudentId }) => {
       keySelector={(course) => course.groupId}
       nameSelector={(course) => course.courseName}
       linkSelector={(course) => `/course/${course.groupId}`}
-      showButtons={true}
-      handleAdd={() => console.log('Adding new course for student')}
-      handleRemove={() => console.log('Removing new course for student')}
+      showButtons={false}
     />
   )
 }
 
-export default StudentListCard
+export default LecturerListCard

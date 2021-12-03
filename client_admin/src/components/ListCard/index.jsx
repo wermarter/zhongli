@@ -9,13 +9,13 @@ const ListCard = (props) => {
     keySelector,
     nameSelector,
     linkSelector,
-    showKey,
-    showButton,
+    showButtons,
     handleAdd,
     handleRemove,
   } = props
 
   const [query, setQuery] = useState('')
+  const [selectedItem, setSelectedItem] = useState({})
 
   const listItems = items
     .filter(
@@ -26,17 +26,27 @@ const ListCard = (props) => {
     .map((item) => {
       const itemKey = keySelector(item)
       const itemName = nameSelector(item)
+      const isActive = itemKey === keySelector(selectedItem)
       return (
         <ListGroup.Item
           key={itemKey}
           action
-          as={Link}
-          to={linkSelector(item)}
           className="user-select-none"
+          onClick={() => setSelectedItem(item)}
+          active={isActive}
         >
           <div className="d-flex justify-content-between">
             {itemName}
-            {showKey ? <div>[{itemKey}]</div> : null}
+            <Link
+              style={
+                isActive
+                  ? {
+                      color: '#fff',
+                    }
+                  : {}
+              }
+              to={linkSelector(item)}
+            >{`Go to ${label.toLowerCase()}`}</Link>
           </div>
         </ListGroup.Item>
       )
@@ -52,26 +62,32 @@ const ListCard = (props) => {
             onChange={(e) => setQuery(e.target.value)}
           />
         </FloatingLabel>
-        {showButton ? (
+        {showButtons ? (
           <>
             <Button variant="secondary" className="mx-1" onClick={handleAdd}>
-              +
+              Add
             </Button>
-            <Button variant="secondary" onClick={handleRemove}>
-              -
+            <Button
+              variant="secondary"
+              onClick={() => {
+                if (keySelector(selectedItem)) {
+                  handleRemove()
+                } else {
+                  alert(`Please select one ${label.toLowerCase()}.`)
+                }
+              }}
+            >
+              Del
             </Button>
           </>
         ) : null}
       </Card.Header>
-      <ListGroup variant="flush">
-        {listItems.length !== 0 ? (
-          listItems
-        ) : (
-          <ListGroup.Item>
-            <h5 className="text-center">No result :)</h5>
-          </ListGroup.Item>
-        )}
-      </ListGroup>
+      <ListGroup variant="flush">{listItems}</ListGroup>
+      <Card.Footer>
+        <div className="text-center text-secondary">
+          {`Found ${listItems.length} ${label.toLowerCase()}`}
+        </div>
+      </Card.Footer>
     </Card>
   )
 }

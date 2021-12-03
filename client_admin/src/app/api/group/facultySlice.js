@@ -1,17 +1,41 @@
-import { FACULTY } from '../tagConstants'
+import { FACULTY, LECTURER } from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getFaculties: builder.query({
-      query: () => ({
+    searchFaculties: builder.query({
+      query: (queryStr) => ({
         url: '/faculty',
         method: 'GET',
+        params: { query: queryStr || '' },
       }),
       providesTags: (result = [], error, arg) =>
         result.map((faculty) => ({ type: FACULTY, id: faculty.groupId })),
     }),
+    getFacultyInfo: builder.query({
+      query: (groupId) => ({
+        url: '/faculty/info',
+        method: 'GET',
+        params: { groupId },
+      }),
+      providesTags: (result = {}, error, arg) => [
+        { type: FACULTY, id: result.groupId },
+      ],
+    }),
+    getFacultyLecturers: builder.query({
+      query: (groupId) => ({
+        url: '/group/user',
+        method: 'GET',
+        params: { groupId, role: 'LECTURER' },
+      }),
+      providesTags: (result = [], error, arg) =>
+        result.map((lecturer) => ({ type: LECTURER, id: lecturer.userId })),
+    }),
   }),
 })
 
-export const { useLazyGetFacultiesQuery } = extendedApi
+export const {
+  useLazySearchFacultiesQuery,
+  useGetFacultyInfoQuery,
+  useGetFacultyLecturersQuery,
+} = extendedApi

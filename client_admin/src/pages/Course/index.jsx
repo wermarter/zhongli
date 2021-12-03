@@ -3,8 +3,10 @@ import {
   selectedCourseIdSelector,
   setSelectedCourseId,
 } from '../../app/pageSlice'
-import { Row, Col, Fade } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import CourseSearchCard from './components/CourseSearchCard'
+import CourseDetailCard from './components/CourseDetailCard'
+import CourseListCard from './components/CourseListCard'
 
 const CoursePage = () => {
   const selectedCourseId = useSelectedItemId(
@@ -17,12 +19,21 @@ const CoursePage = () => {
       <Col md="3">
         <CourseSearchCard />
       </Col>
-      <Col md="4">
-        <Fade in={!!selectedCourseId} dimension="width">
-          <h1>Info Card</h1>
-        </Fade>
-      </Col>
-      <Col md="4">ListCard</Col>
+      {selectedCourseId ? (
+        <>
+          <Col md="4">
+            <CourseDetailCard selectedCourseId={selectedCourseId} />
+          </Col>
+          <Col md="4">
+            <CourseListCard selectedCourseId={selectedCourseId} />
+          </Col>
+        </>
+      ) : (
+        <>
+          <Col md="4"></Col>
+          <Col md="4"></Col>
+        </>
+      )}
     </Row>
   )
 }

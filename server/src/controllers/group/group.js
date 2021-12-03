@@ -8,12 +8,14 @@ export const removeGroup = async (req, res) => {
 }
 
 export const getUsersInGroup = async (req, res) => {
-  const { groupId } = req.query
+  const { groupId, role } = req.query
   const sql = `
-    SELECT user_id as id
-    FROM "Memberships"
-    WHERE group_id=$1`
-  const result = await database.query(sql, [groupId])
+    SELECT user_id as "userId", name as "userName"
+    FROM "Memberships", "Users"
+    WHERE group_id=$1
+    AND id=user_id
+    AND role=$2`
+  const result = await database.query(sql, [groupId, role])
   res.json(result.rows)
 }
 

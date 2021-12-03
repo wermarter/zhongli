@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   useGetStudentFacultyQuery,
+  useGetStudentInfoQuery,
   useGetStudentMentorGroupQuery,
 } from '../../../../app/api/user/studentSlice'
 import DetailCard from '../../../../components/DetailCard'
@@ -12,7 +13,10 @@ const StudentDetailCard = ({ selectedStudentId }) => {
     useGetStudentMentorGroupQuery(selectedStudentId)
   const { data: faculty, isFetching: facultyIsFetching } =
     useGetStudentFacultyQuery(selectedStudentId)
-  const isFetching = mentorIsFetching || facultyIsFetching
+  const { data: studentInfo, isFetching: studentIsFetching } =
+    useGetStudentInfoQuery(selectedStudentId)
+
+  const isFetching = mentorIsFetching || facultyIsFetching || studentIsFetching
 
   const dispatch = useDispatch()
 
@@ -28,7 +32,43 @@ const StudentDetailCard = ({ selectedStudentId }) => {
     return <></>
   }
 
-  return <DetailCard mentorGroup={mentorGroup} faculty={faculty} />
+  return (
+    <DetailCard
+      label="Student"
+      fields={[
+        { label: 'Name', content: studentInfo.name },
+        { label: 'ID', content: studentInfo.id },
+        { label: 'PSID', content: studentInfo.psid },
+        { label: 'Address', content: studentInfo.address },
+      ]}
+      buttons={[
+        {
+          label: 'Edit',
+          onClick: () => {
+            console.log('Editing student')
+          },
+        },
+        {
+          label: 'Del',
+          onClick: () => {
+            console.log('Removing student')
+          },
+        },
+      ]}
+      links={[
+        {
+          label: 'Mentor',
+          content: mentorGroup.mentorName,
+          destination: `/mentor/${mentorGroup.groupId}`,
+        },
+        {
+          label: 'Faculty',
+          content: faculty.facultyName,
+          destination: `/faculty/${faculty.groupId}`,
+        },
+      ]}
+    />
+  )
 }
 
 export default StudentDetailCard

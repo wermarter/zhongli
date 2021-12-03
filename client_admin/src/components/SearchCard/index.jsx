@@ -63,7 +63,7 @@ const SearchCard = (props) => {
           Find
         </Button>
         <Button variant="secondary" onClick={handleAdd}>
-          +
+          Add
         </Button>
       </Card.Header>
       <ListGroup variant="flush">
@@ -71,7 +71,9 @@ const SearchCard = (props) => {
           listItems
         ) : (
           <ListGroup.Item>
-            <h5 className="text-center">No result :)</h5>
+            <div className="text-center text-secondary">
+              No {label.toLowerCase()} found 😅
+            </div>
           </ListGroup.Item>
         )}
       </ListGroup>

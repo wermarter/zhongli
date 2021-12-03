@@ -25,12 +25,12 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-  const { id, name, password, role } = req.body
+  const { id, name, password, role, dateOfBirth } = req.body
   if (password != undefined && password?.length !== 0) {
     const hashedPassword = await bcrypt.hash(password, config.saltRounds)
     const sql = `
-      UPDATE "Users" SET name=$1, password=$2 WHERE id=$3 AND role=$4`
-    await database.query(sql, [name, hashedPassword, id, role])
+      UPDATE "Users" SET name=$1, password=$2, date_of_birth=$5 WHERE id=$3 AND role=$4`
+    await database.query(sql, [name, hashedPassword, id, role, dateOfBirth])
     res.sendStatus(200)
   } else {
     const sql = `
@@ -55,6 +55,16 @@ export const getUserFaculty = async (req, res) => {
     AND "Memberships".group_id="Groups".id
     AND "Groups".type='FACULTY'
     AND "Faculties".group_id="Memberships".group_id`
+  const result = await database.query(sql, [userId])
+  res.json(result.rows[0])
+}
+
+export const getUserInfo = async (req, res) => {
+  const { userId } = req.query
+  const sql = `
+    SELECT id, psid, name, role, address
+    FROM "Users"
+    WHERE id=$1`
   const result = await database.query(sql, [userId])
   res.json(result.rows[0])
 }

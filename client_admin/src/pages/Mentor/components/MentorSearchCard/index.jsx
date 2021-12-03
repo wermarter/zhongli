@@ -14,7 +14,7 @@ const MentorSearchCard = () => {
   const selectedMentorId = useSelector(selectedMentorIdSelector)
 
   useEffect(() => {
-    trigger(selectedMentorId)
+    trigger(selectedMentorId, { preferCacheValue: true })
     // eslint-disable-next-line
   }, [])
 

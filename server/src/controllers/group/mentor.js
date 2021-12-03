@@ -6,7 +6,7 @@ export const searchMentors = async (req, res) => {
   const { query } = req.query
   let result
   const searchByGroupId = `
-  SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
+  SELECT mentor_name as "mentorName", group_id as "groupId"
     FROM "MentorGroups"
     WHERE group_id = $1
   `
@@ -14,9 +14,9 @@ export const searchMentors = async (req, res) => {
     result = await database.query(searchByGroupId, [query])
   } catch {
     const sql = `
-      SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId"
+      SELECT mentor_name as "mentorName", group_id as "groupId"
       FROM "MentorGroups"
-      WHERE (mentor_id ILIKE $1 OR mentor_name ILIKE $1) LIMIT 20`
+      WHERE (mentor_id ILIKE $1 OR mentor_name ILIKE $1 OR name ILIKE $1) LIMIT 20`
     result = await database.query(sql, [`%${query}%`])
   }
   res.json(result.rows)
@@ -45,4 +45,14 @@ export const changeMentor = async (req, res) => {
     UPDATE "MentorGroups" SET mentor_id=$1, mentor_name=$2 WHERE group_id=$3`
   await database.query(sql, [mentorId, mentorName, groupId])
   res.sendStatus(200)
+}
+
+export const getMentorGroupInfo = async (req, res) => {
+  const { groupId } = req.query
+  const sql = `
+    SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId", name
+    FROM "MentorGroups"
+    WHERE group_id = $1`
+  const result = await database.query(sql, [groupId])
+  res.json(result.rows[0])
 }

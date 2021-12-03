@@ -4,6 +4,7 @@ CREATE TABLE "Users" (
   "name" varchar(100) NOT NULL,
   "password" varchar(255) NOT NULL,
   "role" varchar(10) NOT NULL,
+  "address" varchar(100),
   PRIMARY KEY ("id")
 );
 
@@ -40,6 +41,7 @@ CREATE TABLE "MentorGroups" (
   "group_id" uuid,
   "mentor_id" varchar(20) NOT NULL,
   "mentor_name" varchar(100) NOT NULL,
+  "name" varchar(100),
   PRIMARY KEY ("group_id"),
   CONSTRAINT "FK_MentorGroups.mentor_id"
     FOREIGN KEY ("mentor_id")

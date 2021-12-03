@@ -4,18 +4,19 @@ import {
   selectedFacultyIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazyGetFacultiesQuery } from '../../../../app/api/group/facultySlice'
+import { useLazySearchFacultiesQuery } from '../../../../app/api/group/facultySlice'
 import { useEffect } from 'react'
 
 const FacultySearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazyGetFacultiesQuery()
+  const [trigger, query] = useLazySearchFacultiesQuery()
   const { data, isFetching } = query
   const selectedFacultyId = useSelector(selectedFacultyIdSelector)
 
   useEffect(() => {
-    trigger()
-  }, [trigger])
+    trigger(selectedFacultyId, { preferCacheValue: true })
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     if (isFetching) {
@@ -32,9 +33,9 @@ const FacultySearchCard = () => {
         items={data}
         selectedItemKey={selectedFacultyId}
         keySelector={(faculty) => faculty.groupId}
-        nameSelector={(faculty) => faculty.name}
+        nameSelector={(faculty) => faculty.facultyName}
         showKey={false}
-        handleSubmit={trigger}
+        handleSubmit={(query) => trigger(query)}
         handleAdd={() => {
           console.log('Add faculty button clicked')
         }}

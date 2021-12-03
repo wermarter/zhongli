@@ -5,7 +5,7 @@ import database from '../../services/database.js'
 export const searchCourses = async (req, res) => {
   const { query } = req.query
   const searchByGroupId = `
-    SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
+    SELECT group_id as "groupId", course_name as "courseName"
     FROM "Courses"
     WHERE group_id = $1`
   let result
@@ -13,19 +13,11 @@ export const searchCourses = async (req, res) => {
     result = await database.query(searchByGroupId, [query])
   } catch {
     const searchByCourseName = `
-    SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
+    SELECT group_id as "groupId", course_name as "courseName"
     FROM "Courses"
     WHERE course_name ILIKE $1`
     result = await database.query(searchByCourseName, [`%${query}%`])
   }
-  res.json(result.rows)
-}
-
-export const getSomeCourses = async (req, res) => {
-  const sql = `
-  SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
-    FROM "Courses"`
-  const result = await database.query(sql)
   res.json(result.rows)
 }
 
@@ -59,4 +51,14 @@ export const updateCourse = async (req, res) => {
     WHERE group_id=$4`
   await database.query(sql, [courseName, timeSlot, lecturerId, groupId])
   res.sendStatus(200)
+}
+
+export const getCourseInfo = async (req, res) => {
+  const { groupId } = req.query
+  const sql = `
+    SELECT group_id as "groupId", course_name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId", name as "lecturerName"
+    FROM "Courses", "Users"
+    WHERE group_id = $1 AND lecturer_id=id`
+  const result = await database.query(sql, [groupId])
+  res.json(result.rows[0])
 }

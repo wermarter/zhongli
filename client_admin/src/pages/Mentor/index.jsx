@@ -3,8 +3,10 @@ import {
   selectedMentorIdSelector,
   setSelectedMentorId,
 } from '../../app/pageSlice'
-import { Row, Col, Fade } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import MentorSearchCard from './components/MentorSearchCard'
+import MentorDetailCard from './components/MentorDetailCard'
+import MentorListCard from './components/MentorListCard'
 
 const MentorPage = () => {
   const selectedMentorId = useSelectedItemId(
@@ -17,12 +19,21 @@ const MentorPage = () => {
       <Col md="3">
         <MentorSearchCard />
       </Col>
-      <Col md="4">
-        <Fade in={!!selectedMentorId} dimension="width">
-          <h1>Info Card</h1>
-        </Fade>
-      </Col>
-      <Col md="4">ListCard</Col>
+      {selectedMentorId ? (
+        <>
+          <Col md="4">
+            <MentorDetailCard selectedMentorId={selectedMentorId} />
+          </Col>
+          <Col md="4">
+            <MentorListCard selectedMentorId={selectedMentorId} />
+          </Col>
+        </>
+      ) : (
+        <>
+          <Col md="4"></Col>
+          <Col md="4"></Col>
+        </>
+      )}
     </Row>
   )
 }

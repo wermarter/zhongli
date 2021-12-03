@@ -14,7 +14,7 @@ const CourseSearchCard = () => {
   const selectedCourseId = useSelector(selectedCourseIdSelector)
 
   useEffect(() => {
-    trigger(selectedCourseId)
+    trigger(selectedCourseId, { preferCacheValue: true })
     // eslint-disable-next-line
   }, [])
 

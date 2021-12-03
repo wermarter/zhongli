@@ -14,7 +14,7 @@ const LecturerSearchCard = () => {
   const selectedLecturerId = useSelector(selectedLecturerIdSelector)
 
   useEffect(() => {
-    trigger(selectedLecturerId)
+    trigger(selectedLecturerId, { preferCacheValue: true })
     // eslint-disable-next-line
   }, [])
 

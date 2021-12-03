@@ -12,6 +12,16 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((student) => ({ type: STUDENT, id: student.id })),
     }),
+    getStudentInfo: builder.query({
+      query: (studentId) => ({
+        url: '/user/info',
+        method: 'GET',
+        params: { userId: studentId },
+      }),
+      providesTags: (result = {}, error, arg) => [
+        { type: STUDENT, id: result.id },
+      ],
+    }),
     getStudentMentorGroup: builder.query({
       query: (studentId) => ({
         url: '/student/mentor',
@@ -20,6 +30,16 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result = {}, error, arg) => [
         { type: MENTOR, id: result.groupId },
+      ],
+    }),
+    getStudentFaculty: builder.query({
+      query: (studentId) => ({
+        url: '/user/faculty',
+        method: 'GET',
+        params: { userId: studentId },
+      }),
+      providesTags: (result = {}, error, arg) => [
+        { type: FACULTY, id: result.groupId },
       ],
     }),
     getStudentCourses: builder.query({
@@ -34,16 +54,6 @@ const extendedApi = apiSlice.injectEndpoints({
           id: course.groupId,
         })),
     }),
-    getStudentFaculty: builder.query({
-      query: (studentId) => ({
-        url: '/user/faculty',
-        method: 'GET',
-        params: { userId: studentId },
-      }),
-      providesTags: (result = {}, error, arg) => [
-        { type: FACULTY, id: result.groupId },
-      ],
-    }),
   }),
 })
 
@@ -52,4 +62,5 @@ export const {
   useGetStudentMentorGroupQuery,
   useGetStudentCoursesQuery,
   useGetStudentFacultyQuery,
+  useGetStudentInfoQuery,
 } = extendedApi
