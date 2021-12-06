@@ -1,5 +1,26 @@
 import database from '../../services/database.js'
 
+export const searchGroups = async (req, res) => {
+  const { query, groupType } = req.query
+  const searchByGroupId = `
+    SELECT id as "groupId", name as "groupName"
+    FROM "Groups"
+    WHERE id = $1
+    AND type=$2`
+  let result
+  try {
+    result = await database.query(searchByGroupId, [query, groupType])
+  } catch {
+    const searchByGroupName = `
+      SELECT id as "groupId", name as "groupName"
+      FROM "Groups"
+      WHERE type=$2
+      AND name ILIKE $1 LIMIT 20`
+    result = await database.query(searchByGroupName, [`%${query}%`, groupType])
+  }
+  res.json(result.rows)
+}
+
 export const removeGroup = async (req, res) => {
   const { groupId } = req.query
   const sql = `DELETE FROM "Groups" WHERE id=$1`

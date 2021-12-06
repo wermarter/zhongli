@@ -7,8 +7,6 @@ import NavigationBar from './components/NavigationBar'
 import { ProgressBar } from 'react-bootstrap'
 import { selectIsLoading } from './app/pageSlice'
 
-import './App.css'
-
 const StudentPage = React.lazy(() => import('./pages/Student'))
 const LecturerPage = React.lazy(() => import('./pages/Lecturer'))
 const MentorPage = React.lazy(() => import('./pages/Mentor'))

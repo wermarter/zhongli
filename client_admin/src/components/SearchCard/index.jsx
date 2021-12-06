@@ -36,14 +36,14 @@ const SearchCard = (props) => {
         >
           <div className="d-flex justify-content-between">
             {itemName}
-            {showKey ? <div>[{itemKey}]</div> : null}
+            {showKey ? <div className>{itemKey}</div> : null}
           </div>
         </ListGroup.Item>
       )
     })
 
   return (
-    <Card border="secondary">
+    <Card border="secondary" style={{ maxHeight: '500px' }}>
       <Card.Header className="d-flex justify-content-between">
         <FloatingLabel className="flex-grow-1" label={label}>
           <Form.Control
@@ -66,17 +66,12 @@ const SearchCard = (props) => {
           Add
         </Button>
       </Card.Header>
-      <ListGroup variant="flush">
-        {listItems.length !== 0 ? (
-          listItems
-        ) : (
-          <ListGroup.Item>
-            <div className="text-center text-secondary">
-              No {label.toLowerCase()} found 😅
-            </div>
-          </ListGroup.Item>
-        )}
-      </ListGroup>
+      {listItems.length !== 0 ? (
+        <ListGroup variant="flush">{listItems}</ListGroup>
+      ) : null}
+      <Card.Footer className="text-muted text-center">
+        {`Found ${listItems.length} ${label.toLowerCase()}`}
+      </Card.Footer>
     </Card>
   )
 }

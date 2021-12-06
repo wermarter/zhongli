@@ -3,11 +3,11 @@ import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    searchCourses: builder.query({
+    searchCourses: builder.mutation({
       query: (queryStr) => ({
-        url: '/course',
+        url: '/group',
         method: 'GET',
-        params: { query: queryStr || '' },
+        params: { query: queryStr || '', groupType: 'COURSE' },
       }),
       providesTags: (result = [], error, arg) =>
         result.map((course) => ({ type: COURSE, id: course.groupId })),
@@ -35,7 +35,7 @@ const extendedApi = apiSlice.injectEndpoints({
 })
 
 export const {
-  useLazySearchCoursesQuery,
+  useSearchCoursesMutation,
   useGetCourseInfoQuery,
   useGetCourseStudentsQuery,
 } = extendedApi

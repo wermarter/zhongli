@@ -11,6 +11,7 @@ CREATE TABLE "Users" (
 CREATE TABLE "Groups" (
   "id" uuid,
   "type" varchar(20) NOT NULL,
+  "name" varchar(100) NOT NULl,
   PRIMARY KEY ("id")
 );
 
@@ -28,7 +29,6 @@ CREATE TABLE "Memberships" (
 
 CREATE TABLE "Courses" (
   "group_id" uuid,
-  "course_name" varchar(100) NOT NULL,
   "time_slot" integer NOT NULL,
   "lecturer_id" varchar(20) NOT NULL,
   PRIMARY KEY ("group_id"),
@@ -40,8 +40,6 @@ CREATE TABLE "Courses" (
 CREATE TABLE "MentorGroups" (
   "group_id" uuid,
   "mentor_id" varchar(20) NOT NULL,
-  "mentor_name" varchar(100) NOT NULL,
-  "name" varchar(100),
   PRIMARY KEY ("group_id"),
   CONSTRAINT "FK_MentorGroups.mentor_id"
     FOREIGN KEY ("mentor_id")
@@ -53,7 +51,7 @@ CREATE TABLE "MentorGroups" (
 
 CREATE TABLE "Faculties" (
   "group_id" uuid,
-  "name" varchar(100) NOT NULL,
+  "description" text,
   PRIMARY KEY ("group_id"),
   CONSTRAINT "FK_Faculties.group_id"
     FOREIGN KEY ("group_id")

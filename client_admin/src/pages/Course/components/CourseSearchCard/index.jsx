@@ -4,27 +4,27 @@ import {
   selectedCourseIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazySearchCoursesQuery } from '../../../../app/api/group/courseSlice'
+import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
 import { useEffect } from 'react'
 
 const CourseSearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazySearchCoursesQuery()
-  const { data, isFetching } = query
+  const [trigger, query] = useSearchCoursesMutation()
+  const { data, isLoading } = query
   const selectedCourseId = useSelector(selectedCourseIdSelector)
 
   useEffect(() => {
-    trigger(selectedCourseId, { preferCacheValue: true })
+    trigger(selectedCourseId)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading) {
       dispatch(setIsLoading(true))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [isFetching, dispatch])
+  }, [isLoading, dispatch])
 
   return (
     <>
@@ -33,7 +33,7 @@ const CourseSearchCard = () => {
         items={data}
         selectedItemKey={selectedCourseId}
         keySelector={(course) => course.groupId}
-        nameSelector={(course) => course.courseName}
+        nameSelector={(course) => course.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
         handleAdd={() => {

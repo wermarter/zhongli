@@ -4,27 +4,27 @@ import {
   selectedLecturerIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazySearchLecturersQuery } from '../../../../app/api/user/lecturerSlice'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import { useEffect } from 'react'
 
 const LecturerSearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazySearchLecturersQuery()
-  const { data, isFetching } = query
+  const [trigger, query] = useSearchLecturersMutation()
+  const { data, isLoading } = query
   const selectedLecturerId = useSelector(selectedLecturerIdSelector)
 
   useEffect(() => {
-    trigger(selectedLecturerId, { preferCacheValue: true })
+    trigger(selectedLecturerId)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading) {
       dispatch(setIsLoading(true))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [isFetching, dispatch])
+  }, [isLoading, dispatch])
 
   return (
     <>

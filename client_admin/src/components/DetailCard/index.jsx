@@ -1,12 +1,12 @@
 import {
   Card,
-  Button,
   Form,
   Col,
   Row,
-  ButtonGroup,
   NavLink,
   ListGroup,
+  DropdownButton,
+  Dropdown,
 } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -17,7 +17,7 @@ const DetailCard = (props) => {
     fields = [],
     links = [],
     listItems = [],
-    listItemLabel = 'additional info',
+    listItemLabel,
     keySelector,
     nameSelector,
     linkSelector,
@@ -26,7 +26,7 @@ const DetailCard = (props) => {
   const itemList = listItems.map((item) => (
     <ListGroup.Item key={keySelector(item)}>
       <div className="d-flex justify-content-between">
-        {nameSelector(item) ?? `Unnamed ${listItemLabel.toLowerCase()}`}
+        {nameSelector(item) ?? `[unnamed ${listItemLabel.toLowerCase()}]`}
         <Link
           to={linkSelector(item)}
         >{`Go to ${listItemLabel.toLowerCase()}`}</Link>
@@ -35,16 +35,16 @@ const DetailCard = (props) => {
   ))
 
   return (
-    <Card border="secondary">
-      <Card.Header className="d-flex justify-content-between">
+    <Card border="secondary" style={{ maxHeight: '500px' }}>
+      <Card.Header className="d-flex justify-content-between align-items-center">
         <h1 className="display-6 flex-grow-1">{label} details</h1>
-        <ButtonGroup>
+        <DropdownButton variant="secondary" title="Options">
           {buttons.map(({ label, onClick }) => (
-            <Button key={label} variant="secondary" onClick={onClick}>
+            <Dropdown.Item key={label} onClick={onClick}>
               {label}
-            </Button>
+            </Dropdown.Item>
           ))}
-        </ButtonGroup>
+        </DropdownButton>
       </Card.Header>
       <Card.Body>
         {fields.map(({ label, content }) => (
@@ -57,7 +57,7 @@ const DetailCard = (props) => {
                 plaintext
                 readOnly
                 className={content ? '' : 'text-muted'}
-                value={content ?? '😭not available😭'}
+                value={content ?? '[not available]'}
               />
             </Col>
           </Form.Group>
@@ -69,27 +69,19 @@ const DetailCard = (props) => {
             </Form.Label>
             <Col sm="9">
               {content ? (
-                <NavLink onClick={() => navigate(destination)}>
+                <NavLink className="px-0" onClick={() => navigate(destination)}>
                   {content}
                 </NavLink>
               ) : (
-                <NavLink className="text-muted">😭not available😭'</NavLink>
+                <NavLink className="text-muted px-0">[not available]</NavLink>
               )}
             </Col>
           </Form.Group>
         ))}
       </Card.Body>
-      <ListGroup variant="flush">
-        {itemList.length !== 0 ? (
-          itemList
-        ) : (
-          <ListGroup.Item>
-            <div className="text-center text-secondary">
-              No {listItemLabel.toLowerCase()} found 😅
-            </div>
-          </ListGroup.Item>
-        )}
-      </ListGroup>
+      {itemList.length !== 0 ? (
+        <ListGroup variant="flush">{itemList}</ListGroup>
+      ) : null}
     </Card>
   )
 }

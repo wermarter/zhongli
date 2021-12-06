@@ -4,41 +4,45 @@ import {
   selectedStudentIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazySearchStudentsQuery } from '../../../../app/api/user/studentSlice'
-import { useEffect } from 'react'
+import { useSearchStudentsMutation } from '../../../../app/api/user/studentSlice'
+import { Fragment, useEffect, useState } from 'react'
+import StudentAddModal from './StudentAddModal'
 
 const StudentSearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazySearchStudentsQuery()
-  const { data, isFetching } = query
+  const [trigger, query] = useSearchStudentsMutation()
+  const { data, isLoading } = query
   const selectedStudentId = useSelector(selectedStudentIdSelector)
 
   useEffect(() => {
-    trigger(selectedStudentId, { preferCacheValue: true })
+    trigger(selectedStudentId)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading) {
       dispatch(setIsLoading(true))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [isFetching, dispatch])
+  }, [isLoading, dispatch])
+
+  const [addModal, setAddModal] = useState(false)
 
   return (
-    <SearchCard
-      label="Student"
-      items={data}
-      selectedItemKey={selectedStudentId}
-      keySelector={(student) => student.id}
-      nameSelector={(student) => student.name}
-      showKey={true}
-      handleSubmit={(query) => trigger(query)}
-      handleAdd={() => {
-        console.log('Add student button clicked')
-      }}
-    />
+    <Fragment>
+      <SearchCard
+        label="Student"
+        items={data}
+        selectedItemKey={selectedStudentId}
+        keySelector={(student) => student.id}
+        nameSelector={(student) => student.name}
+        showKey={true}
+        handleSubmit={(query) => trigger(query)}
+        handleAdd={() => setAddModal(true)}
+      />
+      <StudentAddModal show={addModal} handleClose={() => setAddModal(false)} />
+    </Fragment>
   )
 }
 

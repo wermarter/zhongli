@@ -1,17 +1,12 @@
 import { ErrorMessage } from 'formik'
 import { Form } from 'react-bootstrap'
-import Select from 'react-select'
+import AsyncSelect from 'react-select/async'
 
-function SelectField(props) {
-  const { field, form, label, placeholder, disabled, options } = props
-  const { name, onBlur, value } = field
+function AsyncSelectField(props) {
+  const { field, form, label, placeholder, disabled, loadOptions } = props
+  const { name, onBlur } = field
   const { errors, touched } = form
   const showError = errors[name] && touched[name]
-  const optionValue = value
-    ? options.find((option) => option.value === value)
-    : null
-
-  console.log({ options, value, optionValue })
 
   const handleSelectedOptionChange = (selectedOption) => {
     const selectedValue = selectedOption ? selectedOption.value : selectedOption
@@ -27,13 +22,12 @@ function SelectField(props) {
   return (
     <Form.Group className="mb-3">
       {label && <Form.Label htmlFor={name}>{label}</Form.Label>}
-      <Select
+      <AsyncSelect
         id={name}
         onChange={handleSelectedOptionChange}
         onBlur={onBlur}
-        value={optionValue}
         placeholder={placeholder}
-        options={options}
+        loadOptions={loadOptions}
         disabled={disabled}
         className={showError ? 'is-invalid' : ''}
       />
@@ -47,4 +41,4 @@ function SelectField(props) {
   )
 }
 
-export default SelectField
+export default AsyncSelectField

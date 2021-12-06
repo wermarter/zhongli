@@ -3,7 +3,7 @@ import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    searchLecturers: builder.query({
+    searchLecturers: builder.mutation({
       query: (queryStr) => ({
         url: '/user',
         method: 'GET',
@@ -60,7 +60,7 @@ const extendedApi = apiSlice.injectEndpoints({
 })
 
 export const {
-  useLazySearchLecturersQuery,
+  useSearchLecturersMutation,
   useGetLecturerMentorGroupsQuery,
   useGetLecturerCoursesQuery,
   useGetLecturerFacultyQuery,

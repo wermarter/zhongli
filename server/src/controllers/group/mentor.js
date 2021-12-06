@@ -2,57 +2,47 @@ import { v4 as uuidv4 } from 'uuid'
 
 import database from '../../services/database.js'
 
-export const searchMentors = async (req, res) => {
-  const { query } = req.query
-  let result
-  const searchByGroupId = `
-  SELECT mentor_name as "mentorName", group_id as "groupId"
-    FROM "MentorGroups"
-    WHERE group_id = $1
-  `
-  try {
-    result = await database.query(searchByGroupId, [query])
-  } catch {
-    const sql = `
-      SELECT mentor_name as "mentorName", group_id as "groupId"
-      FROM "MentorGroups"
-      WHERE (mentor_id ILIKE $1 OR mentor_name ILIKE $1 OR name ILIKE $1) LIMIT 20`
-    result = await database.query(sql, [`%${query}%`])
-  }
-  res.json(result.rows)
-}
-
-export const assignMentor = async (req, res) => {
-  const { lecturerId, lecturerName } = req.body
+export const createMentorGroup = async (req, res) => {
+  const { mentorId, groupName } = req.body
   const groupId = uuidv4()
 
-  const createNewGroup = `
-    INSERT INTO "Groups" ("id", "type")
-    VALUES ($1, 'MENTORGROUP')`
-  await database.query(createNewGroup, [groupId])
+  const createNewMentorGroup = `
+    INSERT INTO "Groups" ("id", "type", "name")
+    VALUES ($1, 'MENTORGROUP', $2)`
+  await database.query(createNewMentorGroup, [groupId, groupName])
 
   const populateMentorGroup = `
-    INSERT INTO "MentorGroups" ("group_id", "mentor_id", "mentor_name")
-    VALUES ($1, $2, $3)`
-  await database.query(populateMentorGroup, [groupId, lecturerId, lecturerName])
+    INSERT INTO "MentorGroups" ("group_id", "mentor_id")
+    VALUES ($1, $2)`
+  await database.query(populateMentorGroup, [groupId, mentorId])
 
   res.json({ groupId })
 }
 
-export const changeMentor = async (req, res) => {
-  const { groupId, mentorId, mentorName } = req.body
-  const sql = `
-    UPDATE "MentorGroups" SET mentor_id=$1, mentor_name=$2 WHERE group_id=$3`
-  await database.query(sql, [mentorId, mentorName, groupId])
+export const updateMentorGroup = async (req, res) => {
+  const { groupId, mentorId, groupName } = req.body
+  if (groupName) {
+    const updateGroupName = `
+      UPDATE "Groups" 
+      SET name=$1
+      WHERE type='MENTORGROUP'
+      AND group_id=$2`
+    await database.query(updateGroupName, [groupName, groupId])
+  }
+  const updateMentorTable = `
+    UPDATE "MentorGroups" SET mentor_id=$1 WHERE group_id=$3`
+  await database.query(updateMentorTable, [mentorId, groupId])
   res.sendStatus(200)
 }
 
 export const getMentorGroupInfo = async (req, res) => {
   const { groupId } = req.query
   const sql = `
-    SELECT mentor_id as "mentorId", mentor_name as "mentorName", group_id as "groupId", name
-    FROM "MentorGroups"
-    WHERE group_id = $1`
+    SELECT mentor_id as "mentorId", "Users".name as "mentorName", group_id as "groupId", "Groups".name as "groupName"
+    FROM "MentorGroups", "Users", "Groups"
+    WHERE "MentorGroups".group_id=$1
+    AND "MentorGroups".group_id="Groups".id
+    AND mentor_id="Users".id`
   const result = await database.query(sql, [groupId])
-  res.json(result.rows[0])
+  res.json(result.rows[0] || {})
 }

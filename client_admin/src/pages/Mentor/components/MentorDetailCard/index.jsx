@@ -26,7 +26,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
     <DetailCard
       label="Group"
       fields={[
-        { label: 'Group name', content: mentorInfo.name },
+        { label: 'Group name', content: mentorInfo.groupName },
         { label: 'Group ID', content: mentorInfo.groupId },
       ]}
       buttons={[

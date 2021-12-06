@@ -13,6 +13,7 @@ import {
 import { apiSlice } from './api'
 import { authSlice } from './authSlice'
 import { pageSlice } from './pageSlice'
+import { setupListeners } from '@reduxjs/toolkit/dist/query'
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -40,3 +41,6 @@ export const store = configureStore({
 })
 
 export const persistor = persistStore(store)
+
+// enable listener behavior for the store
+setupListeners(store.dispatch)

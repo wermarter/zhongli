@@ -4,27 +4,27 @@ import {
   selectedFacultyIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazySearchFacultiesQuery } from '../../../../app/api/group/facultySlice'
+import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
 import { useEffect } from 'react'
 
 const FacultySearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazySearchFacultiesQuery()
-  const { data, isFetching } = query
+  const [trigger, query] = useSearchFacultiesMutation()
+  const { data, isLoading } = query
   const selectedFacultyId = useSelector(selectedFacultyIdSelector)
 
   useEffect(() => {
-    trigger(selectedFacultyId, { preferCacheValue: true })
+    trigger(selectedFacultyId)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading) {
       dispatch(setIsLoading(true))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [isFetching, dispatch])
+  }, [isLoading, dispatch])
 
   return (
     <>
@@ -33,7 +33,7 @@ const FacultySearchCard = () => {
         items={data}
         selectedItemKey={selectedFacultyId}
         keySelector={(faculty) => faculty.groupId}
-        nameSelector={(faculty) => faculty.facultyName}
+        nameSelector={(faculty) => faculty.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
         handleAdd={() => {

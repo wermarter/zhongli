@@ -3,7 +3,7 @@ import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    searchStudents: builder.query({
+    searchStudents: builder.mutation({
       query: (queryStr) => ({
         url: '/user',
         method: 'GET',
@@ -54,13 +54,22 @@ const extendedApi = apiSlice.injectEndpoints({
           id: course.groupId,
         })),
     }),
+    addNewStudent: builder.mutation({
+      query: ({ id, name, password, address, facultyId }) => ({
+        url: '/user',
+        method: 'POST',
+        body: { id, name, password, role: 'STUDENT', address, facultyId },
+      }),
+      invalidatesTags: (result, error, arg) => [STUDENT],
+    }),
   }),
 })
 
 export const {
-  useLazySearchStudentsQuery,
+  useSearchStudentsMutation,
   useGetStudentMentorGroupQuery,
   useGetStudentCoursesQuery,
   useGetStudentFacultyQuery,
   useGetStudentInfoQuery,
+  useAddNewStudentMutation,
 } = extendedApi

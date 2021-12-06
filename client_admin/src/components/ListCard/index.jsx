@@ -53,7 +53,7 @@ const ListCard = (props) => {
     })
 
   return (
-    <Card border="secondary">
+    <Card border="secondary" style={{ maxHeight: '500px' }}>
       <Card.Header className="d-flex justify-content-between">
         <FloatingLabel className="flex-grow-1" label={label}>
           <Form.Control
@@ -77,16 +77,16 @@ const ListCard = (props) => {
                 }
               }}
             >
-              Del
+              Remove
             </Button>
           </>
         ) : null}
       </Card.Header>
-      <ListGroup variant="flush">{listItems}</ListGroup>
-      <Card.Footer>
-        <div className="text-center text-secondary">
-          {`Found ${listItems.length} ${label.toLowerCase()}`}
-        </div>
+      {listItems.length !== 0 ? (
+        <ListGroup variant="flush">{listItems}</ListGroup>
+      ) : null}
+      <Card.Footer className="text-muted text-center">
+        {`Found ${listItems.length} ${label.toLowerCase()}`}
       </Card.Footer>
     </Card>
   )

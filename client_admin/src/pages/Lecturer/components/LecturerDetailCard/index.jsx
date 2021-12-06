@@ -64,7 +64,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
       ]}
       listItems={mentorGroups}
       listItemLabel="mentor group"
-      nameSelector={(mentorGroup) => mentorGroup.name}
+      nameSelector={(mentorGroup) => mentorGroup.groupName}
       keySelector={(mentorGroup) => mentorGroup.groupId}
       linkSelector={(mentorGroup) => `/mentor/${mentorGroup.groupId}`}
     />

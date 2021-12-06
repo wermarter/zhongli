@@ -4,27 +4,27 @@ import {
   selectedMentorIdSelector,
   setIsLoading,
 } from '../../../../app/pageSlice'
-import { useLazySearchMentorsQuery } from '../../../../app/api/group/mentorSlice'
+import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
 import { useEffect } from 'react'
 
 const MentorSearchCard = () => {
   const dispatch = useDispatch()
-  const [trigger, query] = useLazySearchMentorsQuery()
-  const { data, isFetching } = query
+  const [trigger, query] = useSearchMentorsMutation()
+  const { data, isLoading } = query
   const selectedMentorId = useSelector(selectedMentorIdSelector)
 
   useEffect(() => {
-    trigger(selectedMentorId, { preferCacheValue: true })
+    trigger(selectedMentorId)
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading) {
       dispatch(setIsLoading(true))
     } else {
       dispatch(setIsLoading(false))
     }
-  }, [isFetching, dispatch])
+  }, [isLoading, dispatch])
 
   return (
     <>
@@ -33,7 +33,7 @@ const MentorSearchCard = () => {
         items={data}
         selectedItemKey={selectedMentorId}
         keySelector={(mentor) => mentor.groupId}
-        nameSelector={(mentor) => mentor.mentorName}
+        nameSelector={(mentor) => mentor.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
         handleAdd={() => {
