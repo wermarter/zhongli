@@ -5,21 +5,26 @@ import { useMatch, useNavigate } from 'react-router'
 const useSelectedItemId = (selectedItemIdSelector, setSelectedItemId) => {
   const navigate = useNavigate()
   const match = useMatch('/:resource/:itemId')
-  const itemIdParam = match?.params?.itemId
 
   const dispatch = useDispatch()
   const selectedItemId = useSelector(selectedItemIdSelector)
 
   useEffect(() => {
+    const itemIdParam = match?.params?.itemId
     // Set new selected item
     if (itemIdParam && itemIdParam !== selectedItemId) {
-      dispatch(setSelectedItemId(itemIdParam))
+      if (itemIdParam !== 'deleted') {
+        dispatch(setSelectedItemId(itemIdParam))
+      } else {
+        dispatch(setSelectedItemId(null))
+        window.location.href = `/${match.params.resource}`
+      }
     }
     // Redirect to selected item
     if (!itemIdParam && selectedItemId) {
       navigate(selectedItemId.toString())
     }
-  }, [itemIdParam, dispatch, setSelectedItemId, selectedItemId, navigate])
+  }, [dispatch, setSelectedItemId, selectedItemId, navigate, match])
 
   return selectedItemId
 }

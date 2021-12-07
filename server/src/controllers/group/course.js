@@ -16,7 +16,7 @@ export const createCourse = async (req, res) => {
     VALUES ($1, $2, $3)`
   await database.query(populateCourse, [groupId, timeSlot, lecturerId])
 
-  res.json({ groupId })
+  res.status(201).json({ groupId })
 }
 
 export const updateCourse = async (req, res) => {

@@ -5,13 +5,15 @@ import {
   setIsLoading,
 } from '../../../../app/pageSlice'
 import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import MentorAddModal from './MentorAddModal'
 
 const MentorSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchMentorsMutation()
   const { data, isLoading } = query
   const selectedMentorId = useSelector(selectedMentorIdSelector)
+  const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
     trigger(selectedMentorId)
@@ -27,7 +29,7 @@ const MentorSearchCard = () => {
   }, [isLoading, dispatch])
 
   return (
-    <>
+    <Fragment>
       <SearchCard
         label="Mentor"
         items={data}
@@ -36,11 +38,10 @@ const MentorSearchCard = () => {
         nameSelector={(mentor) => mentor.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
-        handleAdd={() => {
-          console.log('Add mentor button clicked')
-        }}
+        handleAdd={() => setAddModal(true)}
       />
-    </>
+      <MentorAddModal show={addModal} handleClose={() => setAddModal(false)} />
+    </Fragment>
   )
 }
 

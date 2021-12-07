@@ -5,13 +5,15 @@ import {
   setIsLoading,
 } from '../../../../app/pageSlice'
 import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import LecturerAddModal from './LecturerAddModal'
 
 const LecturerSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchLecturersMutation()
   const { data, isLoading } = query
   const selectedLecturerId = useSelector(selectedLecturerIdSelector)
+  const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
     trigger(selectedLecturerId)
@@ -27,7 +29,7 @@ const LecturerSearchCard = () => {
   }, [isLoading, dispatch])
 
   return (
-    <>
+    <Fragment>
       <SearchCard
         label="Lecturer"
         items={data}
@@ -36,11 +38,13 @@ const LecturerSearchCard = () => {
         nameSelector={(lecturer) => lecturer.name}
         showKey={true}
         handleSubmit={(query) => trigger(query)}
-        handleAdd={() => {
-          console.log('Add lecturer button clicked')
-        }}
+        handleAdd={() => setAddModal(true)}
       />
-    </>
+      <LecturerAddModal
+        show={addModal}
+        handleClose={() => setAddModal(false)}
+      />
+    </Fragment>
   )
 }
 

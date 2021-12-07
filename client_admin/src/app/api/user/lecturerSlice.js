@@ -56,6 +56,14 @@ const extendedApi = apiSlice.injectEndpoints({
           id: course.groupId,
         })),
     }),
+    addNewLecturer: builder.mutation({
+      query: ({ id, name, password, address, facultyId }) => ({
+        url: '/user',
+        method: 'POST',
+        body: { id, name, password, role: 'LECTURER', address, facultyId },
+      }),
+      invalidatesTags: [LECTURER],
+    }),
   }),
 })
 
@@ -65,4 +73,5 @@ export const {
   useGetLecturerCoursesQuery,
   useGetLecturerFacultyQuery,
   useGetLecturerInfoQuery,
+  useAddNewLecturerMutation,
 } = extendedApi

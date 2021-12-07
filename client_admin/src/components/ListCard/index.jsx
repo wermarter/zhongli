@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ConfirmationModal from '../ConfirmationModal'
 
 const ListCard = (props) => {
   const {
@@ -16,6 +17,7 @@ const ListCard = (props) => {
 
   const [query, setQuery] = useState('')
   const [selectedItem, setSelectedItem] = useState({})
+  const [showWarning, setShowWarning] = useState(false)
 
   const listItems = items
     .filter(
@@ -53,42 +55,50 @@ const ListCard = (props) => {
     })
 
   return (
-    <Card border="secondary" style={{ maxHeight: '500px' }}>
-      <Card.Header className="d-flex justify-content-between">
-        <FloatingLabel className="flex-grow-1" label={label}>
-          <Form.Control
-            placeholder="placeholder"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </FloatingLabel>
-        {showButtons ? (
-          <>
-            <Button variant="secondary" className="mx-1" onClick={handleAdd}>
-              Add
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                if (keySelector(selectedItem)) {
-                  handleRemove()
-                } else {
-                  alert(`Please select one ${label.toLowerCase()}.`)
-                }
-              }}
-            >
-              Remove
-            </Button>
-          </>
+    <Fragment>
+      <Card border="secondary" style={{ maxHeight: '500px' }}>
+        <Card.Header className="d-flex justify-content-between">
+          <FloatingLabel className="flex-grow-1" label={label}>
+            <Form.Control
+              placeholder="placeholder"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </FloatingLabel>
+          {showButtons ? (
+            <>
+              <Button variant="secondary" className="mx-1" onClick={handleAdd}>
+                Add
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  if (keySelector(selectedItem)) {
+                    handleRemove()
+                  } else {
+                    setShowWarning(true)
+                  }
+                }}
+              >
+                Remove
+              </Button>
+            </>
+          ) : null}
+        </Card.Header>
+        {listItems.length !== 0 ? (
+          <ListGroup variant="flush">{listItems}</ListGroup>
         ) : null}
-      </Card.Header>
-      {listItems.length !== 0 ? (
-        <ListGroup variant="flush">{listItems}</ListGroup>
-      ) : null}
-      <Card.Footer className="text-muted text-center">
-        {`Found ${listItems.length} ${label.toLowerCase()}`}
-      </Card.Footer>
-    </Card>
+        <Card.Footer className="text-muted text-center">
+          {`Found ${listItems.length} ${label.toLowerCase()}`}
+        </Card.Footer>
+      </Card>
+      <ConfirmationModal
+        title="Warning"
+        content={`Please select one ${label.toLowerCase()} from the list.`}
+        show={showWarning}
+        handleClose={() => setShowWarning(false)}
+      />
+    </Fragment>
   )
 }
 

@@ -5,13 +5,15 @@ import {
   setIsLoading,
 } from '../../../../app/pageSlice'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import FacultyAddModal from './FacultyAddModal'
 
 const FacultySearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchFacultiesMutation()
   const { data, isLoading } = query
   const selectedFacultyId = useSelector(selectedFacultyIdSelector)
+  const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
     trigger(selectedFacultyId)
@@ -27,7 +29,7 @@ const FacultySearchCard = () => {
   }, [isLoading, dispatch])
 
   return (
-    <>
+    <Fragment>
       <SearchCard
         label="Faculty"
         items={data}
@@ -36,11 +38,10 @@ const FacultySearchCard = () => {
         nameSelector={(faculty) => faculty.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
-        handleAdd={() => {
-          console.log('Add faculty button clicked')
-        }}
+        handleAdd={() => setAddModal(true)}
       />
-    </>
+      <FacultyAddModal show={addModal} handleClose={() => setAddModal(false)} />
+    </Fragment>
   )
 }
 

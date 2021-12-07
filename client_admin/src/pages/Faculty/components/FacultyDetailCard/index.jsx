@@ -28,6 +28,7 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
       fields={[
         { label: 'Name', content: facultyInfo.facultyName },
         { label: 'ID', content: facultyInfo.groupId },
+        { label: 'Description', content: facultyInfo.facultyDescription },
       ]}
       buttons={[
         {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
@@ -13,6 +13,17 @@ const SearchCard = (props) => {
     handleSubmit,
     handleAdd,
   } = props
+
+  useEffect(() => {
+    if (selectedItemKey) {
+      if (
+        items.findIndex((item) => keySelector(item) === selectedItemKey) === -1
+      ) {
+        handleSubmit(selectedItemKey)
+      }
+    }
+    // eslint-disable-next-line
+  }, [selectedItemKey])
 
   const [query, setQuery] = useState('')
 

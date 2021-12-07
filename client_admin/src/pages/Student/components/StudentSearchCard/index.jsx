@@ -13,6 +13,7 @@ const StudentSearchCard = () => {
   const [trigger, query] = useSearchStudentsMutation()
   const { data, isLoading } = query
   const selectedStudentId = useSelector(selectedStudentIdSelector)
+  const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
     trigger(selectedStudentId)
@@ -27,7 +28,6 @@ const StudentSearchCard = () => {
     }
   }, [isLoading, dispatch])
 
-  const [addModal, setAddModal] = useState(false)
 
   return (
     <Fragment>

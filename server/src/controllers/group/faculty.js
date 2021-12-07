@@ -8,7 +8,7 @@ export const createFaculty = async (req, res) => {
 
   const createNewGroup = `
     INSERT INTO "Groups" ("id", "type", "name")
-    VALUES ($1, 'COURSE', $2)`
+    VALUES ($1, 'FACULTY', $2)`
   await database.query(createNewGroup, [groupId, facultyName])
 
   const populateFaculty = `
@@ -16,7 +16,7 @@ export const createFaculty = async (req, res) => {
     VALUES ($1, $2)`
   await database.query(populateFaculty, [groupId, facultyDescription])
 
-  res.json({ groupId })
+  res.status(201).json({ groupId })
 }
 
 export const updateFaculty = async (req, res) => {

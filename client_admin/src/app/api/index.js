@@ -21,9 +21,9 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await authorizedBaseQuery(args, api, extraOptions)
   if (result.error && result.error.status === 401) {
     // login again
-    api.dispatch(adminLogin())
+    await api.dispatch(adminLogin())
     // retry the initial query
-    result = await authorizedBaseQuery(args, api, extraOptions) // ? doens't seem to work ?
+    result = await authorizedBaseQuery(args, api, extraOptions)
   }
   return result
 }

@@ -16,7 +16,7 @@ export const createMentorGroup = async (req, res) => {
     VALUES ($1, $2)`
   await database.query(populateMentorGroup, [groupId, mentorId])
 
-  res.json({ groupId })
+  res.status(201).json({ groupId })
 }
 
 export const updateMentorGroup = async (req, res) => {

@@ -31,6 +31,14 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((student) => ({ type: STUDENT, id: student.userId })),
     }),
+    addNewMentorGroup: builder.mutation({
+      query: ({ mentorId, groupName }) => ({
+        url: '/mentor',
+        method: 'POST',
+        body: { mentorId, groupName },
+      }),
+      invalidatesTags: [MENTOR],
+    }),
   }),
 })
 
@@ -38,4 +46,5 @@ export const {
   useSearchMentorsMutation,
   useGetMentorGroupStudentsQuery,
   useGetMentorInfoQuery,
+  useAddNewMentorGroupMutation,
 } = extendedApi

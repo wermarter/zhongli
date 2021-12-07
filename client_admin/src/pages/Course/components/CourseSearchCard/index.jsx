@@ -5,13 +5,15 @@ import {
   setIsLoading,
 } from '../../../../app/pageSlice'
 import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import CourseAddModal from './CourseAddModal'
 
 const CourseSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchCoursesMutation()
   const { data, isLoading } = query
   const selectedCourseId = useSelector(selectedCourseIdSelector)
+  const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
     trigger(selectedCourseId)
@@ -27,7 +29,7 @@ const CourseSearchCard = () => {
   }, [isLoading, dispatch])
 
   return (
-    <>
+    <Fragment>
       <SearchCard
         label="Course"
         items={data}
@@ -36,11 +38,10 @@ const CourseSearchCard = () => {
         nameSelector={(course) => course.groupName}
         showKey={false}
         handleSubmit={(query) => trigger(query)}
-        handleAdd={() => {
-          console.log('Add course button clicked')
-        }}
+        handleAdd={() => setAddModal(true)}
       />
-    </>
+      <CourseAddModal show={addModal} handleClose={() => setAddModal(false)} />
+    </Fragment>
   )
 }
 

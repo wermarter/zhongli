@@ -31,6 +31,14 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((lecturer) => ({ type: LECTURER, id: lecturer.userId })),
     }),
+    addNewFaculty: builder.mutation({
+      query: ({ facultyName, facultyDescription }) => ({
+        url: '/faculty',
+        method: 'POST',
+        body: { facultyName, facultyDescription },
+      }),
+      invalidatesTags: [FACULTY],
+    }),
   }),
 })
 
@@ -38,4 +46,5 @@ export const {
   useSearchFacultiesMutation,
   useGetFacultyInfoQuery,
   useGetFacultyLecturersQuery,
+  useAddNewFacultyMutation,
 } = extendedApi

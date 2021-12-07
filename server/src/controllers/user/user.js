@@ -50,7 +50,7 @@ export const removeUser = async (req, res) => {
   const { userId } = req.query
   const sql = `DELETE FROM "Users" WHERE id=$1`
   await database.query(sql, [userId])
-  res.sendStatus(200)
+  res.sendStatus(204)
 }
 
 export const getUserFaculty = async (req, res) => {

@@ -25,7 +25,7 @@ export const removeGroup = async (req, res) => {
   const { groupId } = req.query
   const sql = `DELETE FROM "Groups" WHERE id=$1`
   await database.query(sql, [groupId])
-  res.sendStatus(200)
+  res.sendStatus(204)
 }
 
 export const getUsersInGroup = async (req, res) => {
