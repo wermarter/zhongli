@@ -2,8 +2,9 @@ import * as Yup from 'yup'
 import { FastField, Formik } from 'formik'
 import { Modal, Button, Form, Spinner } from 'react-bootstrap'
 import InputField from '../../../../components/custom-fields/InputField'
-import { useNavigate } from 'react-router-dom'
 import { useAddNewFacultyMutation } from '../../../../app/api/group/facultySlice'
+import { setSelectedFacultyId } from '../../../../app/pageSlice'
+import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
   facultyName: Yup.string().required('This field is required.'),
@@ -18,12 +19,16 @@ const initialValues = {
 const FacultyAddModal = (props) => {
   const { show, handleClose } = props
   const [triggerAdd] = useAddNewFacultyMutation()
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSubmit = async (values) => {
-    const { groupId } = await triggerAdd(values).unwrap()
-    handleClose()
-    navigate(`/faculty/${groupId}`)
+    try {
+      const { groupId } = await triggerAdd(values).unwrap()
+      handleClose()
+      dispatch(setSelectedFacultyId(groupId))
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedFacultyIdSelector,
   setIsLoading,
+  setSelectedFacultyId,
 } from '../../../../app/pageSlice'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
 import { Fragment, useEffect, useState } from 'react'
@@ -16,16 +17,7 @@ const FacultySearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    trigger(selectedFacultyId)
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(setIsLoading(true))
-    } else {
-      dispatch(setIsLoading(false))
-    }
+    dispatch(setIsLoading(isLoading))
   }, [isLoading, dispatch])
 
   return (
@@ -37,8 +29,9 @@ const FacultySearchCard = () => {
         keySelector={(faculty) => faculty.groupId}
         nameSelector={(faculty) => faculty.groupName}
         showKey={false}
-        handleSubmit={(query) => trigger(query)}
-        handleAdd={() => setAddModal(true)}
+        onSearch={(query) => trigger(query)}
+        onAdd={() => setAddModal(true)}
+        onSelect={(faculty) => dispatch(setSelectedFacultyId(faculty.groupId))}
       />
       <FacultyAddModal show={addModal} handleClose={() => setAddModal(false)} />
     </Fragment>

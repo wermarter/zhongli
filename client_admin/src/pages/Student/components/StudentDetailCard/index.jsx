@@ -7,7 +7,7 @@ import {
   useRemoveStudentMutation,
 } from '../../../../app/api/user/studentSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { setIsLoading, setSelectedStudentId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
 const StudentDetailCard = ({ selectedStudentId }) => {
@@ -76,10 +76,10 @@ const StudentDetailCard = ({ selectedStudentId }) => {
         content="Information related to this student cannot be recovered."
         show={showRemoveWarning}
         handleClose={() => setshowRemoveWarning(false)}
-        handleSubmit={async () =>
+        handleSubmit={async () => {
+          dispatch(setSelectedStudentId(null))
           await triggerRemoveStudent({ userId: studentInfo.id }).unwrap()
-        }
-        navigateTo="/student/deleted"
+        }}
       />
     </Fragment>
   )

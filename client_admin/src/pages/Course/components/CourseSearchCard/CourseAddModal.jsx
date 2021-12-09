@@ -3,9 +3,10 @@ import { FastField, Formik } from 'formik'
 import { Modal, Button, Form, Spinner } from 'react-bootstrap'
 import InputField from '../../../../components/custom-fields/InputField'
 import AsyncSelectField from '../../../../components/custom-fields/AsyncSelectField'
-import { useNavigate } from 'react-router-dom'
 import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import { useAddNewCourseMutation } from '../../../../app/api/group/courseSlice'
+import { setSelectedCourseId } from '../../../../app/pageSlice'
+import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
   courseName: Yup.string().required('This field is required.'),
@@ -23,7 +24,7 @@ const CourseAddModal = (props) => {
   const { show, handleClose } = props
   const [triggerSearch] = useSearchLecturersMutation()
   const [triggerAdd] = useAddNewCourseMutation()
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const searchLecturers = async (inputValue) => {
     const lecturers = await triggerSearch(inputValue).unwrap()
@@ -34,9 +35,13 @@ const CourseAddModal = (props) => {
   }
 
   const handleSubmit = async (values) => {
-    const { groupId } = await triggerAdd(values).unwrap()
-    handleClose()
-    navigate(`/course/${groupId}`)
+    try {
+      const { groupId } = await triggerAdd(values).unwrap()
+      handleClose()
+      dispatch(setSelectedCourseId(groupId))
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (

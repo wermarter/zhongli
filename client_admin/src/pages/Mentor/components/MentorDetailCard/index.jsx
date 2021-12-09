@@ -5,7 +5,7 @@ import {
   useRemoveMentorGroupMutation,
 } from '../../../../app/api/group/mentorSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { setIsLoading, setSelectedMentorId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
 const MentorDetailCard = ({ selectedMentorId }) => {
@@ -61,12 +61,12 @@ const MentorDetailCard = ({ selectedMentorId }) => {
         content="All students and lecturers will be removed from this mentor group too."
         show={showRemoveWarning}
         handleClose={() => setshowRemoveWarning(false)}
-        handleSubmit={async () =>
+        handleSubmit={async () => {
+          dispatch(setSelectedMentorId(null))
           await triggerRemoveMentorGroup({
             groupId: mentorInfo.groupId,
           }).unwrap()
-        }
-        navigateTo="/mentor/deleted"
+        }}
       />
     </Fragment>
   )

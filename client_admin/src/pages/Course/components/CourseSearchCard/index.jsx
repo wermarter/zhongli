@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedCourseIdSelector,
   setIsLoading,
+  setSelectedCourseId,
 } from '../../../../app/pageSlice'
 import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
 import { Fragment, useEffect, useState } from 'react'
@@ -16,16 +17,7 @@ const CourseSearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    trigger(selectedCourseId)
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(setIsLoading(true))
-    } else {
-      dispatch(setIsLoading(false))
-    }
+    dispatch(setIsLoading(isLoading))
   }, [isLoading, dispatch])
 
   return (
@@ -37,8 +29,9 @@ const CourseSearchCard = () => {
         keySelector={(course) => course.groupId}
         nameSelector={(course) => course.groupName}
         showKey={false}
-        handleSubmit={(query) => trigger(query)}
-        handleAdd={() => setAddModal(true)}
+        onSearch={(query) => trigger(query)}
+        onAdd={() => setAddModal(true)}
+        onSelect={(course) => dispatch(setSelectedCourseId(course.groupId))}
       />
       <CourseAddModal show={addModal} handleClose={() => setAddModal(false)} />
     </Fragment>

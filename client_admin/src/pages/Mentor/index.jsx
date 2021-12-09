@@ -1,4 +1,4 @@
-import useSelectedItemId from '../../hooks/useSelectedItemId'
+import useItemParam from '../../hooks/useItemParam'
 import {
   selectedMentorIdSelector,
   setSelectedMentorId,
@@ -7,12 +7,19 @@ import { Row, Col } from 'react-bootstrap'
 import MentorSearchCard from './components/MentorSearchCard'
 import MentorDetailCard from './components/MentorDetailCard'
 import MentorListCard from './components/MentorListCard'
+import { Fragment } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const MentorPage = () => {
-  const selectedMentorId = useSelectedItemId(
-    selectedMentorIdSelector,
-    setSelectedMentorId,
-  )
+  const dispatch = useDispatch()
+  const selectedMentorId = useSelector(selectedMentorIdSelector)
+
+  useItemParam({
+    selectedItemId: selectedMentorId,
+    setSelectedItemId: (mentorId) => {
+      dispatch(setSelectedMentorId(mentorId))
+    },
+  })
 
   return (
     <Row className="justify-content-md-center my-3">

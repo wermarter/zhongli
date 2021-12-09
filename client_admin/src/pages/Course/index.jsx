@@ -1,4 +1,4 @@
-import useSelectedItemId from '../../hooks/useSelectedItemId'
+import useItemParam from '../../hooks/useItemParam'
 import {
   selectedCourseIdSelector,
   setSelectedCourseId,
@@ -7,12 +7,18 @@ import { Row, Col } from 'react-bootstrap'
 import CourseSearchCard from './components/CourseSearchCard'
 import CourseDetailCard from './components/CourseDetailCard'
 import CourseListCard from './components/CourseListCard'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CoursePage = () => {
-  const selectedCourseId = useSelectedItemId(
-    selectedCourseIdSelector,
-    setSelectedCourseId,
-  )
+  const dispatch = useDispatch()
+  const selectedCourseId = useSelector(selectedCourseIdSelector)
+
+  useItemParam({
+    selectedItemId: selectedCourseId,
+    setSelectedItemId: (courseId) => {
+      dispatch(setSelectedCourseId(courseId))
+    },
+  })
 
   return (
     <Row className="justify-content-md-center my-3">

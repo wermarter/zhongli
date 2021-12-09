@@ -5,7 +5,7 @@ import {
   useRemoveFacultyMutation,
 } from '../../../../app/api/group/facultySlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { setIsLoading, setSelectedFacultyId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
 const FacultyDetailCard = ({ selectedFacultyId }) => {
@@ -57,10 +57,10 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
         content="All students and lecturers will be removed from this faculty too."
         show={showRemoveWarning}
         handleClose={() => setshowRemoveWarning(false)}
-        handleSubmit={async () =>
+        handleSubmit={async () => {
+          dispatch(setSelectedFacultyId(null))
           await triggerRemoveFaculty({ groupId: facultyInfo.groupId }).unwrap()
-        }
-        navigateTo="/faculty/deleted"
+        }}
       />
     </Fragment>
   )

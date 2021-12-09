@@ -1,14 +1,19 @@
 import { Fragment, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   useGetCourseInfoQuery,
   useRemoveCourseMutation,
 } from '../../../../app/api/group/courseSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading } from '../../../../app/pageSlice'
+import {
+  selectedCourseIdSelector,
+  setIsLoading,
+  setSelectedCourseId,
+} from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
-const CourseDetailCard = ({ selectedCourseId }) => {
+const CourseDetailCard = () => {
+  const selectedCourseId = useSelector(selectedCourseIdSelector)
   const { data: courseInfo, isFetching } =
     useGetCourseInfoQuery(selectedCourseId)
   const [triggerRemoveCourse] = useRemoveCourseMutation()
@@ -64,10 +69,10 @@ const CourseDetailCard = ({ selectedCourseId }) => {
         content="All students will be removed from this course too."
         show={showRemoveWarning}
         handleClose={() => setshowRemoveWarning(false)}
-        handleSubmit={async () =>
+        handleSubmit={async () => {
+          dispatch(setSelectedCourseId(null))
           await triggerRemoveCourse({ groupId: courseInfo.groupId }).unwrap()
-        }
-        navigateTo="/course/deleted"
+        }}
       />
     </Fragment>
   )

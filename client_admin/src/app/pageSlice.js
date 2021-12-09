@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isLoading: false,
-  selectedStudentId: null,
-  selectedLecturerId: null,
-  selectedMentorId: null,
-  selectedCourseId: null,
-  selectedFacultyId: null,
+  selectedStudentId: undefined,
+  selectedLecturerId: undefined,
+  selectedMentorId: undefined,
+  selectedCourseId: undefined,
+  selectedFacultyId: undefined,
 }
 
 export const pageSlice = createSlice({

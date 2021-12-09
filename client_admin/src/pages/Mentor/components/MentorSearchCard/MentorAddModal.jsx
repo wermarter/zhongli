@@ -3,9 +3,10 @@ import { FastField, Formik } from 'formik'
 import { Modal, Button, Form, Spinner } from 'react-bootstrap'
 import InputField from '../../../../components/custom-fields/InputField'
 import AsyncSelectField from '../../../../components/custom-fields/AsyncSelectField'
-import { useNavigate } from 'react-router-dom'
 import { useAddNewMentorGroupMutation } from '../../../../app/api/group/mentorSlice'
 import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
+import { setSelectedMentorId } from '../../../../app/pageSlice'
+import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
   groupName: Yup.string().required('This field is required.'),
@@ -21,7 +22,7 @@ const MentorAddModal = (props) => {
   const { show, handleClose } = props
   const [triggerSearch] = useSearchLecturersMutation()
   const [triggerAdd] = useAddNewMentorGroupMutation()
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const searchLecturers = async (inputValue) => {
     const lecturers = await triggerSearch(inputValue).unwrap()
@@ -32,9 +33,13 @@ const MentorAddModal = (props) => {
   }
 
   const handleSubmit = async (values) => {
-    const { groupId } = await triggerAdd(values).unwrap()
-    handleClose()
-    navigate(`/mentor/${groupId}`)
+    try {
+      const { groupId } = await triggerAdd(values).unwrap()
+      handleClose()
+      dispatch(setSelectedMentorId(groupId))
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (

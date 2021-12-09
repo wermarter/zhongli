@@ -7,7 +7,7 @@ import {
   useRemoveLecturerMutation,
 } from '../../../../app/api/user/lecturerSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { setIsLoading, setSelectedLecturerId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
 const LecturerDetailCard = ({ selectedLecturerId }) => {
@@ -76,10 +76,10 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
         content="Information related to this lecturer cannot be recovered."
         show={showRemoveWarning}
         handleClose={() => setshowRemoveWarning(false)}
-        handleSubmit={async () =>
+        handleSubmit={async () => {
+          dispatch(setSelectedLecturerId(null))
           await triggerRemoveLecturer({ userId: lecturerInfo.id }).unwrap()
-        }
-        navigateTo="/lecturer/deleted"
+        }}
       />
     </Fragment>
   )

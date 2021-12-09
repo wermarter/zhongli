@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedMentorIdSelector,
   setIsLoading,
+  setSelectedMentorId,
 } from '../../../../app/pageSlice'
 import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
 import { Fragment, useEffect, useState } from 'react'
@@ -16,16 +17,7 @@ const MentorSearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    trigger(selectedMentorId)
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(setIsLoading(true))
-    } else {
-      dispatch(setIsLoading(false))
-    }
+    dispatch(setIsLoading(isLoading))
   }, [isLoading, dispatch])
 
   return (
@@ -37,8 +29,9 @@ const MentorSearchCard = () => {
         keySelector={(mentor) => mentor.groupId}
         nameSelector={(mentor) => mentor.groupName}
         showKey={false}
-        handleSubmit={(query) => trigger(query)}
-        handleAdd={() => setAddModal(true)}
+        onSearch={(query) => trigger(query)}
+        onAdd={() => setAddModal(true)}
+        onSelect={(mentor) => dispatch(setSelectedMentorId(mentor.groupId))}
       />
       <MentorAddModal show={addModal} handleClose={() => setAddModal(false)} />
     </Fragment>

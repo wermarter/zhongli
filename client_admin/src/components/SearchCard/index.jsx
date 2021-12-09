@@ -1,32 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 
-const SearchCard = (props) => {
-  const {
-    label,
-    items = [],
-    selectedItemKey,
-    keySelector,
-    nameSelector,
-    showKey,
-    handleSubmit,
-    handleAdd,
-  } = props
-
+const SearchCard = ({
+  label,
+  items = [],
+  selectedItemKey,
+  keySelector,
+  nameSelector,
+  showKey,
+  onSearch,
+  onAdd,
+  onSelect,
+}) => {
   useEffect(() => {
-    if (selectedItemKey) {
-      if (
-        items.findIndex((item) => keySelector(item) === selectedItemKey) === -1
-      ) {
-        // Trigger search again with the selected item
-        handleSubmit(selectedItemKey)
-      }
-    } else {
-      handleSubmit()
+    if (!selectedItemKey) {
+      // On mount, if no item selected, get something
+      onSearch(selectedItemKey)
     }
     // eslint-disable-next-line
-  }, [selectedItemKey])
+  }, [])
 
   const [query, setQuery] = useState('')
 
@@ -44,13 +37,12 @@ const SearchCard = (props) => {
           key={itemKey}
           active={itemKey === selectedItemKey}
           action
-          as={Link}
-          to={itemKey}
+          onClick={() => onSelect(item)}
           className="user-select-none"
         >
           <div className="d-flex justify-content-between">
             {itemName}
-            {showKey ? <div className>{itemKey}</div> : null}
+            {showKey ? <div>{itemKey}</div> : null}
           </div>
         </ListGroup.Item>
       )
@@ -70,13 +62,13 @@ const SearchCard = (props) => {
           variant="secondary"
           className="mx-1"
           onClick={() => {
-            handleSubmit(query)
+            onSearch(query)
             setQuery('')
           }}
         >
           Find
         </Button>
-        <Button variant="secondary" onClick={handleAdd}>
+        <Button variant="secondary" onClick={onAdd}>
           Add
         </Button>
       </Card.Header>

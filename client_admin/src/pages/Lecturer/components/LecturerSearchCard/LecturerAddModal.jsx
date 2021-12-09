@@ -4,8 +4,9 @@ import { Modal, Button, Form, Spinner } from 'react-bootstrap'
 import InputField from '../../../../components/custom-fields/InputField'
 import AsyncSelectField from '../../../../components/custom-fields/AsyncSelectField'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
-import { useNavigate } from 'react-router-dom'
 import { useAddNewLecturerMutation } from '../../../../app/api/user/lecturerSlice'
+import { setSelectedLecturerId } from '../../../../app/pageSlice'
+import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
   id: Yup.string().required('This field is required.'),
@@ -31,11 +32,10 @@ const initialValues = {
   facultyId: '',
 }
 
-const LecturerAddModal = (props) => {
-  const { show, handleClose } = props
+const LecturerAddModal = ({ show, handleClose }) => {
+  const dispatch = useDispatch()
   const [triggerSearch] = useSearchFacultiesMutation()
   const [triggerAdd] = useAddNewLecturerMutation()
-  const navigate = useNavigate()
 
   const searchFaculties = async (inputValue) => {
     const faculties = await triggerSearch(inputValue).unwrap()
@@ -45,10 +45,14 @@ const LecturerAddModal = (props) => {
     }))
   }
 
-  const handleSubmit = async (values) => {
-    await triggerAdd(values)
-    handleClose()
-    navigate(`/lecturer/${values.id}`)
+  const handleSubmit = async (values, actions) => {
+    try {
+      await triggerAdd(values)
+      dispatch(setSelectedLecturerId(values.id))
+      handleClose()
+    } catch {
+      actions.setErrors({ id: 'Bị trùng ID bạn nhé' })
+    }
   }
 
   return (

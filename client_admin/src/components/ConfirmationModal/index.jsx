@@ -1,11 +1,15 @@
 import { Modal, Button, Spinner } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
-const ConfirmationModal = (props) => {
-  const { show, handleClose, handleSubmit, navigateTo, title, content } = props
+const ConfirmationModal = ({
+  show,
+  handleClose,
+  handleSubmit,
+  handleError,
+  title,
+  content,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const navigate = useNavigate()
 
   const handleClick = async () => {
     if (handleSubmit) {
@@ -13,13 +17,12 @@ const ConfirmationModal = (props) => {
       try {
         await handleSubmit()
       } catch (e) {
-        alert(e)
+        if (handleError) {
+          handleError(e)
+        }
       }
     }
     handleClose()
-    if (navigateTo) {
-      navigate(navigateTo)
-    }
   }
 
   return (

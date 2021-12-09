@@ -5,7 +5,8 @@ import InputField from '../../../../components/custom-fields/InputField'
 import AsyncSelectField from '../../../../components/custom-fields/AsyncSelectField'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
 import { useAddNewStudentMutation } from '../../../../app/api/user/studentSlice'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setSelectedStudentId } from '../../../../app/pageSlice'
 
 const validationSchema = Yup.object().shape({
   id: Yup.string().required('This field is required.'),
@@ -31,11 +32,10 @@ const initialValues = {
   facultyId: '',
 }
 
-const StudentAddModal = (props) => {
-  const { show, handleClose } = props
+const StudentAddModal = ({ show, handleClose }) => {
+  const dispatch = useDispatch()
   const [triggerSearch] = useSearchFacultiesMutation()
   const [triggerAdd] = useAddNewStudentMutation()
-  const navigate = useNavigate()
 
   const searchFaculties = async (inputValue) => {
     const faculties = await triggerSearch(inputValue).unwrap()
@@ -45,10 +45,14 @@ const StudentAddModal = (props) => {
     }))
   }
 
-  const handleSubmit = async (values) => {
-    await triggerAdd(values)
-    handleClose()
-    navigate(`/student/${values.id}`)
+  const handleSubmit = async (values, actions) => {
+    try {
+      await triggerAdd(values)
+      handleClose()
+      dispatch(setSelectedStudentId(values.id))
+    } catch {
+      actions.setFieldError('id', 'Bị trùng ID bạn nhé')
+    }
   }
 
   return (
