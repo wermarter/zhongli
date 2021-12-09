@@ -17,7 +17,7 @@ const useSelectedItemId = (selectedItemIdSelector, setSelectedItemId) => {
         dispatch(setSelectedItemId(itemIdParam))
       } else {
         dispatch(setSelectedItemId(null))
-        window.location.href = `/${match.params.resource}`
+        // window.location.href = `/${match.params.resource}`
       }
     }
     // Redirect to selected item

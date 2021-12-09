@@ -1,4 +1,4 @@
-import { FACULTY, LECTURER } from '../tagConstants'
+import { FACULTY, LECTURER, LECTURER_LIST } from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -12,6 +12,7 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((faculty) => ({ type: FACULTY, id: faculty.groupId })),
     }),
+
     getFacultyInfo: builder.query({
       query: (groupId) => ({
         url: '/faculty/info',
@@ -22,6 +23,7 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: FACULTY, id: result.groupId },
       ],
     }),
+
     getFacultyLecturers: builder.query({
       query: (groupId) => ({
         url: '/group/user',
@@ -29,15 +31,28 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { groupId, role: 'LECTURER' },
       }),
       providesTags: (result = [], error, arg) =>
-        result.map((lecturer) => ({ type: LECTURER, id: lecturer.userId })),
+        result
+          .map((lecturer) => ({ type: LECTURER, id: lecturer.userId }))
+          .concat([{ type: LECTURER_LIST, id: arg }]),
     }),
+
     addNewFaculty: builder.mutation({
       query: ({ facultyName, facultyDescription }) => ({
         url: '/faculty',
         method: 'POST',
         body: { facultyName, facultyDescription },
       }),
-      invalidatesTags: [FACULTY],
+    }),
+
+    removeFaculty: builder.mutation({
+      query: ({ groupId }) => ({
+        url: '/group',
+        method: 'DELETE',
+        params: { groupId },
+      }),
+      invalidatesTags: (result = [], error, arg) => [
+        { type: FACULTY, id: arg.groupId },
+      ],
     }),
   }),
 })
@@ -47,4 +62,5 @@ export const {
   useGetFacultyInfoQuery,
   useGetFacultyLecturersQuery,
   useAddNewFacultyMutation,
+  useRemoveFacultyMutation,
 } = extendedApi

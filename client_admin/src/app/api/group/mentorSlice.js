@@ -1,4 +1,4 @@
-import { MENTOR, STUDENT } from '../tagConstants'
+import { MENTOR, MENTOR_LIST, STUDENT, STUDENT_LIST } from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -12,6 +12,7 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((mentor) => ({ type: MENTOR, id: mentor.groupId })),
     }),
+
     getMentorInfo: builder.query({
       query: (groupId) => ({
         url: '/mentor/info',
@@ -22,6 +23,7 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: MENTOR, id: result.groupId },
       ],
     }),
+
     getMentorGroupStudents: builder.query({
       query: (groupId) => ({
         url: '/group/user',
@@ -29,15 +31,31 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { groupId, role: 'STUDENT' },
       }),
       providesTags: (result = [], error, arg) =>
-        result.map((student) => ({ type: STUDENT, id: student.userId })),
+        result
+          .map((student) => ({ type: STUDENT, id: student.userId }))
+          .concat([{ type: STUDENT_LIST, id: arg.groupId }]),
     }),
+
     addNewMentorGroup: builder.mutation({
       query: ({ mentorId, groupName }) => ({
         url: '/mentor',
         method: 'POST',
         body: { mentorId, groupName },
       }),
-      invalidatesTags: [MENTOR],
+      invalidatesTags: (result = [], error, arg) => [
+        { type: MENTOR_LIST, id: arg.mentorId },
+      ],
+    }),
+
+    removeMentorGroup: builder.mutation({
+      query: ({ groupId }) => ({
+        url: '/group',
+        method: 'DELETE',
+        params: { groupId },
+      }),
+      invalidatesTags: (result = [], error, arg) => [
+        { type: MENTOR, id: arg.groupId },
+      ],
     }),
   }),
 })
@@ -47,4 +65,5 @@ export const {
   useGetMentorGroupStudentsQuery,
   useGetMentorInfoQuery,
   useAddNewMentorGroupMutation,
+  useRemoveMentorGroupMutation,
 } = extendedApi

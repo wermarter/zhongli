@@ -3,3 +3,8 @@ export const FACULTY = 'FACULTY'
 export const MENTOR = 'MENTOR'
 export const LECTURER = 'LECTURER'
 export const STUDENT = 'STUDENT'
+
+export const MENTOR_LIST = 'MENTOR_LIST'
+export const STUDENT_LIST = 'STUDENT_LIST'
+export const LECTURER_LIST = 'LECTURER_LIST'
+export const COURSE_LIST = 'COURSE_LIST'

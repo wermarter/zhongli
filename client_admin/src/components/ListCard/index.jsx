@@ -56,7 +56,7 @@ const ListCard = (props) => {
 
   return (
     <Fragment>
-      <Card border="secondary" style={{ maxHeight: '500px' }}>
+      <Card border="secondary">
         <Card.Header className="d-flex justify-content-between">
           <FloatingLabel className="flex-grow-1" label={label}>
             <Form.Control

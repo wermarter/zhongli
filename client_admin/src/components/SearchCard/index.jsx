@@ -19,8 +19,11 @@ const SearchCard = (props) => {
       if (
         items.findIndex((item) => keySelector(item) === selectedItemKey) === -1
       ) {
+        // Trigger search again with the selected item
         handleSubmit(selectedItemKey)
       }
+    } else {
+      handleSubmit()
     }
     // eslint-disable-next-line
   }, [selectedItemKey])
@@ -54,7 +57,7 @@ const SearchCard = (props) => {
     })
 
   return (
-    <Card border="secondary" style={{ maxHeight: '500px' }}>
+    <Card border="secondary">
       <Card.Header className="d-flex justify-content-between">
         <FloatingLabel className="flex-grow-1" label={label}>
           <Form.Control

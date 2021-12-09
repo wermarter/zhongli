@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLogin, selectJWT } from './app/authSlice'
 import { Routes, Route, Navigate } from 'react-router-dom'
@@ -6,6 +6,8 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import NavigationBar from './components/NavigationBar'
 import { ProgressBar } from 'react-bootstrap'
 import { selectIsLoading } from './app/pageSlice'
+
+import './App.css'
 
 const StudentPage = React.lazy(() => import('./pages/Student'))
 const LecturerPage = React.lazy(() => import('./pages/Lecturer'))
@@ -30,7 +32,7 @@ function App() {
   }
 
   return (
-    <>
+    <Fragment>
       <NavigationBar />
       <ProgressBar variant="secondary" animated now={isLoading ? 100 : 0} />
       <Routes>
@@ -42,7 +44,7 @@ function App() {
         <Route path="faculty/*" element={<FacultyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </Fragment>
   )
 }
 

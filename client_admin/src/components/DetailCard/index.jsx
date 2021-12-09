@@ -35,7 +35,7 @@ const DetailCard = (props) => {
   ))
 
   return (
-    <Card border="secondary" style={{ maxHeight: '500px' }}>
+    <Card border="secondary">
       <Card.Header className="d-flex justify-content-between align-items-center">
         <h1 className="display-6 flex-grow-1">{label} details</h1>
         <DropdownButton variant="secondary" title="Options">

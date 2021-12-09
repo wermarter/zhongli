@@ -1,4 +1,12 @@
-import { COURSE, FACULTY, LECTURER, MENTOR } from '../tagConstants'
+import {
+  COURSE,
+  COURSE_LIST,
+  FACULTY,
+  LECTURER,
+  LECTURER_LIST,
+  MENTOR,
+  MENTOR_LIST,
+} from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -12,6 +20,7 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result.map((lecturer) => ({ type: LECTURER, id: lecturer.id })),
     }),
+
     getLecturerInfo: builder.query({
       query: (lecturerId) => ({
         url: '/user/info',
@@ -22,6 +31,7 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: LECTURER, id: result.id },
       ],
     }),
+
     getLecturerMentorGroups: builder.query({
       query: (lecturerId) => ({
         url: '/lecturer/mentor',
@@ -29,11 +39,14 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { lecturerId },
       }),
       providesTags: (result = {}, error, arg) =>
-        result.map((mentorGroup) => ({
-          type: MENTOR,
-          id: mentorGroup.groupId,
-        })),
+        result
+          .map((mentorGroup) => ({
+            type: MENTOR,
+            id: mentorGroup.groupId,
+          }))
+          .concat([{ type: MENTOR_LIST, id: arg }]),
     }),
+
     getLecturerFaculty: builder.query({
       query: (lecturerId) => ({
         url: '/user/faculty',
@@ -44,6 +57,7 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: FACULTY, id: result.groupId },
       ],
     }),
+
     getLecturerCourses: builder.query({
       query: (lecturerId) => ({
         url: '/lecturer/course',
@@ -51,18 +65,34 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { lecturerId },
       }),
       providesTags: (result = [], error, arg) =>
-        result.map((course) => ({
-          type: COURSE,
-          id: course.groupId,
-        })),
+        result
+          .map((course) => ({
+            type: COURSE,
+            id: course.groupId,
+          }))
+          .concat([{ type: COURSE_LIST, id: arg }]),
     }),
+
     addNewLecturer: builder.mutation({
       query: ({ id, name, password, address, facultyId }) => ({
         url: '/user',
         method: 'POST',
         body: { id, name, password, role: 'LECTURER', address, facultyId },
       }),
-      invalidatesTags: [LECTURER],
+      invalidatesTags: (result, error, arg) => [
+        { type: LECTURER_LIST, id: arg.facultyId },
+      ],
+    }),
+
+    removeLecturer: builder.mutation({
+      query: ({ userId }) => ({
+        url: '/user',
+        method: 'DELETE',
+        params: { userId },
+      }),
+      invalidatesTags: (result = [], error, arg) => [
+        { type: LECTURER, id: arg.userId },
+      ],
     }),
   }),
 })
@@ -74,4 +104,5 @@ export const {
   useGetLecturerFacultyQuery,
   useGetLecturerInfoQuery,
   useAddNewLecturerMutation,
+  useRemoveLecturerMutation,
 } = extendedApi

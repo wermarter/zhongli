@@ -1,7 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import config from '../../config'
 import { adminLogin, selectJWT } from '../authSlice'
-import { COURSE, FACULTY, LECTURER, MENTOR, STUDENT } from './tagConstants'
+import {
+  COURSE,
+  COURSE_LIST,
+  FACULTY,
+  LECTURER,
+  LECTURER_LIST,
+  MENTOR,
+  MENTOR_LIST,
+  STUDENT,
+  STUDENT_LIST,
+} from './tagConstants'
 
 const authorizedBaseQuery = fetchBaseQuery({
   baseUrl: `${config.apiUrl}/api`,
@@ -32,6 +42,16 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
   refetchOnReconnect: true,
-  tagTypes: [COURSE, FACULTY, MENTOR, LECTURER, STUDENT],
+  tagTypes: [
+    COURSE,
+    FACULTY,
+    MENTOR,
+    LECTURER,
+    STUDENT,
+    MENTOR_LIST,
+    STUDENT_LIST,
+    LECTURER_LIST,
+    COURSE_LIST,
+  ],
   endpoints: () => ({}),
 })
