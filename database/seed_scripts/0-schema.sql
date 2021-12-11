@@ -17,7 +17,7 @@ CREATE TABLE "Groups" (
 
 CREATE TABLE "Memberships" (
   "user_id" varchar(20),
-  "group_id" uuid,
+  "group_id" uuid NOT NULL,
   PRIMARY KEY ("user_id", "group_id"),
   CONSTRAINT "FK_Memberships.user_id"
     FOREIGN KEY ("user_id")
@@ -30,20 +30,23 @@ CREATE TABLE "Memberships" (
 CREATE TABLE "Courses" (
   "group_id" uuid,
   "time_slot" integer NOT NULL,
-  "lecturer_id" varchar(20) NOT NULL,
+  "lecturer_id" varchar(20),
   PRIMARY KEY ("group_id"),
   CONSTRAINT "FK_Courses.group_id"
     FOREIGN KEY ("group_id")
-      REFERENCES "Groups"("id") ON DELETE CASCADE
+      REFERENCES "Groups"("id") ON DELETE CASCADE,
+  CONSTRAINT "FK_Courses.lecturer_id"
+    FOREIGN KEY ("lecturer_id")
+      REFERENCES "Users"("id") ON DELETE SET NULL
 );
 
 CREATE TABLE "MentorGroups" (
   "group_id" uuid,
-  "mentor_id" varchar(20) NOT NULL,
+  "mentor_id" varchar(20),
   PRIMARY KEY ("group_id"),
   CONSTRAINT "FK_MentorGroups.mentor_id"
     FOREIGN KEY ("mentor_id")
-      REFERENCES "Users"("id") ON DELETE CASCADE,
+      REFERENCES "Users"("id") ON DELETE SET NULL,
   CONSTRAINT "FK_MentorGroups.group_id"
     FOREIGN KEY ("group_id")
       REFERENCES "Groups"("id") ON DELETE CASCADE
@@ -56,6 +59,9 @@ CREATE TABLE "Faculties" (
   CONSTRAINT "FK_Faculties.group_id"
     FOREIGN KEY ("group_id")
       REFERENCES "Groups"("id") ON DELETE CASCADE
+  -- CONSTRAINT "FK_Faculties.admin_id"
+  --   FOREIGN KEY ("admin_id")
+  --     REFERENCES "Users"("id") ON DELETE SET NULL
 );
 
 CREATE TABLE "GroupItems" (

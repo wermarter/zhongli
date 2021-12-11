@@ -36,23 +36,29 @@ const MentorDetailCard = ({ selectedMentorId }) => {
           { label: 'Group name', content: mentorInfo.groupName },
           { label: 'Group ID', content: mentorInfo.groupId },
         ]}
-        buttons={[
-          {
-            label: 'Edit',
-            onClick: () => {
-              console.log('Editing course')
-            },
-          },
-          {
-            label: 'Remove group',
-            onClick: () => setShowRemoveWarning(true),
-          },
-        ]}
         links={[
           {
             label: 'Mentor',
             content: mentorInfo.mentorName,
             destination: `/lecturer/${mentorInfo.mentorId}`,
+          },
+        ]}
+        buttons={[
+          {
+            label: 'Edit group name',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change mentor',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Remove group',
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
       />

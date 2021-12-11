@@ -38,15 +38,34 @@ const CourseDetailCard = () => {
       <DetailCard
         label="Course"
         fields={[
-          { label: 'Name', content: courseInfo.courseName },
-          { label: 'ID', content: courseInfo.groupId },
+          { label: 'Group name', content: courseInfo.courseName },
+          { label: 'Group ID', content: courseInfo.groupId },
           { label: 'Timeslot', content: courseInfo.timeSlot },
+        ]}
+        links={[
+          {
+            label: 'Lecturer',
+            content: courseInfo.lecturerName,
+            destination: `/lecturer/${courseInfo.lecturerId}`,
+          },
         ]}
         buttons={[
           {
-            label: 'Edit',
+            label: 'Edit course name',
             onClick: () => {
-              console.log('Editing course')
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Update course timeslot',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change lecturer',
+            onClick: () => {
+              console.log('Editing student')
             },
           },
           {
@@ -54,13 +73,6 @@ const CourseDetailCard = () => {
             onClick: () => {
               setShowRemoveWarning(true)
             },
-          },
-        ]}
-        links={[
-          {
-            label: 'Lecturer',
-            content: courseInfo.lecturerName,
-            destination: `/lecturer/${courseInfo.lecturerId}`,
           },
         ]}
       />

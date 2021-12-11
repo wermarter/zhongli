@@ -20,15 +20,7 @@ export const createFaculty = async (req, res) => {
 }
 
 export const updateFaculty = async (req, res) => {
-  const { groupId, facultyName, facultyDescription } = req.body
-  if (facultyName) {
-    const updateFacultyName = `
-      UPDATE "Groups" 
-      SET name=$1
-      WHERE type='FACULTY'
-      AND id=$2`
-    await database.query(updateFacultyName, [facultyName, groupId])
-  }
+  const { groupId, facultyDescription } = req.body
   const updateFacultyTable = `
     UPDATE "Faculties" 
     SET description=$1

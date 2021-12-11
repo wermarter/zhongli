@@ -19,18 +19,10 @@ export const createMentorGroup = async (req, res) => {
   res.status(201).json({ groupId })
 }
 
-export const updateMentorGroup = async (req, res) => {
-  const { groupId, mentorId, groupName } = req.body
-  if (groupName) {
-    const updateGroupName = `
-      UPDATE "Groups" 
-      SET name=$1
-      WHERE type='MENTORGROUP'
-      AND group_id=$2`
-    await database.query(updateGroupName, [groupName, groupId])
-  }
+export const changeMentorId = async (req, res) => {
+  const { groupId, mentorId } = req.body
   const updateMentorTable = `
-    UPDATE "MentorGroups" SET mentor_id=$1 WHERE group_id=$3`
+    UPDATE "MentorGroups" SET mentor_id=$1 WHERE group_id=$2`
   await database.query(updateMentorTable, [mentorId, groupId])
   res.sendStatus(200)
 }

@@ -46,18 +46,6 @@ const StudentDetailCard = ({ selectedStudentId }) => {
           { label: 'PSID', content: studentInfo.psid },
           { label: 'Address', content: studentInfo.address },
         ]}
-        buttons={[
-          {
-            label: 'Edit',
-            onClick: () => {
-              console.log('Editing student')
-            },
-          },
-          {
-            label: 'Remove student',
-            onClick: () => setShowRemoveWarning(true),
-          },
-        ]}
         links={[
           {
             label: 'Mentor',
@@ -68,6 +56,36 @@ const StudentDetailCard = ({ selectedStudentId }) => {
             label: 'Faculty',
             content: faculty.facultyName,
             destination: `/faculty/${faculty.groupId}`,
+          },
+        ]}
+        buttons={[
+          {
+            label: 'Edit basic info',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change password',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change mentor',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change faculty',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Remove student',
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
       />

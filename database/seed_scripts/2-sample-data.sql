@@ -21,8 +21,8 @@ INSERT INTO "MentorGroups" ("group_id", "mentor_id") VALUES
 ('9c270c7f-3c3e-45a0-8326-3e0390096196', 'lecturerb');
 
 INSERT INTO "Faculties" ("group_id", "description") VALUES
-('9c270c7f-3c3e-45a0-8326-3e0390096193', 'computer, machine...'),
-('9c270c7f-3c3e-45a0-8326-3e0390096194', 'business,...');
+('9c270c7f-3c3e-45a0-8326-3e0390096193', 'some description'),
+('9c270c7f-3c3e-45a0-8326-3e0390096194', 'some other description');
 
 INSERT INTO "Memberships" ("user_id", "group_id") VALUES
 ('lecturera', '9c270c7f-3c3e-45a0-8326-3e0390096193'),

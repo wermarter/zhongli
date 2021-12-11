@@ -57,3 +57,13 @@ export const removeUserFromGroup = async (req, res) => {
   await database.query(sql, [userId, groupId])
   res.sendStatus(200)
 }
+
+export const updateGroupName = async (req, res) => {
+  const { groupId, groupName } = req.body
+  const updateGroupName = `
+    UPDATE "Groups" 
+    SET name=$1
+    WHERE group_id=$2`
+  await database.query(updateGroupName, [groupName, groupId])
+  res.sendStatus(200)
+}

@@ -30,7 +30,7 @@ const StudentAddModal = ({
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add new {label}</Modal.Title>
+        <Modal.Title>Add new {label.toLowerCase()}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={initialValues}

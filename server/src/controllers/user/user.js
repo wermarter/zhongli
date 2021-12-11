@@ -31,19 +31,20 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-  const { id, name, password, role, address } = req.body
-  if (password != undefined && password?.length !== 0) {
-    const hashedPassword = await bcrypt.hash(password, config.saltRounds)
-    const sql = `
-      UPDATE "Users" SET name=$1, password=$2, address=$5 WHERE id=$3 AND role=$4`
-    await database.query(sql, [name, hashedPassword, id, role, address])
-    res.sendStatus(200)
-  } else {
-    const sql = `
-      UPDATE "Users" SET name=$1, address=$4 WHERE id=$2 AND role=$3`
-    await database.query(sql, [name, id, role, address])
-    res.sendStatus(200)
-  }
+  const { userId, name, address } = req.body
+  const sql = `
+    UPDATE "Users" SET name=$1, address=$2 WHERE id=$3`
+  await database.query(sql, [name, address, userId])
+  res.sendStatus(200)
+}
+
+export const changePassword = async (req, res) => {
+  const { userId, password } = req.body
+  const hashedPassword = await bcrypt.hash(password, config.saltRounds)
+  const sql = `
+    UPDATE "Users" SET password=$1 WHERE id=$2`
+  await database.query(sql, [hashedPassword, userId])
+  res.sendStatus(200)
 }
 
 export const removeUser = async (req, res) => {
@@ -63,6 +64,19 @@ export const getUserFaculty = async (req, res) => {
     AND "Groups".type='FACULTY'`
   const result = await database.query(sql, [userId])
   res.json(result.rows[0] || {})
+}
+
+export const changeUserGroup = async (req, res) => {
+  const { userId, currentGroupId, newGroupId } = req.body
+  const removeOldGroup = `
+    DELETE FROM "Memberships"
+    WHERE user_id=$1 AND group_id=$2`
+  const addNewGroup = `
+    INSERT INTO "Memberships" ("user_id", "group_id")
+    VALUES ($1, $2)`
+  await database.query(removeOldGroup, [userId, currentGroupId])
+  await database.query(addNewGroup, [userId, newGroupId])
+  res.sendStatus(200)
 }
 
 export const getUserInfo = async (req, res) => {

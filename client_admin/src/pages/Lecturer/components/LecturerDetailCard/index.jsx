@@ -46,23 +46,35 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
           { label: 'PSID', content: lecturerInfo.psid },
           { label: 'Address', content: lecturerInfo.address },
         ]}
-        buttons={[
-          {
-            label: 'Edit',
-            onClick: () => {
-              console.log('Editing lecturer')
-            },
-          },
-          {
-            label: 'Remove lecturer',
-            onClick: () => setShowRemoveWarning(true),
-          },
-        ]}
         links={[
           {
             label: 'Faculty',
             content: faculty.facultyName,
             destination: `/faculty/${faculty.groupId}`,
+          },
+        ]}
+        buttons={[
+          {
+            label: 'Edit basic info',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change password',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Change faculty',
+            onClick: () => {
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Remove lecturer',
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
         listItems={mentorGroups}

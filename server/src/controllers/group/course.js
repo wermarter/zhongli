@@ -19,21 +19,24 @@ export const createCourse = async (req, res) => {
   res.status(201).json({ groupId })
 }
 
-export const updateCourse = async (req, res) => {
-  const { groupId, courseName, timeSlot, lecturerId } = req.body
-  if (courseName) {
-    const updateCourseName = `
-      UPDATE "Groups" 
-      SET name=$1
-      WHERE type='COURSE'
-      AND id=$2`
-    await database.query(updateCourseName, [courseName, groupId])
-  }
+export const updateCourseTimeSlot = async (req, res) => {
+  const { groupId, timeSlot } = req.body
   const updateCourseTable = `
     UPDATE "Courses" 
-    SET time_slot=$2, lecturer_id=$3
+    SET time_slot=$2
     WHERE group_id=$1`
-  await database.query(updateCourseTable, [groupId, timeSlot, lecturerId])
+  await database.query(updateCourseTable, [groupId, timeSlot])
+
+  res.sendStatus(200)
+}
+
+export const changeCourseLecturerId = async (req, res) => {
+  const { groupId, lecturerId } = req.body
+  const updateCourseTable = `
+    UPDATE "Courses" 
+    SET lecturer_id=$2
+    WHERE group_id=$1`
+  await database.query(updateCourseTable, [groupId, lecturerId])
 
   res.sendStatus(200)
 }

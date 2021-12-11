@@ -33,15 +33,21 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
       <DetailCard
         label="Faculty"
         fields={[
-          { label: 'Name', content: facultyInfo.facultyName },
-          { label: 'ID', content: facultyInfo.groupId },
+          { label: 'Group name', content: facultyInfo.facultyName },
+          { label: 'Group ID', content: facultyInfo.groupId },
           { label: 'Description', content: facultyInfo.facultyDescription },
         ]}
         buttons={[
           {
-            label: 'Edit',
+            label: 'Edit faculty name',
             onClick: () => {
-              console.log('Editing faculty')
+              console.log('Editing student')
+            },
+          },
+          {
+            label: 'Update faculty description',
+            onClick: () => {
+              console.log('Editing student')
             },
           },
           {
