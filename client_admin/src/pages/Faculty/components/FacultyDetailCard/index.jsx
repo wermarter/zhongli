@@ -12,7 +12,7 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
   const { data: facultyInfo, isFetching } =
     useGetFacultyInfoQuery(selectedFacultyId)
   const [triggerRemoveFaculty] = useRemoveFacultyMutation()
-  const [showRemoveWarning, setshowRemoveWarning] = useState()
+  const [showRemoveWarning, setShowRemoveWarning] = useState()
 
   const dispatch = useDispatch()
 
@@ -47,7 +47,7 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
           {
             label: 'Remove faculty',
             onClick: () => {
-              setshowRemoveWarning(true)
+              setShowRemoveWarning(true)
             },
           },
         ]}
@@ -56,7 +56,7 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
         title="Remove faculty?"
         content="All students and lecturers will be removed from this faculty too."
         show={showRemoveWarning}
-        handleClose={() => setshowRemoveWarning(false)}
+        handleClose={() => setShowRemoveWarning(false)}
         handleSubmit={async () => {
           dispatch(setSelectedFacultyId(null))
           await triggerRemoveFaculty({ groupId: facultyInfo.groupId }).unwrap()

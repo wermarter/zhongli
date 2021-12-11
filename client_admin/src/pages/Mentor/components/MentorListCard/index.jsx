@@ -28,9 +28,7 @@ const MentorListCard = ({ selectedMentorId }) => {
       keySelector={(student) => student.userId}
       nameSelector={(student) => student.userName}
       linkSelector={(student) => `/student/${student.userId}`}
-      showButtons={true}
-      handleAdd={() => console.log('Adding student to mentorgroup')}
-      handleRemove={() => console.log('Removing student from mentorgroup')}
+      showButtons={false}
     />
   )
 }

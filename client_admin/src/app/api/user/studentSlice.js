@@ -1,4 +1,11 @@
-import { COURSE, COURSE_LIST, FACULTY, MENTOR, STUDENT } from '../tagConstants'
+import {
+  COURSE,
+  COURSE_LIST,
+  FACULTY,
+  MENTOR,
+  STUDENT,
+  STUDENT_LIST,
+} from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -79,6 +86,30 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: STUDENT, id: arg.userId },
       ],
     }),
+
+    addStudentCourse: builder.mutation({
+      query: ({ userId, groupId }) => ({
+        url: '/group/user',
+        method: 'POST',
+        params: { userId, groupId },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: COURSE_LIST, id: arg.userId },
+        { type: STUDENT_LIST, id: arg.groupId },
+      ],
+    }),
+
+    removeStudentCourse: builder.mutation({
+      query: ({ userId, groupId }) => ({
+        url: '/group/user',
+        method: 'DELETE',
+        params: { userId, groupId },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: COURSE_LIST, id: arg.userId },
+        { type: STUDENT_LIST, id: arg.groupId },
+      ],
+    }),
   }),
 })
 
@@ -90,4 +121,6 @@ export const {
   useGetStudentInfoQuery,
   useAddNewStudentMutation,
   useRemoveStudentMutation,
+  useAddStudentCourseMutation,
+  useRemoveStudentCourseMutation,
 } = extendedApi

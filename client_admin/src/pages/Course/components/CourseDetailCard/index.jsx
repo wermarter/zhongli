@@ -17,7 +17,7 @@ const CourseDetailCard = () => {
   const { data: courseInfo, isFetching } =
     useGetCourseInfoQuery(selectedCourseId)
   const [triggerRemoveCourse] = useRemoveCourseMutation()
-  const [showRemoveWarning, setshowRemoveWarning] = useState()
+  const [showRemoveWarning, setShowRemoveWarning] = useState()
 
   const dispatch = useDispatch()
 
@@ -52,7 +52,7 @@ const CourseDetailCard = () => {
           {
             label: 'Remove course',
             onClick: () => {
-              setshowRemoveWarning(true)
+              setShowRemoveWarning(true)
             },
           },
         ]}
@@ -68,7 +68,7 @@ const CourseDetailCard = () => {
         title="Remove course?"
         content="All students will be removed from this course too."
         show={showRemoveWarning}
-        handleClose={() => setshowRemoveWarning(false)}
+        handleClose={() => setShowRemoveWarning(false)}
         handleSubmit={async () => {
           dispatch(setSelectedCourseId(null))
           await triggerRemoveCourse({ groupId: courseInfo.groupId }).unwrap()

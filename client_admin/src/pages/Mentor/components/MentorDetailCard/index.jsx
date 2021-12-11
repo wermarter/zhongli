@@ -12,7 +12,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
   const { data: mentorInfo, isFetching } =
     useGetMentorInfoQuery(selectedMentorId)
   const [triggerRemoveMentorGroup] = useRemoveMentorGroupMutation()
-  const [showRemoveWarning, setshowRemoveWarning] = useState()
+  const [showRemoveWarning, setShowRemoveWarning] = useState()
 
   const dispatch = useDispatch()
 
@@ -45,7 +45,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
           },
           {
             label: 'Remove group',
-            onClick: () => setshowRemoveWarning(true),
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
         links={[
@@ -60,7 +60,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
         title="Remove mentor group?"
         content="All students and lecturers will be removed from this mentor group too."
         show={showRemoveWarning}
-        handleClose={() => setshowRemoveWarning(false)}
+        handleClose={() => setShowRemoveWarning(false)}
         handleSubmit={async () => {
           dispatch(setSelectedMentorId(null))
           await triggerRemoveMentorGroup({

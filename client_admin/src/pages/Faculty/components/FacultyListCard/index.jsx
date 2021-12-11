@@ -28,9 +28,7 @@ const FacultyListCard = ({ selectedFacultyId }) => {
       keySelector={(lecturer) => lecturer.userId}
       nameSelector={(lecturer) => lecturer.userName}
       linkSelector={(lecturer) => `/lecturer/${lecturer.userId}`}
-      showButtons={true}
-      handleAdd={() => console.log('Adding lecturer to faculty')}
-      handleRemove={() => console.log('Removing lecturer from faculty')}
+      showButtons={false}
     />
   )
 }

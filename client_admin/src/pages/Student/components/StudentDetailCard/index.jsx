@@ -18,7 +18,7 @@ const StudentDetailCard = ({ selectedStudentId }) => {
   const { data: studentInfo, isFetching: studentIsFetching } =
     useGetStudentInfoQuery(selectedStudentId)
   const [triggerRemoveStudent] = useRemoveStudentMutation()
-  const [showRemoveWarning, setshowRemoveWarning] = useState()
+  const [showRemoveWarning, setShowRemoveWarning] = useState()
 
   const isFetching = mentorIsFetching || facultyIsFetching || studentIsFetching
 
@@ -55,7 +55,7 @@ const StudentDetailCard = ({ selectedStudentId }) => {
           },
           {
             label: 'Remove student',
-            onClick: () => setshowRemoveWarning(true),
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
         links={[
@@ -75,7 +75,7 @@ const StudentDetailCard = ({ selectedStudentId }) => {
         title="Remove student?"
         content="Information related to this student cannot be recovered."
         show={showRemoveWarning}
-        handleClose={() => setshowRemoveWarning(false)}
+        handleClose={() => setShowRemoveWarning(false)}
         handleSubmit={async () => {
           dispatch(setSelectedStudentId(null))
           await triggerRemoveStudent({ userId: studentInfo.id }).unwrap()

@@ -2,22 +2,25 @@ import { Fragment, useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ConfirmationModal from '../ConfirmationModal'
+import AddItemModal from './AddItemModal'
 
-const ListCard = (props) => {
-  const {
-    label,
-    items = [],
-    keySelector,
-    nameSelector,
-    linkSelector,
-    showButtons,
-    handleAdd,
-    handleRemove,
-  } = props
-
+const ListCard = ({
+  label,
+  items,
+  keySelector,
+  nameSelector,
+  linkSelector,
+  showButtons,
+  handleRemove,
+  handleAdd,
+  handleSearchItems,
+}) => {
   const [query, setQuery] = useState('')
   const [selectedItem, setSelectedItem] = useState({})
-  const [showWarning, setShowWarning] = useState(false)
+  const [showSelectWarning, setShowSelectWarning] = useState(false)
+  const [showRemoveWarning, setShowRemoveWarning] = useState(false)
+  const [showAddModal, setShowAddModal] = useState()
+  const itemKeys = items.map((item) => keySelector(item))
 
   const listItems = items
     .filter(
@@ -67,16 +70,20 @@ const ListCard = (props) => {
           </FloatingLabel>
           {showButtons ? (
             <>
-              <Button variant="secondary" className="mx-1" onClick={handleAdd}>
+              <Button
+                variant="secondary"
+                className="mx-1"
+                onClick={() => setShowAddModal(true)}
+              >
                 Add
               </Button>
               <Button
                 variant="secondary"
                 onClick={() => {
                   if (keySelector(selectedItem)) {
-                    handleRemove()
+                    setShowRemoveWarning(true)
                   } else {
-                    setShowWarning(true)
+                    setShowSelectWarning(true)
                   }
                 }}
               >
@@ -95,8 +102,27 @@ const ListCard = (props) => {
       <ConfirmationModal
         title="Warning"
         content={`Please select one ${label.toLowerCase()} from the list.`}
-        show={showWarning}
-        handleClose={() => setShowWarning(false)}
+        show={showSelectWarning}
+        handleClose={() => setShowSelectWarning(false)}
+      />
+      <ConfirmationModal
+        title={`Remove ${label.toLowerCase()}?`}
+        content="This action cannot be undone. List will be updated."
+        show={showRemoveWarning}
+        handleClose={() => setShowRemoveWarning(false)}
+        handleSubmit={async () => {
+          await handleRemove(selectedItem)
+        }}
+      />
+      <AddItemModal
+        label={label}
+        show={showAddModal}
+        handleClose={() => setShowAddModal(false)}
+        handleAdd={handleAdd}
+        handleSearchItems={async (query) => {
+          const itemList = await handleSearchItems(query)
+          return itemList.filter((item) => !itemKeys.includes(item.value))
+        }}
       />
     </Fragment>
   )

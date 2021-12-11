@@ -18,7 +18,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
   const { data: lecturerInfo, isFetching: lecturerIsFetching } =
     useGetLecturerInfoQuery(selectedLecturerId)
   const [triggerRemoveLecturer] = useRemoveLecturerMutation()
-  const [showRemoveWarning, setshowRemoveWarning] = useState()
+  const [showRemoveWarning, setShowRemoveWarning] = useState()
 
   const isFetching = mentorIsFetching || facultyIsFetching || lecturerIsFetching
 
@@ -55,7 +55,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
           },
           {
             label: 'Remove lecturer',
-            onClick: () => setshowRemoveWarning(true),
+            onClick: () => setShowRemoveWarning(true),
           },
         ]}
         links={[
@@ -75,7 +75,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
         title="Remove lecturer?"
         content="Information related to this lecturer cannot be recovered."
         show={showRemoveWarning}
-        handleClose={() => setshowRemoveWarning(false)}
+        handleClose={() => setShowRemoveWarning(false)}
         handleSubmit={async () => {
           dispatch(setSelectedLecturerId(null))
           await triggerRemoveLecturer({ userId: lecturerInfo.id }).unwrap()
