@@ -4,8 +4,8 @@ import {
   FACULTY,
   LECTURER,
   LECTURER_LIST,
-  MENTOR,
-  MENTOR_LIST,
+  MENTORGROUP,
+  MENTORGROUP_LIST,
 } from '../tagConstants'
 import { apiSlice } from '../index'
 
@@ -41,10 +41,10 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = {}, error, arg) =>
         result
           .map((mentorGroup) => ({
-            type: MENTOR,
+            type: MENTORGROUP,
             id: mentorGroup.groupId,
           }))
-          .concat([{ type: MENTOR_LIST, id: arg }]),
+          .concat([{ type: MENTORGROUP_LIST, id: arg }]),
     }),
 
     getLecturerFaculty: builder.query({
@@ -94,6 +94,37 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: LECTURER, id: arg.userId },
       ],
     }),
+
+    changeLecturerInfo: builder.mutation({
+      query: ({ id, name, address }) => ({
+        url: '/user',
+        method: 'PUT',
+        body: { id, name, address },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        {
+          type: LECTURER,
+          id: arg.id,
+        },
+      ],
+    }),
+
+    changeLecturerFaculty: builder.mutation({
+      query: ({ id, currentFacultyId, newFacultyId }) => ({
+        url: '/user/group',
+        method: 'PUT',
+        body: {
+          userId: id,
+          currentGroupId: currentFacultyId,
+          newGroupId: newFacultyId,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: LECTURER, id: arg.id },
+        { type: LECTURER_LIST, id: arg.currentFacultyId },
+        { type: LECTURER_LIST, id: arg.newFacultyId },
+      ],
+    }),
   }),
 })
 
@@ -105,4 +136,6 @@ export const {
   useGetLecturerInfoQuery,
   useAddNewLecturerMutation,
   useRemoveLecturerMutation,
+  useChangeLecturerInfoMutation,
+  useChangeLecturerFacultyMutation,
 } = extendedApi

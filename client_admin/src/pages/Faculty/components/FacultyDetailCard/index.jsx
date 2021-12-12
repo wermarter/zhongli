@@ -6,7 +6,7 @@ import {
 } from '../../../../app/api/group/facultySlice'
 import DetailCard from '../../../../components/DetailCard'
 import { setIsLoading, setSelectedFacultyId } from '../../../../app/pageSlice'
-import ConfirmationModal from '../../../../components/ConfirmationModal'
+import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 
 const FacultyDetailCard = ({ selectedFacultyId }) => {
   const { data: facultyInfo, isFetching } =
@@ -45,7 +45,7 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
             },
           },
           {
-            label: 'Update faculty description',
+            label: 'Edit description',
             onClick: () => {
               console.log('Editing student')
             },

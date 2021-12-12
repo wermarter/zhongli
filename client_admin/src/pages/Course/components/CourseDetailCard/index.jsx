@@ -10,7 +10,7 @@ import {
   setIsLoading,
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
-import ConfirmationModal from '../../../../components/ConfirmationModal'
+import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 
 const CourseDetailCard = () => {
   const selectedCourseId = useSelector(selectedCourseIdSelector)

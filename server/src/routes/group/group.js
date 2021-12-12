@@ -6,13 +6,13 @@ import {
   removeGroup,
   removeUserFromGroup,
   searchGroups,
-  updateGroupName,
+  changeGroupName,
 } from '../../controllers/group/group.js'
 
 const router = express.Router()
 
 router.get('/', searchGroups)
-router.put('/', updateGroupName)
+router.put('/', changeGroupName)
 router.delete('/', removeGroup)
 router.get('/user', getUsersInGroup)
 router.post('/user', addUserToGroup)

@@ -1,4 +1,9 @@
-import { MENTOR, MENTOR_LIST, STUDENT, STUDENT_LIST } from '../tagConstants'
+import {
+  MENTORGROUP,
+  MENTORGROUP_LIST,
+  STUDENT,
+  STUDENT_LIST,
+} from '../tagConstants'
 import { apiSlice } from '../index'
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -7,10 +12,10 @@ const extendedApi = apiSlice.injectEndpoints({
       query: (queryStr) => ({
         url: '/group',
         method: 'GET',
-        params: { query: queryStr || '', groupType: 'MENTORGROUP' },
+        params: { query: queryStr || '', groupType: 'MENTORGROUPGROUP' },
       }),
       providesTags: (result = [], error, arg) =>
-        result.map((mentor) => ({ type: MENTOR, id: mentor.groupId })),
+        result.map((mentor) => ({ type: MENTORGROUP, id: mentor.groupId })),
     }),
 
     getMentorInfo: builder.query({
@@ -20,7 +25,7 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { groupId },
       }),
       providesTags: (result = {}, error, arg) => [
-        { type: MENTOR, id: result.groupId },
+        { type: MENTORGROUP, id: result.groupId },
       ],
     }),
 
@@ -43,7 +48,7 @@ const extendedApi = apiSlice.injectEndpoints({
         body: { mentorId, groupName },
       }),
       invalidatesTags: (result = [], error, arg) => [
-        { type: MENTOR_LIST, id: arg.mentorId },
+        { type: MENTORGROUP_LIST, id: arg.mentorId },
       ],
     }),
 
@@ -54,7 +59,31 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { groupId },
       }),
       invalidatesTags: (result = [], error, arg) => [
-        { type: MENTOR, id: arg.groupId },
+        { type: MENTORGROUP, id: arg.groupId },
+      ],
+    }),
+
+    changeGroupName: builder.mutation({
+      query: ({ groupId, groupName }) => ({
+        url: '/group',
+        method: 'PUT',
+        body: { groupId, groupName },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: MENTORGROUP, id: arg.groupId },
+      ],
+    }),
+
+    changeMentorId: builder.mutation({
+      query: ({ groupId, currentMentorId, newMentorId }) => ({
+        url: '/course/lecturer',
+        method: 'PUT',
+        body: { groupId, mentorId: newMentorId },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: MENTORGROUP, id: arg.groupId },
+        { type: MENTORGROUP_LIST, id: arg.currentMentorId },
+        { type: MENTORGROUP_LIST, id: arg.newMentorId },
       ],
     }),
   }),
@@ -66,4 +95,6 @@ export const {
   useGetMentorInfoQuery,
   useAddNewMentorGroupMutation,
   useRemoveMentorGroupMutation,
+  useChangeGroupNameMutation,
+  useChangeMentorIdMutation,
 } = extendedApi

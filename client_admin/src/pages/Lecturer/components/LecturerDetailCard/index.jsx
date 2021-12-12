@@ -8,7 +8,7 @@ import {
 } from '../../../../app/api/user/lecturerSlice'
 import DetailCard from '../../../../components/DetailCard'
 import { setIsLoading, setSelectedLecturerId } from '../../../../app/pageSlice'
-import ConfirmationModal from '../../../../components/ConfirmationModal'
+import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 
 const LecturerDetailCard = ({ selectedLecturerId }) => {
   const { data: mentorGroups, isFetching: mentorIsFetching } =

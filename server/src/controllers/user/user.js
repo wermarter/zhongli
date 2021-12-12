@@ -68,13 +68,15 @@ export const getUserFaculty = async (req, res) => {
 
 export const changeUserGroup = async (req, res) => {
   const { userId, currentGroupId, newGroupId } = req.body
-  const removeOldGroup = `
-    DELETE FROM "Memberships"
-    WHERE user_id=$1 AND group_id=$2`
+  if (currentGroupId) {
+    const removeOldGroup = `
+      DELETE FROM "Memberships"
+      WHERE user_id=$1 AND group_id=$2`
+    await database.query(removeOldGroup, [userId, currentGroupId])
+  }
   const addNewGroup = `
     INSERT INTO "Memberships" ("user_id", "group_id")
     VALUES ($1, $2)`
-  await database.query(removeOldGroup, [userId, currentGroupId])
   await database.query(addNewGroup, [userId, newGroupId])
   res.sendStatus(200)
 }

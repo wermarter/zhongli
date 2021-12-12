@@ -7,8 +7,8 @@ import {
   FACULTY,
   LECTURER,
   LECTURER_LIST,
-  MENTOR,
-  MENTOR_LIST,
+  MENTORGROUP,
+  MENTORGROUP_LIST,
   STUDENT,
   STUDENT_LIST,
 } from './tagConstants'
@@ -45,10 +45,10 @@ export const apiSlice = createApi({
   tagTypes: [
     COURSE,
     FACULTY,
-    MENTOR,
+    MENTORGROUP,
     LECTURER,
     STUDENT,
-    MENTOR_LIST,
+    MENTORGROUP_LIST,
     STUDENT_LIST,
     LECTURER_LIST,
     COURSE_LIST,

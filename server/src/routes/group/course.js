@@ -4,13 +4,13 @@ import {
   changeCourseLecturerId,
   createCourse,
   getCourseInfo,
-  updateCourseTimeSlot,
+  changeCourseTimeSlot,
 } from '../../controllers/group/course.js'
 
 const router = express.Router()
 
 router.post('/', createCourse)
-router.put('/timeslot', updateCourseTimeSlot)
+router.put('/timeslot', changeCourseTimeSlot)
 router.put('/lecturer', changeCourseLecturerId)
 router.get('/info', getCourseInfo)
 

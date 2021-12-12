@@ -58,7 +58,7 @@ export const removeUserFromGroup = async (req, res) => {
   res.sendStatus(200)
 }
 
-export const updateGroupName = async (req, res) => {
+export const changeGroupName = async (req, res) => {
   const { groupId, groupName } = req.body
   const updateGroupName = `
     UPDATE "Groups" 

@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import ConfirmationModal from '../ConfirmationModal'
+import ConfirmationModal from '../modals/ConfirmationModal'
 import AddItemModal from './AddItemModal'
 
 const ListCard = ({

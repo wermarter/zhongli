@@ -1,10 +1,10 @@
 export const COURSE = 'COURSE'
 export const FACULTY = 'FACULTY'
-export const MENTOR = 'MENTOR'
+export const MENTORGROUP = 'MENTORGROUP'
 export const LECTURER = 'LECTURER'
 export const STUDENT = 'STUDENT'
 
-export const MENTOR_LIST = 'MENTOR_LIST'
+export const MENTORGROUP_LIST = 'MENTORGROUP_LIST'
 export const STUDENT_LIST = 'STUDENT_LIST'
 export const LECTURER_LIST = 'LECTURER_LIST'
 export const COURSE_LIST = 'COURSE_LIST'

@@ -19,7 +19,7 @@ export const createCourse = async (req, res) => {
   res.status(201).json({ groupId })
 }
 
-export const updateCourseTimeSlot = async (req, res) => {
+export const changeCourseTimeSlot = async (req, res) => {
   const { groupId, timeSlot } = req.body
   const updateCourseTable = `
     UPDATE "Courses" 

@@ -54,6 +54,28 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: FACULTY, id: arg.groupId },
       ],
     }),
+
+    changeFacultyName: builder.mutation({
+      query: ({ groupId, groupName }) => ({
+        url: '/group',
+        method: 'PUT',
+        body: { groupId, groupName },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: FACULTY, id: arg.groupId },
+      ],
+    }),
+
+    changeFacultyDescription: builder.mutation({
+      query: ({ groupId, facultyDescription }) => ({
+        url: '/faculty',
+        method: 'PUT',
+        body: { groupId, facultyDescription },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: FACULTY, id: arg.groupId },
+      ],
+    }),
   }),
 })
 
@@ -63,4 +85,6 @@ export const {
   useGetFacultyLecturersQuery,
   useAddNewFacultyMutation,
   useRemoveFacultyMutation,
+  useChangeFacultyDescriptionMutation,
+  useChangeFacultyNameMutation,
 } = extendedApi

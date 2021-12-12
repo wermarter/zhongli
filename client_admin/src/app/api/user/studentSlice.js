@@ -2,7 +2,7 @@ import {
   COURSE,
   COURSE_LIST,
   FACULTY,
-  MENTOR,
+  MENTORGROUP,
   STUDENT,
   STUDENT_LIST,
 } from '../tagConstants'
@@ -38,7 +38,7 @@ const extendedApi = apiSlice.injectEndpoints({
         params: { studentId },
       }),
       providesTags: (result = {}, error, arg) => [
-        { type: MENTOR, id: result.groupId },
+        { type: MENTORGROUP, id: result.groupId },
       ],
     }),
 
@@ -110,6 +110,58 @@ const extendedApi = apiSlice.injectEndpoints({
         { type: STUDENT_LIST, id: arg.groupId },
       ],
     }),
+
+    changeUserPassword: builder.mutation({
+      query: ({ userId, password }) => ({
+        url: '/user/password',
+        method: 'PUT',
+        body: { userId, password },
+      }),
+    }),
+
+    changeStudentInfo: builder.mutation({
+      query: ({ id, name, address }) => ({
+        url: '/user',
+        method: 'PUT',
+        body: { id, name, address },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        {
+          type: STUDENT,
+          id: arg.id,
+        },
+      ],
+    }),
+
+    changeStudentMentor: builder.mutation({
+      query: ({ id, currentMentorGroupId, newMentorGroupId }) => ({
+        url: '/user/group',
+        method: 'PUT',
+        body: {
+          userId: id,
+          currentGroupId: currentMentorGroupId,
+          newGroupId: newMentorGroupId,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: STUDENT, id: arg.id },
+        { type: STUDENT_LIST, id: arg.currentMentorGroupId },
+        { type: STUDENT_LIST, id: arg.newMentorGroupId },
+      ],
+    }),
+
+    changeStudentFaculty: builder.mutation({
+      query: ({ id, currentFacultyId, newFacultyId }) => ({
+        url: '/user/group',
+        method: 'PUT',
+        body: {
+          userId: id,
+          currentGroupId: currentFacultyId,
+          newGroupId: newFacultyId,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: STUDENT, id: arg.id }],
+    }),
   }),
 })
 
@@ -123,4 +175,8 @@ export const {
   useRemoveStudentMutation,
   useAddStudentCourseMutation,
   useRemoveStudentCourseMutation,
+  useChangeUserPasswordMutation,
+  useChangeStudentInfoMutation,
+  useChangeStudentMentorMutation,
+  useChangeStudentFacultyMutation,
 } = extendedApi
