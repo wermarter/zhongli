@@ -27,9 +27,7 @@ const extendedApi = apiSlice.injectEndpoints({
         method: 'GET',
         params: { userId: lecturerId },
       }),
-      providesTags: (result = {}, error, arg) => [
-        { type: LECTURER, id: result.id },
-      ],
+      providesTags: (result, error, arg) => [{ type: LECTURER, id: arg }],
     }),
 
     getLecturerMentorGroups: builder.query({
@@ -55,6 +53,7 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result = {}, error, arg) => [
         { type: FACULTY, id: result.groupId },
+        { type: LECTURER, id: arg },
       ],
     }),
 

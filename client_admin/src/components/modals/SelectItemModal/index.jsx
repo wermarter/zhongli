@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import { FastField, Formik } from 'formik'
 import { Modal, Button, Form, Spinner } from 'react-bootstrap'
-import AsyncSelectField from '../../components/custom-fields/AsyncSelectField'
+import AsyncSelectField from '../../../components/custom-fields/AsyncSelectField'
 
 const validationSchema = Yup.object().shape({
   itemId: Yup.string().required('This field is required.'),
@@ -11,30 +11,31 @@ const initialValues = {
   itemId: '',
 }
 
-const StudentAddModal = ({
-  label,
+const SelectItemModal = ({
+  title,
   show,
   handleClose,
-  handleAdd,
+  handleSubmit,
   handleSearchItems,
 }) => {
-  const handleSubmit = async (values, actions) => {
+  const onSubmit = async (values, actions) => {
     try {
-      await handleAdd(values.itemId)
+      await handleSubmit(values.itemId)
       handleClose()
     } catch (e) {
-      actions.setFieldError('itemId', e)
+      console.log(e)
+      // actions.setFieldError('itemId', e)
     }
   }
 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add new {label.toLowerCase()}</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
         {(formikProps) => (
@@ -74,4 +75,4 @@ const StudentAddModal = ({
   )
 }
 
-export default StudentAddModal
+export default SelectItemModal

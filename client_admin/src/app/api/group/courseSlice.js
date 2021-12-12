@@ -19,9 +19,7 @@ const extendedApi = apiSlice.injectEndpoints({
         method: 'GET',
         params: { groupId },
       }),
-      providesTags: (result = {}, error, arg) => [
-        { type: COURSE, id: result.groupId },
-      ],
+      providesTags: (result, error, arg) => [{ type: COURSE, id: arg }],
     }),
 
     getCourseStudents: builder.query({

@@ -1,6 +1,10 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
+  useChangeStudentFacultyMutation,
+  useChangeStudentInfoMutation,
+  useChangeStudentMentorMutation,
+  useChangeUserPasswordMutation,
   useGetStudentFacultyQuery,
   useGetStudentInfoQuery,
   useGetStudentMentorGroupQuery,
@@ -9,6 +13,11 @@ import {
 import DetailCard from '../../../../components/DetailCard'
 import { setIsLoading, setSelectedStudentId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
+import EditUserInfoModal from '../../../../components/modals/EditUserInfoModal'
+import ChangePasswordModal from '../../../../components/modals/ChangePasswordModal'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
+import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
+import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
 
 const StudentDetailCard = ({ selectedStudentId }) => {
   const { data: mentorGroup, isFetching: mentorIsFetching } =
@@ -17,8 +26,20 @@ const StudentDetailCard = ({ selectedStudentId }) => {
     useGetStudentFacultyQuery(selectedStudentId)
   const { data: studentInfo, isFetching: studentIsFetching } =
     useGetStudentInfoQuery(selectedStudentId)
+
   const [triggerRemoveStudent] = useRemoveStudentMutation()
-  const [showRemoveWarning, setShowRemoveWarning] = useState()
+  const [triggerChangeStudentInfo] = useChangeStudentInfoMutation()
+  const [triggerChangePassword] = useChangeUserPasswordMutation()
+  const [triggerChangeMentor] = useChangeStudentMentorMutation()
+  const [triggerChangeFaculty] = useChangeStudentFacultyMutation()
+  const [triggerSearchFaculty] = useSearchFacultiesMutation()
+  const [triggerSearchMentor] = useSearchMentorsMutation()
+
+  const [showRemoveWarning, setShowRemoveWarning] = useState(false)
+  const [showEditInfoModal, setShowEditInfoModal] = useState(false)
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
+  const [showChangeMentorModal, setShowChangeMentorModal] = useState(false)
+  const [showChangeFacultyModal, setShowChangeFacultyModal] = useState(false)
 
   const isFetching = mentorIsFetching || facultyIsFetching || studentIsFetching
 
@@ -49,7 +70,7 @@ const StudentDetailCard = ({ selectedStudentId }) => {
         links={[
           {
             label: 'Mentor',
-            content: mentorGroup.mentorName,
+            content: `${mentorGroup.mentorName} (${mentorGroup.groupName})`,
             destination: `/mentor/${mentorGroup.groupId}`,
           },
           {
@@ -62,32 +83,107 @@ const StudentDetailCard = ({ selectedStudentId }) => {
           {
             label: 'Edit basic info',
             onClick: () => {
-              console.log('Editing student')
+              setShowEditInfoModal(true)
             },
           },
           {
             label: 'Change password',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangePasswordModal(true)
             },
           },
           {
             label: 'Change mentor',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeMentorModal(true)
             },
           },
           {
             label: 'Change faculty',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeFacultyModal(true)
             },
           },
           {
             label: 'Remove student',
-            onClick: () => setShowRemoveWarning(true),
+            onClick: () => {
+              setShowRemoveWarning(true)
+            },
           },
         ]}
+      />
+      <EditUserInfoModal
+        title="Edit student info"
+        show={showEditInfoModal}
+        handleClose={() => {
+          setShowEditInfoModal(false)
+        }}
+        handleSubmit={async ({ name, address }) => {
+          await triggerChangeStudentInfo({
+            id: studentInfo.id,
+            name,
+            address,
+          })
+        }}
+        initialValues={{
+          name: studentInfo.name,
+          address: studentInfo.address,
+        }}
+      />
+      <ChangePasswordModal
+        title="Change student password"
+        show={showChangePasswordModal}
+        handleClose={() => {
+          setShowChangePasswordModal(false)
+        }}
+        handleSubmit={async (password) => {
+          await triggerChangePassword({
+            userId: studentInfo.id,
+            password,
+          })
+        }}
+      />
+      <SelectItemModal
+        title="Change mentor group"
+        show={showChangeMentorModal}
+        handleClose={() => {
+          setShowChangeMentorModal(false)
+        }}
+        handleSubmit={async (newMentorGroupId) => {
+          await triggerChangeMentor({
+            id: studentInfo.id,
+            currentMentorGroupId: mentorGroup.groupId,
+            newMentorGroupId,
+          })
+        }}
+        handleSearchItems={async (query) => {
+          const mentors = await triggerSearchMentor(query).unwrap()
+          return mentors.map((mentor) => ({
+            value: mentor.groupId,
+            label: mentor.groupName,
+          }))
+        }}
+      />
+      <SelectItemModal
+        title="Change student faculty"
+        show={showChangeFacultyModal}
+        handleClose={() => {
+          setShowChangeFacultyModal(false)
+        }}
+        handleSubmit={async (newFacultyId) => {
+          await triggerChangeFaculty({
+            id: studentInfo.id,
+            currentFacultyId: faculty.groupId,
+            newFacultyId,
+          })
+        }}
+        handleSearchItems={async (query) => {
+          const faculties = await triggerSearchFaculty(query).unwrap()
+          return faculties.map((faculty) => ({
+            value: faculty.groupId,
+            label: faculty.groupName,
+          }))
+        }}
       />
       <ConfirmationModal
         title="Remove student?"

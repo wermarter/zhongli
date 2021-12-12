@@ -1,6 +1,9 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  useChangeCourseLecturerMutation,
+  useChangeCourseNameMutation,
+  useChangeCourseTimeSlotMutation,
   useGetCourseInfoQuery,
   useRemoveCourseMutation,
 } from '../../../../app/api/group/courseSlice'
@@ -11,13 +14,24 @@ import {
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
+import EditFieldModal from '../../../../components/modals/EditFieldModal'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 
 const CourseDetailCard = () => {
   const selectedCourseId = useSelector(selectedCourseIdSelector)
   const { data: courseInfo, isFetching } =
     useGetCourseInfoQuery(selectedCourseId)
   const [triggerRemoveCourse] = useRemoveCourseMutation()
-  const [showRemoveWarning, setShowRemoveWarning] = useState()
+  const [triggerRename] = useChangeCourseNameMutation()
+  const [triggerChangeLecturer] = useChangeCourseLecturerMutation()
+  const [triggerSearchLecturers] = useSearchLecturersMutation()
+  const [triggerChangeTimeSlot] = useChangeCourseTimeSlotMutation()
+
+  const [showRemoveWarning, setShowRemoveWarning] = useState(false)
+  const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showChangeLecturerModal, setShowChangeLecturerModal] = useState(false)
+  const [showChangeTimeSlotModal, setShowChangeTimeSlotModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -51,21 +65,21 @@ const CourseDetailCard = () => {
         ]}
         buttons={[
           {
-            label: 'Edit course name',
+            label: 'Rename course',
             onClick: () => {
-              console.log('Editing student')
+              setShowRenameModal(true)
             },
           },
           {
-            label: 'Update course timeslot',
+            label: 'Change timeslot',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeTimeSlotModal(true)
             },
           },
           {
             label: 'Change lecturer',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeLecturerModal(true)
             },
           },
           {
@@ -75,6 +89,56 @@ const CourseDetailCard = () => {
             },
           },
         ]}
+      />
+      <EditFieldModal
+        title="Change course name"
+        show={showRenameModal}
+        handleClose={() => {
+          setShowRenameModal(false)
+        }}
+        handleSubmit={async (newGroupName) => {
+          await triggerRename({
+            groupId: courseInfo.groupId,
+            groupName: newGroupName,
+          })
+        }}
+        initialValues={courseInfo.courseName}
+      />
+      <EditFieldModal
+        title="Change course timeslot"
+        show={showChangeTimeSlotModal}
+        handleClose={() => {
+          setShowChangeTimeSlotModal(false)
+        }}
+        handleSubmit={async (newTimeSlot) => {
+          await triggerChangeTimeSlot({
+            groupId: courseInfo.groupId,
+            timeSlot: newTimeSlot,
+          })
+        }}
+        initialValues={courseInfo.timeSlot}
+        isNumber
+      />
+      <SelectItemModal
+        title="Change lecturer"
+        show={showChangeLecturerModal}
+        handleClose={() => {
+          setShowChangeLecturerModal(false)
+        }}
+        handleSubmit={async (newLecturerId) => {
+          await triggerChangeLecturer({
+            groupId: courseInfo.groupId,
+            currentLecturerId: courseInfo.lecturerId,
+            newLecturerId,
+          })
+        }}
+        handleSearchItems={async (query) => {
+          const lecturers = await triggerSearchLecturers(query).unwrap()
+          return lecturers.map((lecturer) => ({
+            value: lecturer.id,
+            label: lecturer.name,
+          }))
+        }}
       />
       <ConfirmationModal
         title="Remove course?"

@@ -22,7 +22,7 @@ const ConfirmationModal = ({
         }
       }
     }
-    handleClose()
+    // handleClose()
   }
 
   return (

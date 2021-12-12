@@ -47,11 +47,12 @@ const StudentAddModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      await triggerAdd(values)
+      await triggerAdd(values).unwrap()
       handleClose()
       dispatch(setSelectedStudentId(values.id))
-    } catch {
-      actions.setFieldError('id', 'Bị trùng ID bạn nhé')
+    } catch (e) {
+      console.log(e)
+      // actions.setFieldError('id', e)
     }
   }
 

@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react'
 import { Card, FloatingLabel, Form, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ConfirmationModal from '../modals/ConfirmationModal'
-import AddItemModal from './AddItemModal'
+import SelectItemModal from '../modals/SelectItemModal'
 
 const ListCard = ({
   label,
@@ -114,11 +114,11 @@ const ListCard = ({
           await handleRemove(selectedItem)
         }}
       />
-      <AddItemModal
-        label={label}
+      <SelectItemModal
+        title={`Add new ${label.toLowerCase()}`}
         show={showAddModal}
         handleClose={() => setShowAddModal(false)}
-        handleAdd={handleAdd}
+        handleSubmit={handleAdd}
         handleSearchItems={async (query) => {
           const itemList = await handleSearchItems(query)
           return itemList.filter((item) => !itemKeys.includes(item.value))

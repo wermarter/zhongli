@@ -1,18 +1,30 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
+  useChangeGroupNameMutation,
+  useChangeMentorIdMutation,
   useGetMentorInfoQuery,
   useRemoveMentorGroupMutation,
 } from '../../../../app/api/group/mentorSlice'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import DetailCard from '../../../../components/DetailCard'
 import { setIsLoading, setSelectedMentorId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
+import EditFieldModal from '../../../../components/modals/EditFieldModal'
 
 const MentorDetailCard = ({ selectedMentorId }) => {
   const { data: mentorInfo, isFetching } =
     useGetMentorInfoQuery(selectedMentorId)
+
   const [triggerRemoveMentorGroup] = useRemoveMentorGroupMutation()
-  const [showRemoveWarning, setShowRemoveWarning] = useState()
+  const [triggerRename] = useChangeGroupNameMutation()
+  const [triggerChangeMentor] = useChangeMentorIdMutation()
+  const [triggerSearchLecturers] = useSearchLecturersMutation()
+
+  const [showRemoveWarning, setShowRemoveWarning] = useState(false)
+  const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showChangeMentorModal, setShowChangeMentorModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -45,22 +57,59 @@ const MentorDetailCard = ({ selectedMentorId }) => {
         ]}
         buttons={[
           {
-            label: 'Edit group name',
+            label: 'Rename group',
             onClick: () => {
-              console.log('Editing student')
+              setShowRenameModal(true)
             },
           },
           {
             label: 'Change mentor',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeMentorModal(true)
             },
           },
           {
             label: 'Remove group',
-            onClick: () => setShowRemoveWarning(true),
+            onClick: () => {
+              setShowRemoveWarning(true)
+            },
           },
         ]}
+      />
+      <EditFieldModal
+        title="Change group name"
+        show={showRenameModal}
+        handleClose={() => {
+          setShowRenameModal(false)
+        }}
+        handleSubmit={async (newGroupName) => {
+          await triggerRename({
+            groupId: mentorInfo.groupId,
+            groupName: newGroupName,
+          })
+        }}
+        initialValues={mentorInfo.groupName}
+      />
+      <SelectItemModal
+        title="Change mentor"
+        show={showChangeMentorModal}
+        handleClose={() => {
+          setShowChangeMentorModal(false)
+        }}
+        handleSubmit={async (newMentorId) => {
+          await triggerChangeMentor({
+            groupId: mentorInfo.groupId,
+            currentMentorId: mentorInfo.mentorId,
+            newMentorId,
+          })
+        }}
+        handleSearchItems={async (query) => {
+          const lecturers = await triggerSearchLecturers(query).unwrap()
+          return lecturers.map((lecturer) => ({
+            value: lecturer.id,
+            label: lecturer.name,
+          }))
+        }}
       />
       <ConfirmationModal
         title="Remove mentor group?"

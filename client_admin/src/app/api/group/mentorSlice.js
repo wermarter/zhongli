@@ -12,7 +12,7 @@ const extendedApi = apiSlice.injectEndpoints({
       query: (queryStr) => ({
         url: '/group',
         method: 'GET',
-        params: { query: queryStr || '', groupType: 'MENTORGROUPGROUP' },
+        params: { query: queryStr || '', groupType: 'MENTORGROUP' },
       }),
       providesTags: (result = [], error, arg) =>
         result.map((mentor) => ({ type: MENTORGROUP, id: mentor.groupId })),
@@ -38,7 +38,7 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: (result = [], error, arg) =>
         result
           .map((student) => ({ type: STUDENT, id: student.userId }))
-          .concat([{ type: STUDENT_LIST, id: arg.groupId }]),
+          .concat([{ type: STUDENT_LIST, id: arg }]),
     }),
 
     addNewMentorGroup: builder.mutation({
@@ -76,7 +76,7 @@ const extendedApi = apiSlice.injectEndpoints({
 
     changeMentorId: builder.mutation({
       query: ({ groupId, currentMentorId, newMentorId }) => ({
-        url: '/course/lecturer',
+        url: '/mentor',
         method: 'PUT',
         body: { groupId, mentorId: newMentorId },
       }),

@@ -1,18 +1,28 @@
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
+  useChangeFacultyDescriptionMutation,
+  useChangeFacultyNameMutation,
   useGetFacultyInfoQuery,
   useRemoveFacultyMutation,
 } from '../../../../app/api/group/facultySlice'
 import DetailCard from '../../../../components/DetailCard'
 import { setIsLoading, setSelectedFacultyId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
+import EditFieldModal from '../../../../components/modals/EditFieldModal'
 
 const FacultyDetailCard = ({ selectedFacultyId }) => {
   const { data: facultyInfo, isFetching } =
     useGetFacultyInfoQuery(selectedFacultyId)
+
   const [triggerRemoveFaculty] = useRemoveFacultyMutation()
-  const [showRemoveWarning, setShowRemoveWarning] = useState()
+  const [triggerRename] = useChangeFacultyNameMutation()
+  const [triggerChangeDescription] = useChangeFacultyDescriptionMutation()
+
+  const [showRemoveWarning, setShowRemoveWarning] = useState(false)
+  const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showChangeDescriptionModal, setShowChangeDescriptionModal] =
+    useState(false)
 
   const dispatch = useDispatch()
 
@@ -39,15 +49,15 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
         ]}
         buttons={[
           {
-            label: 'Edit faculty name',
+            label: 'Rename faculty',
             onClick: () => {
-              console.log('Editing student')
+              setShowRenameModal(true)
             },
           },
           {
-            label: 'Edit description',
+            label: 'Change description',
             onClick: () => {
-              console.log('Editing student')
+              setShowChangeDescriptionModal(true)
             },
           },
           {
@@ -57,6 +67,34 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
             },
           },
         ]}
+      />
+      <EditFieldModal
+        title="Change faculty name"
+        show={showRenameModal}
+        handleClose={() => {
+          setShowRenameModal(false)
+        }}
+        handleSubmit={async (newGroupName) => {
+          await triggerRename({
+            groupId: facultyInfo.groupId,
+            groupName: newGroupName,
+          })
+        }}
+        initialValues={facultyInfo.facultyName}
+      />
+      <EditFieldModal
+        title="Change faculty description"
+        show={showChangeDescriptionModal}
+        handleClose={() => {
+          setShowChangeDescriptionModal(false)
+        }}
+        handleSubmit={async (newDescription) => {
+          await triggerChangeDescription({
+            groupId: facultyInfo.groupId,
+            facultyDescription: newDescription,
+          })
+        }}
+        initialValues={facultyInfo.facultyDescription}
       />
       <ConfirmationModal
         title="Remove faculty?"

@@ -50,8 +50,9 @@ const LecturerAddModal = ({ show, handleClose }) => {
       await triggerAdd(values)
       dispatch(setSelectedLecturerId(values.id))
       handleClose()
-    } catch {
-      actions.setErrors({ id: 'Bị trùng ID bạn nhé' })
+    } catch (e) {
+      console.log(e)
+      // actions.setFieldError('id', e)
     }
   }
 

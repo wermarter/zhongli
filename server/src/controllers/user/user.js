@@ -31,10 +31,10 @@ export const createUser = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-  const { userId, name, address } = req.body
+  const { id, name, address } = req.body
   const sql = `
     UPDATE "Users" SET name=$1, address=$2 WHERE id=$3`
-  await database.query(sql, [name, address, userId])
+  await database.query(sql, [name, address, id])
   res.sendStatus(200)
 }
 

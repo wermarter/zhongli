@@ -63,7 +63,7 @@ export const changeGroupName = async (req, res) => {
   const updateGroupName = `
     UPDATE "Groups" 
     SET name=$1
-    WHERE group_id=$2`
+    WHERE id=$2`
   await database.query(updateGroupName, [groupName, groupId])
   res.sendStatus(200)
 }

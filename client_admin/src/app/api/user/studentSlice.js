@@ -39,6 +39,7 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result = {}, error, arg) => [
         { type: MENTORGROUP, id: result.groupId },
+        { type: STUDENT, id: arg },
       ],
     }),
 
@@ -50,6 +51,7 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       providesTags: (result = {}, error, arg) => [
         { type: FACULTY, id: result.groupId },
+        { type: STUDENT, id: arg },
       ],
     }),
 
