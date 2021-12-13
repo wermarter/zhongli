@@ -52,7 +52,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
           {
             label: 'Mentor',
             content: mentorInfo.mentorName,
-            destination: `/lecturer/${mentorInfo.mentorId}`,
+            destination: `/lecturer/${mentorInfo.mentorId || ''}`,
           },
         ]}
         buttons={[

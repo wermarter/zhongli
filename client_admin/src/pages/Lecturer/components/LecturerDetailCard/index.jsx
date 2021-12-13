@@ -66,7 +66,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
           {
             label: 'Faculty',
             content: faculty.facultyName,
-            destination: `/faculty/${faculty.groupId}`,
+            destination: `/faculty/${faculty.groupId || ''}`,
           },
         ]}
         buttons={[

@@ -71,12 +71,12 @@ const StudentDetailCard = ({ selectedStudentId }) => {
           {
             label: 'Mentor',
             content: `${mentorGroup.mentorName} (${mentorGroup.groupName})`,
-            destination: `/mentor/${mentorGroup.groupId}`,
+            destination: `/mentor/${mentorGroup.groupId || ''}`,
           },
           {
             label: 'Faculty',
             content: faculty.facultyName,
-            destination: `/faculty/${faculty.groupId}`,
+            destination: `/faculty/${faculty.groupId || ''}`,
           },
         ]}
         buttons={[

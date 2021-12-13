@@ -60,7 +60,7 @@ const CourseDetailCard = () => {
           {
             label: 'Lecturer',
             content: courseInfo.lecturerName,
-            destination: `/lecturer/${courseInfo.lecturerId}`,
+            destination: `/lecturer/${courseInfo.lecturerId || ''}`,
           },
         ]}
         buttons={[
