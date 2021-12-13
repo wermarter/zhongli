@@ -52,7 +52,6 @@ const LecturerAddModal = ({ show, handleClose }) => {
       handleClose()
     } catch (e) {
       console.log(e)
-      // actions.setFieldError('id', e)
     }
   }
 

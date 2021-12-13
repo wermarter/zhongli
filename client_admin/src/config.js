@@ -12,6 +12,7 @@ const config = {
   apiUrl: process.env.REACT_APP_API_URL,
   adminUserId: process.env.REACT_APP_ADMIN_USERID,
   adminPassword: process.env.REACT_APP_ADMIN_PASSWORD,
+  isProduction: process.env.NODE_ENV === 'production',
 
   checkEnvVariables: function () {
     ENV_VARS.forEach(function (key) {

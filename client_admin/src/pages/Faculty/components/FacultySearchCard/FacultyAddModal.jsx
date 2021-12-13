@@ -21,7 +21,7 @@ const FacultyAddModal = (props) => {
   const [triggerAdd] = useAddNewFacultyMutation()
   const dispatch = useDispatch()
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, actions) => {
     try {
       const { groupId } = await triggerAdd(values).unwrap()
       handleClose()

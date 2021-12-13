@@ -47,12 +47,11 @@ const StudentAddModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      await triggerAdd(values).unwrap()
+      await triggerAdd(values)
       handleClose()
       dispatch(setSelectedStudentId(values.id))
     } catch (e) {
       console.log(e)
-      // actions.setFieldError('id', e)
     }
   }
 

@@ -17,6 +17,6 @@ setTimeout(async () => {
   bcrypt.hash(password, config.saltRounds).then((hashed) => {
     console.log(`${password} -> ${hashed}`)
   })
-}, 3000)
+}, 5000)
 
 export default pool

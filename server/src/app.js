@@ -5,11 +5,14 @@ import cors from 'cors'
 import { handleLogin } from './controllers/auth.js'
 
 import APIRouter from './routes/api.js'
+import config from './config.js'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(morgan('dev'))
+if (!config.isProduction) {
+  app.use(morgan('dev'))
+}
 
 app.post('/login', handleLogin)
 app.use('/api', APIRouter)

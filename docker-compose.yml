@@ -19,15 +19,15 @@ services:
   #   environment:
   #     BACKEND_URL: http://server:5000
 
-  # server:
-  #   depends_on:
-  #     - database
-  #   build: ./server
-  #   ports:
-  #     - '5000:5000'
-  #   environment:
-  #     CHATBOT_SERVER_URL: http://chatbot:7000
-  #     DATABASE_URL: http://database:5432
+  server:
+    depends_on:
+      - database
+    build: ./server
+    ports:
+      - '5000:5000'
+    environment:
+      CHATBOT_SERVER_URL: http://chatbot:7000
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/postgres
 
   database:
     build: ./database

@@ -11,6 +11,7 @@ const ENV_VARS = [
 ]
 
 export default {
+  isProduction: process.env.NODE_ENV === 'production',
   chatbotServerURL: process.env.CHATBOT_SERVER_URL,
   databaseUrl: process.env.DATABASE_URL,
   jwtSecret: process.env.JWT_SECRET,

@@ -32,7 +32,7 @@ const MentorAddModal = (props) => {
     }))
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, actions) => {
     try {
       const { groupId } = await triggerAdd(values).unwrap()
       handleClose()
