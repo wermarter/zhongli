@@ -1,4 +1,4 @@
-FROM node
+FROM node:16-alpine
 USER node
 
 RUN mkdir /home/node/code
