@@ -1,0 +1,39 @@
+{
+  "files": {
+    "static/js/0.fdf82caa.chunk.js": "/zhongli/static/js/0.fdf82caa.chunk.js",
+    "static/js/0.fdf82caa.chunk.js.map": "/zhongli/static/js/0.fdf82caa.chunk.js.map",
+    "static/js/1.dff54cee.chunk.js": "/zhongli/static/js/1.dff54cee.chunk.js",
+    "static/js/1.dff54cee.chunk.js.map": "/zhongli/static/js/1.dff54cee.chunk.js.map",
+    "main.css": "/zhongli/static/css/main.ef6e1a37.chunk.css",
+    "main.js": "/zhongli/static/js/main.61ab8b0f.chunk.js",
+    "main.js.map": "/zhongli/static/js/main.61ab8b0f.chunk.js.map",
+    "runtime-main.js": "/zhongli/static/js/runtime-main.6708f5da.js",
+    "runtime-main.js.map": "/zhongli/static/js/runtime-main.6708f5da.js.map",
+    "static/css/4.4659568d.chunk.css": "/zhongli/static/css/4.4659568d.chunk.css",
+    "static/js/4.be9051da.chunk.js": "/zhongli/static/js/4.be9051da.chunk.js",
+    "static/js/4.be9051da.chunk.js.map": "/zhongli/static/js/4.be9051da.chunk.js.map",
+    "static/js/5.d3f821dc.chunk.js": "/zhongli/static/js/5.d3f821dc.chunk.js",
+    "static/js/5.d3f821dc.chunk.js.map": "/zhongli/static/js/5.d3f821dc.chunk.js.map",
+    "static/js/6.803ce336.chunk.js": "/zhongli/static/js/6.803ce336.chunk.js",
+    "static/js/6.803ce336.chunk.js.map": "/zhongli/static/js/6.803ce336.chunk.js.map",
+    "static/js/7.4c864b0c.chunk.js": "/zhongli/static/js/7.4c864b0c.chunk.js",
+    "static/js/7.4c864b0c.chunk.js.map": "/zhongli/static/js/7.4c864b0c.chunk.js.map",
+    "static/js/8.7b31fbe2.chunk.js": "/zhongli/static/js/8.7b31fbe2.chunk.js",
+    "static/js/8.7b31fbe2.chunk.js.map": "/zhongli/static/js/8.7b31fbe2.chunk.js.map",
+    "static/js/9.0664fafa.chunk.js": "/zhongli/static/js/9.0664fafa.chunk.js",
+    "static/js/9.0664fafa.chunk.js.map": "/zhongli/static/js/9.0664fafa.chunk.js.map",
+    "static/js/10.ac1a9fb2.chunk.js": "/zhongli/static/js/10.ac1a9fb2.chunk.js",
+    "static/js/10.ac1a9fb2.chunk.js.map": "/zhongli/static/js/10.ac1a9fb2.chunk.js.map",
+    "index.html": "/zhongli/index.html",
+    "static/css/4.4659568d.chunk.css.map": "/zhongli/static/css/4.4659568d.chunk.css.map",
+    "static/css/main.ef6e1a37.chunk.css.map": "/zhongli/static/css/main.ef6e1a37.chunk.css.map",
+    "static/js/4.be9051da.chunk.js.LICENSE.txt": "/zhongli/static/js/4.be9051da.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6708f5da.js",
+    "static/css/4.4659568d.chunk.css",
+    "static/js/4.be9051da.chunk.js",
+    "static/css/main.ef6e1a37.chunk.css",
+    "static/js/main.61ab8b0f.chunk.js"
+  ]
+}
