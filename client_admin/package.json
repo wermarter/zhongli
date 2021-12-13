@@ -19,8 +19,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "PUBLIC_URL=/ react-scripts build",
+    "start": "cross-env PUBLIC_URL=/ react-scripts start",
+    "build": "cross-env PUBLIC_URL=/ react-scripts build",
     "build:gh-pages": "cross-env REACT_APP_API_URL=https://zhongli-server.herokuapp.com react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

@@ -5,7 +5,11 @@ const NavigationBar = () => {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand as={NavLink} to="/">
+        <Navbar.Brand
+          href="https://github.com/haminhchien/zhongli"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           ADMIN WEB
         </Navbar.Brand>
         <Nav variant="pills" className="me-auto">
