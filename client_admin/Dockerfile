@@ -1,10 +1,10 @@
-FROM node
+FROM node:16
 WORKDIR /app
 
-COPY package-lock.json package.json ./
-RUN npm ci
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN yarn build
 
 
 FROM nginx

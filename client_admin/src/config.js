@@ -6,6 +6,7 @@ const ENV_VARS = [
   'REACT_APP_API_URL',
   'REACT_APP_ADMIN_USERID',
   'REACT_APP_ADMIN_PASSWORD',
+  'NODE_ENV',
 ]
 
 const config = {

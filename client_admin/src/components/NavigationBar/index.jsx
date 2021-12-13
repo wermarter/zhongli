@@ -6,7 +6,7 @@ const NavigationBar = () => {
     <Navbar bg="dark" variant="dark">
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          ZHONGLI ADMIN
+          ADMIN WEB
         </Navbar.Brand>
         <Nav variant="pills" className="me-auto">
           <Nav.Link as={NavLink} to="/student">
