@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import config from '../../config'
-import { adminLogin, selectJWT } from '../authSlice'
+import { logout, selectJWT } from '../authSlice'
 import {
   COURSE,
   COURSE_LIST,
@@ -30,10 +30,11 @@ const authorizedBaseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await authorizedBaseQuery(args, api, extraOptions)
   if (result.error && result.error.status === 401) {
-    // login again
-    await api.dispatch(adminLogin())
-    // retry the initial query
-    result = await authorizedBaseQuery(args, api, extraOptions)
+    // // login again
+    // await api.dispatch(adminLogin())
+    // // retry the initial query
+    // result = await authorizedBaseQuery(args, api, extraOptions)
+    api.dispatch(logout())
   }
   return result
 }

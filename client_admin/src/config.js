@@ -2,17 +2,10 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // Required environment variables
-const ENV_VARS = [
-  'REACT_APP_API_URL',
-  'REACT_APP_ADMIN_USERID',
-  'REACT_APP_ADMIN_PASSWORD',
-  'NODE_ENV',
-]
+const ENV_VARS = ['REACT_APP_API_URL', 'NODE_ENV']
 
 const config = {
   apiUrl: process.env.REACT_APP_API_URL,
-  adminUserId: process.env.REACT_APP_ADMIN_USERID,
-  adminPassword: process.env.REACT_APP_ADMIN_PASSWORD,
   isProduction: process.env.NODE_ENV === 'production',
 
   checkEnvVariables: function () {

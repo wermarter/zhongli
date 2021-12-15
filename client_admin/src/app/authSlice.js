@@ -13,13 +13,7 @@ const initialState = {
 
 export const adminLogin = createAsyncThunk(
   'auth/adminLogin',
-  async (
-    { userId, password } = {
-      userId: config.adminUserId,
-      password: config.adminPassword,
-    },
-    thunkAPI,
-  ) => {
+  async ({ userId, password }, thunkAPI) => {
     const response = await fetch(`${config.apiUrl}/login`, {
       method: 'POST',
       headers: {
@@ -37,7 +31,9 @@ export const adminLogin = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state, action) {}, // state will be reset in root reducer
+  },
   extraReducers: (builder) => {
     builder.addCase(adminLogin.fulfilled, (state, { payload }) => {
       state.jwt = payload.accessToken
@@ -52,3 +48,5 @@ export const authSlice = createSlice({
 })
 
 export const selectJWT = (state) => state[authSlice.name].jwt
+
+export const { logout } = authSlice.actions

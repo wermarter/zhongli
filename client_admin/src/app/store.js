@@ -11,15 +11,23 @@ import {
   REGISTER,
 } from 'redux-persist'
 import { apiSlice } from './api'
-import { authSlice } from './authSlice'
+import { authSlice, logout } from './authSlice'
 import { pageSlice } from './pageSlice'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 
-const rootReducer = combineReducers({
+const combinedReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   [authSlice.name]: authSlice.reducer,
   [pageSlice.name]: pageSlice.reducer,
 })
+
+const rootReducer = (state, action) => {
+  if (action.type === logout.toString()) {
+    // check for action type
+    state = undefined
+  }
+  return combinedReducer(state, action)
+}
 
 // Configure redux-persist
 const persistConfig = {

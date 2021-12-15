@@ -13,7 +13,7 @@ setTimeout(async () => {
   console.log('Database connected')
 
   // default password hash
-  const password = 'conculan'
+  const password = 'admin'
   bcrypt.hash(password, config.saltRounds).then((hashed) => {
     console.log(`${password} -> ${hashed}`)
   })
