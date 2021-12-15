@@ -19,26 +19,26 @@ services:
   #   environment:
   #     BACKEND_URL: http://server:5000
 
-  client_admin:
-    depends_on:
-      - server
-    build: ./client_admin
-    ports:
-      - '3000:3000'
-    environment:
-      - REACT_APP_API_URL=http://localhost:5000
-      - REACT_APP_ADMIN_USERID=admin
-      - REACT_APP_ADMIN_PASSWORD=conculan
+  # client_admin:
+  #   depends_on:
+  #     - server
+  #   build: ./client_admin
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - REACT_APP_API_URL=http://localhost:5000
+  #     - REACT_APP_ADMIN_USERID=admin
+  #     - REACT_APP_ADMIN_PASSWORD=conculan
 
-  server:
-    depends_on:
-      - database
-    build: ./server
-    ports:
-      - '5000:5000'
-    environment:
-      - CHATBOT_SERVER_URL=http://chatbot:7000
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/postgres
+  # server:
+  #   depends_on:
+  #     - database
+  #   build: ./server
+  #   ports:
+  #     - '5000:5000'
+  #   environment:
+  #     - CHATBOT_SERVER_URL=http://chatbot:7000
+  #     - DATABASE_URL=postgresql://postgres:postgres@database:5432/postgres
 
   database:
     build: ./database

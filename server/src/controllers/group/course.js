@@ -43,12 +43,24 @@ export const changeCourseLecturerId = async (req, res) => {
 
 export const getCourseInfo = async (req, res) => {
   const { groupId } = req.query
-  const sql = `
-    SELECT group_id as "groupId", "Groups".name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId", "Users".name as "lecturerName"
-    FROM "Groups", "Courses", "Users"
+  const selectCourseInfo = `
+    SELECT group_id as "groupId", "Groups".name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
+    FROM "Groups", "Courses"
     WHERE "Courses".group_id = $1
-    AND "Groups".id="Courses".group_id
-    AND "Users".id="Courses".lecturer_id`
-  const result = await database.query(sql, [groupId])
-  res.json(result.rows[0] || {})
+    AND "Groups".id="Courses".group_id`
+  const courseInfo = (await database.query(selectCourseInfo, [groupId])).rows[0]
+
+  // Lecturer ID may be null due to deletion
+  const { lecturerId } = courseInfo
+  let lecturerName = undefined
+  if (lecturerId) {
+    const selectLecturerName = `
+      SELECT name
+      FROM "Users"
+      WHERE id=$1`
+    const user = await database.query(selectLecturerName, [lecturerId])
+    lecturerName = user.rows[0].name
+  }
+  const result = { ...courseInfo, lecturerName }
+  res.json(result)
 }

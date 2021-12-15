@@ -30,11 +30,23 @@ export const changeMentorId = async (req, res) => {
 export const getMentorGroupInfo = async (req, res) => {
   const { groupId } = req.query
   const sql = `
-    SELECT mentor_id as "mentorId", "Users".name as "mentorName", group_id as "groupId", "Groups".name as "groupName"
-    FROM "MentorGroups", "Users", "Groups"
+    SELECT mentor_id as "mentorId", group_id as "groupId", "Groups".name as "groupName"
+    FROM "MentorGroups", "Groups"
     WHERE "MentorGroups".group_id=$1
-    AND "MentorGroups".group_id="Groups".id
-    AND mentor_id="Users".id`
-  const result = await database.query(sql, [groupId])
-  res.json(result.rows[0] || {})
+    AND "MentorGroups".group_id="Groups".id`
+  const groupInfo = (await database.query(sql, [groupId])).rows[0]
+  const { mentorId } = groupInfo
+  let mentorName = undefined
+
+  // Mentor ID may be null due to deletion
+  if (mentorId) {
+    const selectMentorName = `
+      SELECT name
+      FROM "Users"
+      WHERE id=$1`
+    const user = await database.query(selectMentorName, [mentorId])
+    mentorName = user.rows[0].name
+  }
+  const result = { ...groupInfo, mentorName }
+  res.json(result)
 }
