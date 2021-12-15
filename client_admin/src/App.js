@@ -5,7 +5,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 import NavigationBar from './components/NavigationBar'
 import { ProgressBar } from 'react-bootstrap'
-import { selectIsLoading } from './app/pageSlice'
+import { selectLoadingCount } from './app/pageSlice'
 
 import './App.css'
 import Login from './pages/Login'
@@ -29,7 +29,7 @@ function RequireAuth({ children }) {
 }
 
 function App() {
-  const isLoading = useSelector(selectIsLoading)
+  const isLoading = useSelector(selectLoadingCount) > 0
 
   return (
     <Fragment>

@@ -2,7 +2,8 @@ import SearchCard from '../../../../components/SearchCard'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedMentorIdSelector,
-  setIsLoading,
+  loadingStarted,
+  loadingDone,
   setSelectedMentorId,
 } from '../../../../app/pageSlice'
 import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
@@ -17,7 +18,11 @@ const MentorSearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    dispatch(setIsLoading(isLoading))
+    if (isLoading) {
+      dispatch(loadingStarted())
+    } else {
+      dispatch(loadingDone())
+    }
   }, [isLoading, dispatch])
 
   return (

@@ -2,7 +2,8 @@ import SearchCard from '../../../../components/SearchCard'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedFacultyIdSelector,
-  setIsLoading,
+  loadingStarted,
+  loadingDone,
   setSelectedFacultyId,
 } from '../../../../app/pageSlice'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
@@ -17,7 +18,11 @@ const FacultySearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    dispatch(setIsLoading(isLoading))
+    if (isLoading) {
+      dispatch(loadingStarted())
+    } else {
+      dispatch(loadingDone())
+    }
   }, [isLoading, dispatch])
 
   return (

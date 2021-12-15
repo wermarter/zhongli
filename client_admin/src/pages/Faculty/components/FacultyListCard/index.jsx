@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useGetFacultyLecturersQuery } from '../../../../app/api/group/facultySlice'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { loadingStarted, loadingDone } from '../../../../app/pageSlice'
 import ListCard from '../../../../components/ListCard'
 
 const FacultyListCard = ({ selectedFacultyId }) => {
@@ -11,9 +11,9 @@ const FacultyListCard = ({ selectedFacultyId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

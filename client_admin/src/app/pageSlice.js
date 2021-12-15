@@ -1,20 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isLoading: false,
   selectedStudentId: undefined,
   selectedLecturerId: undefined,
   selectedMentorId: undefined,
   selectedCourseId: undefined,
   selectedFacultyId: undefined,
+  loadingCount: 0,
 }
 
 export const pageSlice = createSlice({
   name: 'page',
   initialState,
   reducers: {
-    setIsLoading: (state, action) => {
-      state.isLoading = action.payload
+    loadingStarted: (state, action) => {
+      state.loadingCount++
+    },
+    loadingDone: (state, action) => {
+      state.loadingCount--
     },
     setSelectedStudentId: (state, action) => {
       state.selectedStudentId = action.payload
@@ -34,7 +37,7 @@ export const pageSlice = createSlice({
   },
 })
 
-export const selectIsLoading = (state) => state[pageSlice.name].isLoading
+export const selectLoadingCount = (state) => state[pageSlice.name].loadingCount
 
 export const selectedStudentIdSelector = (state) =>
   state[pageSlice.name].selectedStudentId
@@ -52,7 +55,8 @@ export const selectedFacultyIdSelector = (state) =>
   state[pageSlice.name].selectedFacultyId
 
 export const {
-  setIsLoading,
+  loadingStarted,
+  loadingDone,
   setSelectedStudentId,
   setSelectedLecturerId,
   setSelectedMentorId,

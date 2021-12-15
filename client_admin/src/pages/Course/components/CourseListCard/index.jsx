@@ -6,7 +6,7 @@ import {
   useRemoveStudentCourseMutation,
   useSearchStudentsMutation,
 } from '../../../../app/api/user/studentSlice'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { loadingStarted, loadingDone } from '../../../../app/pageSlice'
 import ListCard from '../../../../components/ListCard'
 
 const CourseListCard = ({ selectedCourseId }) => {
@@ -19,9 +19,9 @@ const CourseListCard = ({ selectedCourseId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

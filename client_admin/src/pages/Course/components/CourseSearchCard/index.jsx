@@ -2,7 +2,8 @@ import SearchCard from '../../../../components/SearchCard'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectedCourseIdSelector,
-  setIsLoading,
+  loadingStarted,
+  loadingDone,
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
 import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
@@ -17,7 +18,11 @@ const CourseSearchCard = () => {
   const [addModal, setAddModal] = useState(false)
 
   useEffect(() => {
-    dispatch(setIsLoading(isLoading))
+    if (isLoading) {
+      dispatch(loadingStarted())
+    } else {
+      dispatch(loadingDone())
+    }
   }, [isLoading, dispatch])
 
   return (

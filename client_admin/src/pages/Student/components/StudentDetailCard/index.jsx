@@ -11,7 +11,7 @@ import {
   useRemoveStudentMutation,
 } from '../../../../app/api/user/studentSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading, setSelectedStudentId } from '../../../../app/pageSlice'
+import { loadingStarted, loadingDone, setSelectedStudentId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import EditUserInfoModal from '../../../../components/modals/EditUserInfoModal'
 import ChangePasswordModal from '../../../../components/modals/ChangePasswordModal'
@@ -47,9 +47,9 @@ const StudentDetailCard = ({ selectedStudentId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

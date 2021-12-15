@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useGetMentorGroupStudentsQuery } from '../../../../app/api/group/mentorSlice'
-import { setIsLoading } from '../../../../app/pageSlice'
+import { loadingStarted, loadingDone } from '../../../../app/pageSlice'
 import ListCard from '../../../../components/ListCard'
 
 const MentorListCard = ({ selectedMentorId }) => {
@@ -11,9 +11,9 @@ const MentorListCard = ({ selectedMentorId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

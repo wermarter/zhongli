@@ -7,7 +7,7 @@ import {
   useRemoveFacultyMutation,
 } from '../../../../app/api/group/facultySlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading, setSelectedFacultyId } from '../../../../app/pageSlice'
+import { loadingStarted, loadingDone, setSelectedFacultyId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
 
@@ -28,9 +28,9 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

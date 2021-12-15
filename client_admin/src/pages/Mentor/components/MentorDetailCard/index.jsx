@@ -8,7 +8,11 @@ import {
 } from '../../../../app/api/group/mentorSlice'
 import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading, setSelectedMentorId } from '../../../../app/pageSlice'
+import {
+  loadingStarted,
+  loadingDone,
+  setSelectedMentorId,
+} from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import SelectItemModal from '../../../../components/modals/SelectItemModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
@@ -30,9 +34,9 @@ const MentorDetailCard = ({ selectedMentorId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

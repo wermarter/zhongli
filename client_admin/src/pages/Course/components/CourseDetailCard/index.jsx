@@ -10,7 +10,8 @@ import {
 import DetailCard from '../../../../components/DetailCard'
 import {
   selectedCourseIdSelector,
-  setIsLoading,
+  loadingStarted,
+  loadingDone,
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
@@ -37,9 +38,9 @@ const CourseDetailCard = () => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 

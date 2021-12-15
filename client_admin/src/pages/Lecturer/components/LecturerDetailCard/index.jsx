@@ -9,7 +9,11 @@ import {
   useRemoveLecturerMutation,
 } from '../../../../app/api/user/lecturerSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { setIsLoading, setSelectedLecturerId } from '../../../../app/pageSlice'
+import {
+  loadingStarted,
+  loadingDone,
+  setSelectedLecturerId,
+} from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import { useChangeUserPasswordMutation } from '../../../../app/api/user/studentSlice'
 import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
@@ -42,9 +46,9 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
 
   useEffect(() => {
     if (isFetching) {
-      dispatch(setIsLoading(true))
+      dispatch(loadingStarted())
     } else {
-      dispatch(setIsLoading(false))
+      dispatch(loadingDone())
     }
   }, [isFetching, dispatch])
 
