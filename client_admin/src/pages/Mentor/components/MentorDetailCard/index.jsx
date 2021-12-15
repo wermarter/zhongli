@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   useChangeGroupNameMutation,
@@ -7,15 +7,11 @@ import {
   useRemoveMentorGroupMutation,
 } from '../../../../app/api/group/mentorSlice'
 import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
+import { setSelectedMentorId } from '../../../../app/pageSlice'
 import DetailCard from '../../../../components/DetailCard'
-import {
-  loadingStarted,
-  loadingDone,
-  setSelectedMentorId,
-} from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
-import SelectItemModal from '../../../../components/modals/SelectItemModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
 
 const MentorDetailCard = ({ selectedMentorId }) => {
   const { data: mentorInfo, isFetching } =
@@ -31,14 +27,6 @@ const MentorDetailCard = ({ selectedMentorId }) => {
   const [showChangeMentorModal, setShowChangeMentorModal] = useState(false)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isFetching, dispatch])
 
   if (isFetching) {
     return <></>

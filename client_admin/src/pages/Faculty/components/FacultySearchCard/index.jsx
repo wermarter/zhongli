@@ -1,29 +1,19 @@
-import SearchCard from '../../../../components/SearchCard'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
 import {
   selectedFacultyIdSelector,
-  loadingStarted,
-  loadingDone,
   setSelectedFacultyId,
 } from '../../../../app/pageSlice'
-import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
-import { Fragment, useEffect, useState } from 'react'
+import SearchCard from '../../../../components/SearchCard'
 import FacultyAddModal from './FacultyAddModal'
 
 const FacultySearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchFacultiesMutation()
-  const { data, isLoading } = query
+  const { data } = query
   const selectedFacultyId = useSelector(selectedFacultyIdSelector)
   const [addModal, setAddModal] = useState(false)
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isLoading, dispatch])
 
   return (
     <Fragment>

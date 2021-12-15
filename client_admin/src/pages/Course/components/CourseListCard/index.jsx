@@ -1,29 +1,17 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { useGetCourseStudentsQuery } from '../../../../app/api/group/courseSlice'
 import {
   useAddStudentCourseMutation,
   useRemoveStudentCourseMutation,
   useSearchStudentsMutation,
 } from '../../../../app/api/user/studentSlice'
-import { loadingStarted, loadingDone } from '../../../../app/pageSlice'
 import ListCard from '../../../../components/ListCard'
 
 const CourseListCard = ({ selectedCourseId }) => {
   const { data: students, isFetching } =
     useGetCourseStudentsQuery(selectedCourseId)
-  const dispatch = useDispatch()
   const [triggerRemoveStudent] = useRemoveStudentCourseMutation()
   const [triggerAddStudent] = useAddStudentCourseMutation()
   const [triggerSearchStudent] = useSearchStudentsMutation()
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isFetching, dispatch])
 
   if (isFetching) {
     return <></>
@@ -39,7 +27,7 @@ const CourseListCard = ({ selectedCourseId }) => {
       showButtons={true}
       handleRemove={async (student) => {
         await triggerRemoveStudent({
-          userId: student.id,
+          userId: student.userId,
           groupId: selectedCourseId,
         }).unwrap()
       }}

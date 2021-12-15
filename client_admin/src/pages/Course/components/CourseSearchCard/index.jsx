@@ -1,29 +1,19 @@
-import SearchCard from '../../../../components/SearchCard'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
 import {
   selectedCourseIdSelector,
-  loadingStarted,
-  loadingDone,
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
-import { useSearchCoursesMutation } from '../../../../app/api/group/courseSlice'
-import { Fragment, useEffect, useState } from 'react'
+import SearchCard from '../../../../components/SearchCard'
 import CourseAddModal from './CourseAddModal'
 
 const CourseSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchCoursesMutation()
-  const { data, isLoading } = query
+  const { data } = query
   const selectedCourseId = useSelector(selectedCourseIdSelector)
   const [addModal, setAddModal] = useState(false)
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isLoading, dispatch])
 
   return (
     <Fragment>

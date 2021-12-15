@@ -1,29 +1,19 @@
-import SearchCard from '../../../../components/SearchCard'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
 import {
   selectedMentorIdSelector,
-  loadingStarted,
-  loadingDone,
   setSelectedMentorId,
 } from '../../../../app/pageSlice'
-import { useSearchMentorsMutation } from '../../../../app/api/group/mentorSlice'
-import { Fragment, useEffect, useState } from 'react'
+import SearchCard from '../../../../components/SearchCard'
 import MentorAddModal from './MentorAddModal'
 
 const MentorSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchMentorsMutation()
-  const { data, isLoading } = query
+  const { data } = query
   const selectedMentorId = useSelector(selectedMentorIdSelector)
   const [addModal, setAddModal] = useState(false)
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isLoading, dispatch])
 
   return (
     <Fragment>

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   useChangeFacultyDescriptionMutation,
@@ -6,8 +6,8 @@ import {
   useGetFacultyInfoQuery,
   useRemoveFacultyMutation,
 } from '../../../../app/api/group/facultySlice'
+import { setSelectedFacultyId } from '../../../../app/pageSlice'
 import DetailCard from '../../../../components/DetailCard'
-import { loadingStarted, loadingDone, setSelectedFacultyId } from '../../../../app/pageSlice'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
 
@@ -25,14 +25,6 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
     useState(false)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isFetching, dispatch])
 
   if (isFetching) {
     return <></>

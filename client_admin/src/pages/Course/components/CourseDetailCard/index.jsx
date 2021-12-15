@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   useChangeCourseLecturerMutation,
@@ -7,17 +7,15 @@ import {
   useGetCourseInfoQuery,
   useRemoveCourseMutation,
 } from '../../../../app/api/group/courseSlice'
-import DetailCard from '../../../../components/DetailCard'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import {
   selectedCourseIdSelector,
-  loadingStarted,
-  loadingDone,
   setSelectedCourseId,
 } from '../../../../app/pageSlice'
+import DetailCard from '../../../../components/DetailCard'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
-import SelectItemModal from '../../../../components/modals/SelectItemModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
-import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
 
 const CourseDetailCard = () => {
   const selectedCourseId = useSelector(selectedCourseIdSelector)
@@ -35,14 +33,6 @@ const CourseDetailCard = () => {
   const [showChangeTimeSlotModal, setShowChangeTimeSlotModal] = useState(false)
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isFetching, dispatch])
 
   if (isFetching) {
     return <></>

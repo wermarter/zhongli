@@ -1,29 +1,19 @@
-import SearchCard from '../../../../components/SearchCard'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import {
   selectedLecturerIdSelector,
-  loadingStarted,
-  loadingDone,
   setSelectedLecturerId,
 } from '../../../../app/pageSlice'
-import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
-import { Fragment, useEffect, useState } from 'react'
+import SearchCard from '../../../../components/SearchCard'
 import LecturerAddModal from './LecturerAddModal'
 
 const LecturerSearchCard = () => {
   const dispatch = useDispatch()
   const [trigger, query] = useSearchLecturersMutation()
-  const { data, isLoading } = query
+  const { data } = query
   const selectedLecturerId = useSelector(selectedLecturerIdSelector)
   const [addModal, setAddModal] = useState(false)
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isLoading, dispatch])
 
   return (
     <Fragment>

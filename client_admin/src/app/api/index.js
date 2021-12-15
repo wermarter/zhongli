@@ -12,6 +12,7 @@ import {
   STUDENT,
   STUDENT_LIST,
 } from './tagConstants'
+import { loadingStarted, loadingDone } from '../pageSlice'
 
 const authorizedBaseQuery = fetchBaseQuery({
   baseUrl: `${config.apiUrl}/api`,
@@ -28,7 +29,10 @@ const authorizedBaseQuery = fetchBaseQuery({
 
 // https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#axios-basequery
 const baseQueryWithReauth = async (args, api, extraOptions) => {
+  api.dispatch(loadingStarted())
   let result = await authorizedBaseQuery(args, api, extraOptions)
+  api.dispatch(loadingDone())
+
   if (result.error && result.error.status === 401) {
     // // login again
     // await api.dispatch(adminLogin())

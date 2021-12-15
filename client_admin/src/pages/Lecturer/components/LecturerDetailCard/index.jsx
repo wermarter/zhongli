@@ -1,5 +1,6 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
 import {
   useChangeLecturerFacultyMutation,
   useChangeLecturerInfoMutation,
@@ -8,17 +9,12 @@ import {
   useGetLecturerMentorGroupsQuery,
   useRemoveLecturerMutation,
 } from '../../../../app/api/user/lecturerSlice'
-import DetailCard from '../../../../components/DetailCard'
-import {
-  loadingStarted,
-  loadingDone,
-  setSelectedLecturerId,
-} from '../../../../app/pageSlice'
-import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import { useChangeUserPasswordMutation } from '../../../../app/api/user/studentSlice'
-import { useSearchFacultiesMutation } from '../../../../app/api/group/facultySlice'
-import EditUserInfoModal from '../../../../components/modals/EditUserInfoModal'
+import { setSelectedLecturerId } from '../../../../app/pageSlice'
+import DetailCard from '../../../../components/DetailCard'
 import ChangePasswordModal from '../../../../components/modals/ChangePasswordModal'
+import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
+import EditUserInfoModal from '../../../../components/modals/EditUserInfoModal'
 import SelectItemModal from '../../../../components/modals/SelectItemModal'
 
 const LecturerDetailCard = ({ selectedLecturerId }) => {
@@ -43,14 +39,6 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
   const isFetching = mentorIsFetching || facultyIsFetching || lecturerIsFetching
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isFetching) {
-      dispatch(loadingStarted())
-    } else {
-      dispatch(loadingDone())
-    }
-  }, [isFetching, dispatch])
 
   if (isFetching) {
     return <></>
