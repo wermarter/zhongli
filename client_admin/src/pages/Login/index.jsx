@@ -79,7 +79,6 @@ const Login = () => {
             </Form>
           )}
         </Formik>
-        <Form.Group className="mb-1"></Form.Group>
       </Card.Body>
     </Card>
   )

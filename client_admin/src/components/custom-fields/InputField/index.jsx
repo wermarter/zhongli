@@ -8,7 +8,7 @@ function InputField(props) {
   const showError = errors[name] && touched[name]
 
   return (
-    <Form.Group className="mb-2">
+    <Form.Group className="mb-3">
       {label && <Form.Label htmlFor={name}>{label}</Form.Label>}
       <Form.Control
         id={name}
