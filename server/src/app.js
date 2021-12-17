@@ -7,8 +7,12 @@ import { handleLogin } from './controllers/auth.js'
 import APIRouter from './routes/api.js'
 import config from './config.js'
 
+const corsOptions = {
+  credentials: true,
+}
+
 const app = express()
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 if (!config.isProduction) {
   app.use(morgan('dev'))
