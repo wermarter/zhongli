@@ -3,13 +3,13 @@ import express from 'express'
 import {
   createFaculty,
   getFacultyInfo,
-  updateFaculty,
+  changeFacultyAdmin,
 } from '../../controllers/group/faculty.js'
 
 const router = express.Router()
 
 router.post('/', createFaculty)
-router.put('/', updateFaculty)
+router.put('/', changeFacultyAdmin)
 router.get('/info', getFacultyInfo)
 
 export default router

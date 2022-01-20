@@ -1,28 +1,32 @@
 import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
-  useChangeFacultyDescriptionMutation,
+  useChangeFacultyAdminMutation,
+  useChangeFacultyDisplayIdMutation,
   useChangeFacultyNameMutation,
   useGetFacultyInfoQuery,
   useRemoveFacultyMutation,
 } from '../../../../app/api/group/facultySlice'
+import { useSearchLecturersMutation } from '../../../../app/api/user/lecturerSlice'
 import { setSelectedFacultyId } from '../../../../app/pageSlice'
 import DetailCard from '../../../../components/DetailCard'
 import ConfirmationModal from '../../../../components/modals/ConfirmationModal'
 import EditFieldModal from '../../../../components/modals/EditFieldModal'
+import SelectItemModal from '../../../../components/modals/SelectItemModal'
 
 const FacultyDetailCard = ({ selectedFacultyId }) => {
   const { data: facultyInfo, isFetching } =
     useGetFacultyInfoQuery(selectedFacultyId)
-
+  const [triggerSearchLecturers] = useSearchLecturersMutation()
   const [triggerRemoveFaculty] = useRemoveFacultyMutation()
   const [triggerRename] = useChangeFacultyNameMutation()
-  const [triggerChangeDescription] = useChangeFacultyDescriptionMutation()
+  const [triggerChangeId] = useChangeFacultyDisplayIdMutation()
+  const [triggerChangeAdmin] = useChangeFacultyAdminMutation()
 
   const [showRemoveWarning, setShowRemoveWarning] = useState(false)
   const [showRenameModal, setShowRenameModal] = useState(false)
-  const [showChangeDescriptionModal, setShowChangeDescriptionModal] =
-    useState(false)
+  const [showChangeIdModal, setShowChangeIdModal] = useState(false)
+  const [showChangeAdminModal, setShowChangeAdminModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -35,9 +39,15 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
       <DetailCard
         label="Faculty"
         fields={[
-          { label: 'Group name', content: facultyInfo.facultyName },
-          { label: 'Group ID', content: facultyInfo.groupId },
-          { label: 'Description', content: facultyInfo.facultyDescription },
+          { label: 'Faculty name', content: facultyInfo.facultyName },
+          { label: 'Faculty ID', content: facultyInfo.displayId },
+        ]}
+        links={[
+          {
+            label: 'Admin',
+            content: facultyInfo.adminName,
+            destination: `/lecturer/${facultyInfo.adminId || ''}`,
+          },
         ]}
         buttons={[
           {
@@ -47,9 +57,15 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
             },
           },
           {
-            label: 'Change description',
+            label: 'Change faculty ID',
             onClick: () => {
-              setShowChangeDescriptionModal(true)
+              setShowChangeIdModal(true)
+            },
+          },
+          {
+            label: 'Change faculty admin',
+            onClick: () => {
+              setShowChangeAdminModal(true)
             },
           },
           {
@@ -75,18 +91,38 @@ const FacultyDetailCard = ({ selectedFacultyId }) => {
         initialValues={facultyInfo.facultyName}
       />
       <EditFieldModal
-        title="Change faculty description"
-        show={showChangeDescriptionModal}
+        title="Change faculty ID"
+        show={showChangeIdModal}
         handleClose={() => {
-          setShowChangeDescriptionModal(false)
+          setShowChangeIdModal(false)
         }}
-        handleSubmit={async (newDescription) => {
-          await triggerChangeDescription({
+        handleSubmit={async (newFacultyId) => {
+          await triggerChangeId({
             groupId: facultyInfo.groupId,
-            facultyDescription: newDescription,
+            displayId: newFacultyId,
           })
         }}
-        initialValues={facultyInfo.facultyDescription}
+        initialValues={facultyInfo.displayId}
+      />
+      <SelectItemModal
+        title="Change faculty admin"
+        show={showChangeAdminModal}
+        handleClose={() => {
+          setShowChangeAdminModal(false)
+        }}
+        handleSubmit={async (newAdminId) => {
+          await triggerChangeAdmin({
+            groupId: facultyInfo.groupId,
+            adminId: newAdminId,
+          })
+        }}
+        handleSearchItems={async (query) => {
+          const lecturers = await triggerSearchLecturers(query).unwrap()
+          return lecturers.map((lecturer) => ({
+            value: lecturer.id,
+            label: lecturer.name,
+          }))
+        }}
       />
       <ConfirmationModal
         title="Remove faculty?"

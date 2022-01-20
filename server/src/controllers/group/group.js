@@ -15,7 +15,8 @@ export const searchGroups = async (req, res) => {
       SELECT id as "groupId", name as "groupName"
       FROM "Groups"
       WHERE type=$2
-      AND name ILIKE $1 LIMIT 20`
+      AND (name ILIKE $1 OR display_id ILIKE $1)
+      LIMIT 20`
     result = await database.query(searchByGroupName, [`%${query}%`, groupType])
   }
   res.json(result.rows)
@@ -65,5 +66,15 @@ export const changeGroupName = async (req, res) => {
     SET name=$1
     WHERE id=$2`
   await database.query(updateGroupName, [groupName, groupId])
+  res.sendStatus(200)
+}
+
+export const changeGroupDisplayId = async (req, res) => {
+  const { groupId, displayId } = req.body
+  const updateGroupDisplayId = `
+    UPDATE "Groups" 
+    SET display_id=$1
+    WHERE id=$2`
+  await database.query(updateGroupDisplayId, [displayId, groupId])
   res.sendStatus(200)
 }

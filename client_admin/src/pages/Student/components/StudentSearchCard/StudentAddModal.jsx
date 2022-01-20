@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { setSelectedStudentId } from '../../../../app/pageSlice'
 
 const validationSchema = Yup.object().shape({
-  id: Yup.string().required('This field is required.'),
+  displayId: Yup.string().required('This field is required.'),
   name: Yup.string().required('This field is required.'),
   password: Yup.string().required('This field is required.'),
   passwordConfirmation: Yup.string().test(
@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  id: '',
+  displayId: '',
   name: '',
   password: '',
   passwordConfirmation: '',
@@ -47,9 +47,9 @@ const StudentAddModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (values, actions) => {
     try {
-      await triggerAdd(values)
+      const { userId } = await triggerAdd(values).unwrap()
       handleClose()
-      dispatch(setSelectedStudentId(values.id))
+      dispatch(setSelectedStudentId(userId))
     } catch (e) {
       console.log(e)
     }
@@ -73,7 +73,7 @@ const StudentAddModal = ({ show, handleClose }) => {
           >
             <Modal.Body>
               <FastField
-                name="id"
+                name="displayId"
                 component={InputField}
                 label="Student ID"
                 placeholder="ITITIU18302..."

@@ -50,7 +50,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
         label="Lecturer"
         fields={[
           { label: 'Name', content: lecturerInfo.name },
-          { label: 'ID', content: lecturerInfo.id },
+          { label: 'ID', content: lecturerInfo.displayId },
           { label: 'PSID', content: lecturerInfo.psid },
           { label: 'Address', content: lecturerInfo.address },
         ]}
@@ -99,16 +99,18 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
         handleClose={() => {
           setShowEditInfoModal(false)
         }}
-        handleSubmit={async ({ name, address }) => {
+        handleSubmit={async ({ name, address, displayId }) => {
           await triggerChangeLecturerInfo({
             id: lecturerInfo.id,
             name,
             address,
+            displayId,
           })
         }}
         initialValues={{
           name: lecturerInfo.name,
           address: lecturerInfo.address,
+          displayId: lecturerInfo.displayId,
         }}
       />
       <ChangePasswordModal

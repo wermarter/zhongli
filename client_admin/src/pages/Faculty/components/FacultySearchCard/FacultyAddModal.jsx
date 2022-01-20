@@ -7,13 +7,13 @@ import { setSelectedFacultyId } from '../../../../app/pageSlice'
 import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
+  displayId: Yup.string().required('This field is required.'),
   facultyName: Yup.string().required('This field is required.'),
-  facultyDescription: Yup.string().required('This field is required.'),
 })
 
 const initialValues = {
+  displayId: '',
   facultyName: '',
-  facultyDescription: '',
 }
 
 const FacultyAddModal = (props) => {
@@ -34,7 +34,7 @@ const FacultyAddModal = (props) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add new course</Modal.Title>
+        <Modal.Title>Add new faculty</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={initialValues}
@@ -52,13 +52,13 @@ const FacultyAddModal = (props) => {
                 name="facultyName"
                 component={InputField}
                 label="New faculty name"
-                placeholder="Intro to computing..."
+                placeholder="School of Computer Science and Engineering..."
               />
               <FastField
-                name="facultyDescription"
+                name="displayId"
                 component={InputField}
-                label="Faculty description"
-                placeholder="Located at room A1.111, established in 2007..."
+                label="New faculty ID"
+                placeholder="CSE..."
               />
             </Modal.Body>
 

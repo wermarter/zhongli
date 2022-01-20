@@ -7,6 +7,7 @@ const initialState = {
     psid: null,
     name: null,
     role: null,
+    displayId: null,
   },
   jwt: null,
 }
@@ -42,6 +43,7 @@ export const authSlice = createSlice({
         psid: payload.psid,
         name: payload.name,
         role: payload.role,
+        displayId: payload.displayId,
       }
     })
   },

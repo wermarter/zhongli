@@ -35,10 +35,10 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     addNewCourse: builder.mutation({
-      query: ({ courseName, timeSlot, lecturerId }) => ({
+      query: ({ courseName, timeSlot, lecturerId, displayId }) => ({
         url: '/course',
         method: 'POST',
-        body: { courseName, timeSlot, lecturerId },
+        body: { courseName, timeSlot, lecturerId, displayId },
       }),
       invalidatesTags: (result = [], error, arg) => [
         { type: COURSE_LIST, id: arg.lecturerId },
@@ -58,9 +58,20 @@ const extendedApi = apiSlice.injectEndpoints({
 
     changeCourseName: builder.mutation({
       query: ({ groupId, groupName }) => ({
-        url: '/group',
+        url: '/group/name',
         method: 'PUT',
         body: { groupId, groupName },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: COURSE, id: arg.groupId },
+      ],
+    }),
+
+    changeCourseDisplayId: builder.mutation({
+      query: ({ groupId, displayId }) => ({
+        url: '/group/displayId',
+        method: 'PUT',
+        body: { groupId, displayId },
       }),
       invalidatesTags: (result, error, arg) => [
         { type: COURSE, id: arg.groupId },
@@ -102,4 +113,5 @@ export const {
   useChangeCourseNameMutation,
   useChangeCourseTimeSlotMutation,
   useChangeCourseLecturerMutation,
+  useChangeCourseDisplayIdMutation,
 } = extendedApi

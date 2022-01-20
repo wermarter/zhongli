@@ -23,7 +23,7 @@ const LecturerSearchCard = () => {
         selectedItemKey={selectedLecturerId}
         keySelector={(lecturer) => lecturer.id}
         nameSelector={(lecturer) => lecturer.name}
-        showKey={true}
+        // showKey={true}
         onSearch={(query) => trigger(query)}
         onAdd={() => setAddModal(true)}
         onSelect={(lecturer) => dispatch(setSelectedLecturerId(lecturer.id))}

@@ -54,7 +54,7 @@ const StudentDetailCard = ({ selectedStudentId }) => {
         label="Student"
         fields={[
           { label: 'Name', content: studentInfo.name },
-          { label: 'ID', content: studentInfo.id },
+          { label: 'ID', content: studentInfo.displayId },
           { label: 'PSID', content: studentInfo.psid },
           { label: 'Address', content: studentInfo.address },
         ]}
@@ -109,16 +109,18 @@ const StudentDetailCard = ({ selectedStudentId }) => {
         handleClose={() => {
           setShowEditInfoModal(false)
         }}
-        handleSubmit={async ({ name, address }) => {
+        handleSubmit={async ({ name, address, displayId }) => {
           await triggerChangeStudentInfo({
             id: studentInfo.id,
             name,
             address,
+            displayId,
           })
         }}
         initialValues={{
           name: studentInfo.name,
           address: studentInfo.address,
+          displayId: studentInfo.displayId,
         }}
       />
       <ChangePasswordModal

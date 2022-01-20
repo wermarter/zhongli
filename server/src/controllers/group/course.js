@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid'
 import database from '../../services/database.js'
 
 export const createCourse = async (req, res) => {
-  const { courseName, timeSlot, lecturerId } = req.body
+  const { courseName, timeSlot, lecturerId, displayId } = req.body
   const groupId = uuidv4()
 
   const createNewCourse = `
-    INSERT INTO "Groups" ("id", "type", "name")
-    VALUES ($1, 'COURSE', $2)`
-  await database.query(createNewCourse, [groupId, courseName])
+    INSERT INTO "Groups" ("id", "type", "name", "display_id")
+    VALUES ($1, 'COURSE', $2, $3)`
+  await database.query(createNewCourse, [groupId, courseName, displayId])
 
   const populateCourse = `
     INSERT INTO "Courses" ("group_id", "time_slot", "lecturer_id")
@@ -44,7 +44,7 @@ export const changeCourseLecturerId = async (req, res) => {
 export const getCourseInfo = async (req, res) => {
   const { groupId } = req.query
   const selectCourseInfo = `
-    SELECT group_id as "groupId", "Groups".name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
+    SELECT group_id as "groupId", display_id as "displayId", "Groups".name as "courseName", time_slot as "timeSlot", lecturer_id as "lecturerId"
     FROM "Groups", "Courses"
     WHERE "Courses".group_id = $1
     AND "Groups".id="Courses".group_id`

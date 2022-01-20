@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid'
 import database from '../../services/database.js'
 
 export const createMentorGroup = async (req, res) => {
-  const { mentorId, groupName } = req.body
+  const { mentorId, groupName, displayId } = req.body
   const groupId = uuidv4()
 
   const createNewMentorGroup = `
-    INSERT INTO "Groups" ("id", "type", "name")
-    VALUES ($1, 'MENTORGROUP', $2)`
-  await database.query(createNewMentorGroup, [groupId, groupName])
+    INSERT INTO "Groups" ("id", "type", "name", "display_id")
+    VALUES ($1, 'MENTORGROUP', $2, $3)`
+  await database.query(createNewMentorGroup, [groupId, groupName, displayId])
 
   const populateMentorGroup = `
     INSERT INTO "MentorGroups" ("group_id", "mentor_id")
@@ -30,7 +30,7 @@ export const changeMentorId = async (req, res) => {
 export const getMentorGroupInfo = async (req, res) => {
   const { groupId } = req.query
   const sql = `
-    SELECT mentor_id as "mentorId", group_id as "groupId", "Groups".name as "groupName"
+    SELECT mentor_id as "mentorId", group_id as "groupId", display_id as "displayId", "Groups".name as "groupName"
     FROM "MentorGroups", "Groups"
     WHERE "MentorGroups".group_id=$1
     AND "MentorGroups".group_id="Groups".id`

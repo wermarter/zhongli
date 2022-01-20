@@ -9,12 +9,14 @@ import { setSelectedCourseId } from '../../../../app/pageSlice'
 import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
+  displayId: Yup.string().required('This field is required.'),
   courseName: Yup.string().required('This field is required.'),
   timeSlot: Yup.number().required('This field is required.'),
   lecturerId: Yup.string().required('This field is required.'),
 })
 
 const initialValues = {
+  displayId: '',
   courseName: '',
   timeSlot: 0,
   lecturerId: '',
@@ -66,6 +68,12 @@ const CourseAddModal = (props) => {
                 component={InputField}
                 label="New course name"
                 placeholder="Intro to computing..."
+              />
+              <FastField
+                name="displayId"
+                component={InputField}
+                label="New course ID"
+                placeholder="IT011IU"
               />
               <FastField
                 name="timeSlot"

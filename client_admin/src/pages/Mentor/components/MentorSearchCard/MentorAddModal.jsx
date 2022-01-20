@@ -9,11 +9,13 @@ import { setSelectedMentorId } from '../../../../app/pageSlice'
 import { useDispatch } from 'react-redux'
 
 const validationSchema = Yup.object().shape({
+  displayId: Yup.string().required('This field is required.'),
   groupName: Yup.string().required('This field is required.'),
   mentorId: Yup.string().required('This field is required.'),
 })
 
 const initialValues = {
+  displayId: '',
   groupName: '',
   mentorId: '',
 }
@@ -64,6 +66,12 @@ const MentorAddModal = (props) => {
                 component={InputField}
                 label="New group name"
                 placeholder="ITCS K18..."
+              />
+              <FastField
+                name="displayId"
+                component={InputField}
+                label="New group ID"
+                placeholder="ITCSK18..."
               />
               <FastField
                 name="mentorId"

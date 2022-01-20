@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  useChangeCourseDisplayIdMutation,
   useChangeCourseLecturerMutation,
   useChangeCourseNameMutation,
   useChangeCourseTimeSlotMutation,
@@ -26,9 +27,11 @@ const CourseDetailCard = () => {
   const [triggerChangeLecturer] = useChangeCourseLecturerMutation()
   const [triggerSearchLecturers] = useSearchLecturersMutation()
   const [triggerChangeTimeSlot] = useChangeCourseTimeSlotMutation()
+  const [triggerChangeId] = useChangeCourseDisplayIdMutation()
 
   const [showRemoveWarning, setShowRemoveWarning] = useState(false)
   const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showChangeIdModal, setShowChangeIdModal] = useState(false)
   const [showChangeLecturerModal, setShowChangeLecturerModal] = useState(false)
   const [showChangeTimeSlotModal, setShowChangeTimeSlotModal] = useState(false)
 
@@ -43,8 +46,8 @@ const CourseDetailCard = () => {
       <DetailCard
         label="Course"
         fields={[
-          { label: 'Group name', content: courseInfo.courseName },
-          { label: 'Group ID', content: courseInfo.groupId },
+          { label: 'Course name', content: courseInfo.courseName },
+          { label: 'Course ID', content: courseInfo.displayId },
           { label: 'Timeslot', content: courseInfo.timeSlot },
         ]}
         links={[
@@ -59,6 +62,12 @@ const CourseDetailCard = () => {
             label: 'Rename course',
             onClick: () => {
               setShowRenameModal(true)
+            },
+          },
+          {
+            label: 'Change course ID',
+            onClick: () => {
+              setShowChangeIdModal(true)
             },
           },
           {
@@ -94,6 +103,20 @@ const CourseDetailCard = () => {
           })
         }}
         initialValues={courseInfo.courseName}
+      />
+      <EditFieldModal
+        title="Change course ID"
+        show={showChangeIdModal}
+        handleClose={() => {
+          setShowChangeIdModal(false)
+        }}
+        handleSubmit={async (newCourseId) => {
+          await triggerChangeId({
+            groupId: courseInfo.groupId,
+            displayId: newCourseId,
+          })
+        }}
+        initialValues={courseInfo.displayId}
       />
       <EditFieldModal
         title="Change course timeslot"

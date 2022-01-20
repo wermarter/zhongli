@@ -4,6 +4,7 @@ import { Modal, Button, Form, Spinner } from 'react-bootstrap'
 import InputField from '../../../components/custom-fields/InputField'
 
 const validationSchema = Yup.object().shape({
+  displayId: Yup.string().required('This field is required.'),
   name: Yup.string().required('This field is required.'),
   address: Yup.string().required('This field is required.'),
 })
@@ -42,6 +43,12 @@ const EditUserInfoModal = ({
             onReset={formikProps.handleReset}
           >
             <Modal.Body>
+              <FastField
+                name="displayId"
+                component={InputField}
+                label="User ID"
+                placeholder="ITITIU18302"
+              />
               <FastField
                 name="name"
                 component={InputField}

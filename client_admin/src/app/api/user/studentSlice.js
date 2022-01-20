@@ -71,10 +71,17 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     addNewStudent: builder.mutation({
-      query: ({ id, name, password, address, facultyId }) => ({
+      query: ({ displayId, name, password, address, facultyId }) => ({
         url: '/user',
         method: 'POST',
-        body: { id, name, password, role: 'STUDENT', address, facultyId },
+        body: {
+          displayId,
+          name,
+          password,
+          role: 'STUDENT',
+          address,
+          facultyId,
+        },
       }),
     }),
 
@@ -122,10 +129,10 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     changeStudentInfo: builder.mutation({
-      query: ({ id, name, address }) => ({
+      query: ({ id, name, address, displayId }) => ({
         url: '/user',
         method: 'PUT',
-        body: { id, name, address },
+        body: { id, name, address, displayId },
       }),
       invalidatesTags: (result, error, arg) => [
         {

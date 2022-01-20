@@ -7,7 +7,7 @@ export const handleLogin = async (req, res) => {
   const { userId, password } = req.body
 
   const user = (
-    await database.query(`SELECT * FROM "Users" WHERE id=$1`, [userId])
+    await database.query(`SELECT * FROM "Users" WHERE display_id=$1`, [userId])
   ).rows[0]
 
   if (!user) {
@@ -23,6 +23,7 @@ export const handleLogin = async (req, res) => {
       name: user.name,
       psid: user.psid,
       role: user.role,
+      displayId: user.displayId,
     }
     const token = jwt.sign(userInfo, config.jwtSecret, {
       expiresIn: config.tokenExpires,

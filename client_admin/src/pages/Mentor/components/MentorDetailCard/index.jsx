@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
+  useChangeGroupDisplayIdMutation,
   useChangeGroupNameMutation,
   useChangeMentorIdMutation,
   useGetMentorInfoQuery,
@@ -21,9 +22,11 @@ const MentorDetailCard = ({ selectedMentorId }) => {
   const [triggerRename] = useChangeGroupNameMutation()
   const [triggerChangeMentor] = useChangeMentorIdMutation()
   const [triggerSearchLecturers] = useSearchLecturersMutation()
+  const [triggerChangeId] = useChangeGroupDisplayIdMutation()
 
   const [showRemoveWarning, setShowRemoveWarning] = useState(false)
   const [showRenameModal, setShowRenameModal] = useState(false)
+  const [showChangeIdModal, setShowChangeIdModal] = useState(false)
   const [showChangeMentorModal, setShowChangeMentorModal] = useState(false)
 
   const dispatch = useDispatch()
@@ -38,7 +41,7 @@ const MentorDetailCard = ({ selectedMentorId }) => {
         label="Group"
         fields={[
           { label: 'Group name', content: mentorInfo.groupName },
-          { label: 'Group ID', content: mentorInfo.groupId },
+          { label: 'Group ID', content: mentorInfo.displayId },
         ]}
         links={[
           {
@@ -52,6 +55,12 @@ const MentorDetailCard = ({ selectedMentorId }) => {
             label: 'Rename group',
             onClick: () => {
               setShowRenameModal(true)
+            },
+          },
+          {
+            label: 'Change group ID',
+            onClick: () => {
+              setShowChangeIdModal(true)
             },
           },
           {
@@ -81,6 +90,20 @@ const MentorDetailCard = ({ selectedMentorId }) => {
           })
         }}
         initialValues={mentorInfo.groupName}
+      />
+      <EditFieldModal
+        title="Change group ID"
+        show={showChangeIdModal}
+        handleClose={() => {
+          setShowChangeIdModal(false)
+        }}
+        handleSubmit={async (newGroupId) => {
+          await triggerChangeId({
+            groupId: mentorInfo.groupId,
+            displayId: newGroupId,
+          })
+        }}
+        initialValues={mentorInfo.displayId}
       />
       <SelectItemModal
         title="Change mentor"

@@ -42,10 +42,10 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     addNewMentorGroup: builder.mutation({
-      query: ({ mentorId, groupName }) => ({
+      query: ({ mentorId, groupName, displayId }) => ({
         url: '/mentor',
         method: 'POST',
-        body: { mentorId, groupName },
+        body: { mentorId, groupName, displayId },
       }),
       invalidatesTags: (result = [], error, arg) => [
         { type: MENTORGROUP_LIST, id: arg.mentorId },
@@ -65,9 +65,20 @@ const extendedApi = apiSlice.injectEndpoints({
 
     changeGroupName: builder.mutation({
       query: ({ groupId, groupName }) => ({
-        url: '/group',
+        url: '/group/name',
         method: 'PUT',
         body: { groupId, groupName },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: MENTORGROUP, id: arg.groupId },
+      ],
+    }),
+
+    changeGroupDisplayId: builder.mutation({
+      query: ({ groupId, displayId }) => ({
+        url: '/group/displayId',
+        method: 'PUT',
+        body: { groupId, displayId },
       }),
       invalidatesTags: (result, error, arg) => [
         { type: MENTORGROUP, id: arg.groupId },
@@ -97,4 +108,5 @@ export const {
   useRemoveMentorGroupMutation,
   useChangeGroupNameMutation,
   useChangeMentorIdMutation,
+  useChangeGroupDisplayIdMutation,
 } = extendedApi

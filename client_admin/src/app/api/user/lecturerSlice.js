@@ -73,10 +73,17 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     addNewLecturer: builder.mutation({
-      query: ({ id, name, password, address, facultyId }) => ({
+      query: ({ name, password, address, facultyId, displayId }) => ({
         url: '/user',
         method: 'POST',
-        body: { id, name, password, role: 'LECTURER', address, facultyId },
+        body: {
+          name,
+          password,
+          role: 'LECTURER',
+          address,
+          facultyId,
+          displayId,
+        },
       }),
       invalidatesTags: (result, error, arg) => [
         { type: LECTURER_LIST, id: arg.facultyId },
@@ -95,10 +102,10 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
 
     changeLecturerInfo: builder.mutation({
-      query: ({ id, name, address }) => ({
+      query: ({ id, name, address, displayId }) => ({
         url: '/user',
         method: 'PUT',
-        body: { id, name, address },
+        body: { id, name, address, displayId },
       }),
       invalidatesTags: (result, error, arg) => [
         {
