@@ -127,7 +127,7 @@ const LecturerDetailCard = ({ selectedLecturerId }) => {
         }}
       />
       <SelectItemModal
-        title="Change student faculty"
+        title="Change lecturer faculty"
         show={showChangeFacultyModal}
         handleClose={() => {
           setShowChangeFacultyModal(false)

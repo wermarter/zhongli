@@ -14,6 +14,7 @@ const corsOptions = {
 const app = express()
 app.use(cors(corsOptions))
 app.use(express.json())
+
 if (!config.isProduction) {
   app.use(morgan('dev'))
 }

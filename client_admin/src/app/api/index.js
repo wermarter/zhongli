@@ -38,7 +38,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     // await api.dispatch(adminLogin())
     // // retry the initial query
     // result = await authorizedBaseQuery(args, api, extraOptions)
-    api.dispatch(logout())
+    api.dispatch(logout()) // TODO: logout with messages: Logout successfully/ Token timeout
   }
   return result
 }

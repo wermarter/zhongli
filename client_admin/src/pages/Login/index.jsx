@@ -15,7 +15,6 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const from = location.state?.from?.pathname || '/'
 
   const handleLogin = async (values, actions) => {
     try {
@@ -23,7 +22,8 @@ const Login = () => {
       if (res?.message) {
         actions.setFieldError('password', res.message)
       } else {
-        navigate(from, { replace: true })
+        const returnUrl = location.state?.from?.pathname || '/'
+        navigate(returnUrl, { replace: true })
       }
     } catch (e) {
       console.log(e)
